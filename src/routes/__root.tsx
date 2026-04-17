@@ -14,6 +14,7 @@ export const Route = createRootRoute({
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { title: 'Essencium' },
     ],
+    links: [{ rel: 'icon', href: '/favicon.ico' }],
   }),
   component: RootComponent,
 })
@@ -32,7 +33,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
       <head>
         <HeadContent />
       </head>
-      <body>
+      <body className="bg-background font-sans text-foreground antialiased">
         {children}
         <Scripts />
       </body>
