@@ -6,6 +6,12 @@ Essencium Frontend v2 ist das neue Boilerplate für Frontend-Projekte bei Fracht
 
 Das Ziel: Jedes neue Frontend-Projekt bei Frachtwerk startet mit diesem Boilerplate und ist danach eigenständig — kein Dependency-Lock-in, kein Framework-Overhead.
 
+## Gesamtplan & Roadmap
+
+Der vollständige Plan — Warum der Wechsel, Budget, alle 10 Sprints, Component Library Backlog, Post-v1.0 Ausblick und Definition of Done — liegt in **[SPEC.md](./SPEC.md)**.
+
+Wenn du den Kontext hinter einer Architekturentscheidung brauchst oder wissen willst, was als nächstes ansteht: SPEC.md ist die Referenz.
+
 ## Referenz-Repo
 
 Das bestehende Essencium Frontend liegt im gleichen Verzeichnis:
