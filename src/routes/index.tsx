@@ -1,13 +1,15 @@
+import { createFileRoute } from '@tanstack/react-router'
+import type { JSX } from 'react'
+
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/')({
   component: Home,
 })
 
-function Home() {
+function Home(): JSX.Element {
   return (
     <div className="flex min-h-screen items-center justify-center p-8">
       <Card className="w-full max-w-md">

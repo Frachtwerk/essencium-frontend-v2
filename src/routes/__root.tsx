@@ -1,11 +1,11 @@
 import '@/styles/globals.css'
-import type { ReactNode } from 'react'
 import {
   HeadContent,
   Outlet,
   Scripts,
   createRootRoute,
 } from '@tanstack/react-router'
+import type { JSX, ReactNode } from 'react'
 
 export const Route = createRootRoute({
   head: () => ({
@@ -19,7 +19,7 @@ export const Route = createRootRoute({
   component: RootComponent,
 })
 
-function RootComponent() {
+function RootComponent(): JSX.Element {
   return (
     <RootDocument>
       <Outlet />
@@ -27,13 +27,15 @@ function RootComponent() {
   )
 }
 
-function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
+function RootDocument({
+  children,
+}: Readonly<{ children: ReactNode }>): JSX.Element {
   return (
     <html lang="de">
       <head>
         <HeadContent />
       </head>
-      <body className="bg-background font-sans text-foreground antialiased">
+      <body className="bg-background text-foreground font-sans antialiased">
         {children}
         <Scripts />
       </body>
