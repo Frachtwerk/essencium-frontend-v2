@@ -1,3 +1,6 @@
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/')({
@@ -6,18 +9,21 @@ export const Route = createFileRoute('/')({
 
 function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <div className="text-center">
-        <img
-          src="/img/logo.svg"
-          alt="Essencium"
-          className="mx-auto mb-8 h-10"
-        />
-        <h1 className="text-3xl font-bold text-foreground">
-          Essencium Frontend v2
-        </h1>
-        <p className="mt-3 text-sm text-muted-foreground">Setup erfolgreich.</p>
-      </div>
+    <div className="flex min-h-screen items-center justify-center p-8">
+      <Card className="w-full max-w-md">
+        <CardHeader>
+          <img src="/img/logo.svg" alt="Essencium" className="mb-4 h-8" />
+          <CardTitle className="text-xl">Essencium Frontend v2</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <Input type="email" placeholder="E-Mail" />
+          <Input type="password" placeholder="Passwort" />
+          <Button className="w-full">Anmelden</Button>
+          <Button variant="secondary" className="w-full">
+            Registrieren
+          </Button>
+        </CardContent>
+      </Card>
     </div>
   )
 }
