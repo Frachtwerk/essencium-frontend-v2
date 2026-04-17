@@ -6,9 +6,11 @@ export const Route = createFileRoute('/')({
 
 function Home() {
   return (
-    <div>
-      <h1>Essencium Frontend v2</h1>
-      <p>Setup erfolgreich.</p>
+    <div className="flex min-h-screen items-center justify-center">
+      <div className="text-center">
+        <h1 className="text-4xl font-bold">Essencium Frontend v2</h1>
+        <p className="mt-4 text-lg text-gray-600">Setup erfolgreich.</p>
+      </div>
     </div>
   )
 }
