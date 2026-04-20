@@ -1,4 +1,6 @@
+// Pre-commit: nur Prettier (schnell, zuverlässig, Node-versionsunabhängig).
+// ESLint läuft in CI via `pnpm lint`.
 export default {
-  '*.{ts,tsx}': ['prettier --write', 'eslint --fix'],
+  '*.{ts,tsx,mjs}': ['prettier --write'],
   '*.{json,md,css}': ['prettier --write'],
 }

@@ -16,17 +16,17 @@ React 19 + Vite 8 + TanStack Start + shadcn/ui.
 
 ## Tech Stack
 
-| Category | Technology |
-|---|---|
-| Framework | React 19 + Vite 8 (via TanStack Start, SPA mode) |
-| Routing | TanStack Router (file-based, type-safe) |
-| Server-State | TanStack Query |
-| UI Primitives | shadcn/ui + Base UI |
-| Styling | Tailwind CSS |
-| Forms | React Hook Form + Zod |
-| i18n | i18next + react-i18next |
-| Testing | Vitest (Unit) + Playwright (E2E) |
-| Language | TypeScript 6 (strict mode) |
+| Category      | Technology                                       |
+| ------------- | ------------------------------------------------ |
+| Framework     | React 19 + Vite 8 (via TanStack Start, SPA mode) |
+| Routing       | TanStack Router (file-based, type-safe)          |
+| Server-State  | TanStack Query                                   |
+| UI Primitives | shadcn/ui + Base UI                              |
+| Styling       | Tailwind CSS                                     |
+| Forms         | React Hook Form + Zod                            |
+| i18n          | i18next + react-i18next                          |
+| Testing       | Vitest (Unit) + Playwright (E2E)                 |
+| Language      | TypeScript 6 (strict mode)                       |
 
 ## Getting Started
 

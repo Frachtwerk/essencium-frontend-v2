@@ -48,11 +48,11 @@ Text Sekundär:                #94A3B8  — Slate-400
     --foreground: 215 28% 17%;
     --card: 210 40% 98%;
     --card-foreground: 215 28% 17%;
-    --primary: 213 52% 23%;        /* Frachtwerk Blau #1A3A5C */
+    --primary: 213 52% 23%; /* Frachtwerk Blau #1A3A5C */
     --primary-foreground: 0 0% 100%;
     --secondary: 210 40% 96%;
     --secondary-foreground: 215 28% 17%;
-    --accent: 189 94% 37%;         /* Teal #0891B2 */
+    --accent: 189 94% 37%; /* Teal #0891B2 */
     --accent-foreground: 0 0% 100%;
     --muted: 210 40% 96%;
     --muted-foreground: 215 16% 47%;
@@ -60,7 +60,7 @@ Text Sekundär:                #94A3B8  — Slate-400
     --border: 214 32% 91%;
     --input: 214 32% 91%;
     --ring: 213 52% 23%;
-    --radius: 0.375rem;            /* 6px, entspricht sm */
+    --radius: 0.375rem; /* 6px, entspricht sm */
   }
 
   .dark {
@@ -85,6 +85,7 @@ Text Sekundär:                #94A3B8  — Slate-400
 ```
 
 ### Regel
+
 Farben werden **niemals** hardcoded in Components. Immer über CSS-Variablen (`hsl(var(--primary))`) oder Tailwind-Klassen (`text-primary`, `bg-accent`). Nur so funktioniert Dark Mode und Kunden-Theming.
 
 ---
@@ -92,6 +93,7 @@ Farben werden **niemals** hardcoded in Components. Immer über CSS-Variablen (`h
 ## 2. Typografie
 
 ### Font
+
 - **Headings:** `Inter` (sans-serif) — clean, modern, exzellente Lesbarkeit
 - **Body:** `Inter` — durchgängig eine Fontfamilie für Konsistenz
 - **Monospace:** `JetBrains Mono` — für Code-Blöcke, technische Werte
@@ -100,16 +102,17 @@ Falls Inter nicht geladen werden kann: System-Font-Stack als Fallback (`ui-sans-
 
 ### Größen (Tailwind-Klassen)
 
-| Element | Klasse | Größe | Gewicht |
-|---|---|---|---|
-| Page Title (h1) | `text-2xl` oder `text-3xl` | 24–30px | `font-bold` (700) |
-| Section Title (h2) | `text-xl` | 20px | `font-semibold` (600) |
-| Card Title (h3) | `text-lg` | 18px | `font-semibold` (600) |
-| Body Text | `text-sm` | 14px | `font-normal` (400) |
-| Small/Caption | `text-xs` | 12px | `font-normal` (400) |
-| Label | `text-sm` | 14px | `font-medium` (500) |
+| Element            | Klasse                     | Größe   | Gewicht               |
+| ------------------ | -------------------------- | ------- | --------------------- |
+| Page Title (h1)    | `text-2xl` oder `text-3xl` | 24–30px | `font-bold` (700)     |
+| Section Title (h2) | `text-xl`                  | 20px    | `font-semibold` (600) |
+| Card Title (h3)    | `text-lg`                  | 18px    | `font-semibold` (600) |
+| Body Text          | `text-sm`                  | 14px    | `font-normal` (400)   |
+| Small/Caption      | `text-xs`                  | 12px    | `font-normal` (400)   |
+| Label              | `text-sm`                  | 14px    | `font-medium` (500)   |
 
 ### Regel
+
 - Body-Text ist `text-sm` (14px), nicht `text-base` (16px). Das ist der shadcn/ui-Standard und schafft kompaktere, professionellere Interfaces.
 - Überschriften immer `font-semibold` oder `font-bold`, nie `font-normal`.
 - Muted Text via `text-muted-foreground`.
@@ -119,17 +122,19 @@ Falls Inter nicht geladen werden kann: System-Font-Stack als Fallback (`ui-sans-
 ## 3. Spacing & Layout
 
 ### Spacing-Scale
+
 Wir nutzen die Tailwind-Standard-Scale. Die Frachtwerk-Konvention aus v1 (Mantine xs–xl) wird übersetzt:
 
-| v1 (Mantine) | v2 (Tailwind) | Pixel | Verwendung |
-|---|---|---|---|
-| xs | `p-1` / `gap-1` | 4px | Zwischen eng verwandten Elementen (Icon + Text) |
-| sm | `p-2` / `gap-2` | 8px | Innerhalb von Components (Button-Padding) |
-| md | `p-3` / `gap-3` oder `p-4` / `gap-4` | 12–16px | Standard-Abstand (Card-Padding, Form-Gaps) |
-| lg | `p-6` / `gap-6` | 24px | Zwischen Sections, Card zu Card |
-| xl | `p-8` / `gap-8` | 32px | Page-Padding, große Abstände |
+| v1 (Mantine) | v2 (Tailwind)                        | Pixel   | Verwendung                                      |
+| ------------ | ------------------------------------ | ------- | ----------------------------------------------- |
+| xs           | `p-1` / `gap-1`                      | 4px     | Zwischen eng verwandten Elementen (Icon + Text) |
+| sm           | `p-2` / `gap-2`                      | 8px     | Innerhalb von Components (Button-Padding)       |
+| md           | `p-3` / `gap-3` oder `p-4` / `gap-4` | 12–16px | Standard-Abstand (Card-Padding, Form-Gaps)      |
+| lg           | `p-6` / `gap-6`                      | 24px    | Zwischen Sections, Card zu Card                 |
+| xl           | `p-8` / `gap-8`                      | 32px    | Page-Padding, große Abstände                    |
 
 ### Layout-Regeln
+
 - **Page-Container:** `max-w-7xl mx-auto px-4 sm:px-6 lg:px-8`
 - **Card-Padding:** `p-4` oder `p-6`
 - **Form-Gaps:** `gap-4` zwischen Feldern, `gap-6` zwischen Sections
@@ -140,27 +145,29 @@ Wir nutzen die Tailwind-Standard-Scale. Die Frachtwerk-Konvention aus v1 (Mantin
 
 ## 4. Border Radius
 
-| v1 (Mantine) | v2 (Tailwind) | Pixel | Verwendung |
-|---|---|---|---|
-| sm (Default) | `rounded-md` | 6px | Buttons, Inputs, Cards — **Standard** |
-| md | `rounded-lg` | 8px | Dialoge, Dropdowns, größere Cards |
-| lg | `rounded-xl` | 12px | Modale, Hero-Sections |
-| full | `rounded-full` | 50% | Avatare, Tags, Badges |
+| v1 (Mantine) | v2 (Tailwind)  | Pixel | Verwendung                            |
+| ------------ | -------------- | ----- | ------------------------------------- |
+| sm (Default) | `rounded-md`   | 6px   | Buttons, Inputs, Cards — **Standard** |
+| md           | `rounded-lg`   | 8px   | Dialoge, Dropdowns, größere Cards     |
+| lg           | `rounded-xl`   | 12px  | Modale, Hero-Sections                 |
+| full         | `rounded-full` | 50%   | Avatare, Tags, Badges                 |
 
 ### Regel
+
 Default ist `rounded-md` (6px). Wird über `--radius: 0.375rem` in den CSS-Variablen gesteuert. shadcn/ui Components nutzen das automatisch.
 
 ---
 
 ## 5. Shadows
 
-| v1 (Mantine) | v2 (Tailwind) | Verwendung |
-|---|---|---|
-| sm (Default) | `shadow-sm` | Cards, Dropdowns — **Standard** |
-| md | `shadow-md` | Modale, Popovers |
-| — | `shadow-none` | Flat Elements, innerhalb von Cards |
+| v1 (Mantine) | v2 (Tailwind) | Verwendung                         |
+| ------------ | ------------- | ---------------------------------- |
+| sm (Default) | `shadow-sm`   | Cards, Dropdowns — **Standard**    |
+| md           | `shadow-md`   | Modale, Popovers                   |
+| —            | `shadow-none` | Flat Elements, innerhalb von Cards |
 
 ### Regel
+
 Sparsam mit Shadows. Default ist `shadow-sm` für Cards. Modale bekommen `shadow-md`. Die meisten Elemente brauchen keinen Shadow — Borders (`border`) reichen für visuelle Trennung.
 
 ---
@@ -169,25 +176,26 @@ Sparsam mit Shadows. Default ist `shadow-sm` für Cards. Modale bekommen `shadow
 
 Übersetzung der v1-Konventionen (Mantine filled/light/subtle) nach shadcn/ui:
 
-| v1 (Mantine) | v2 (shadcn/ui) | Verwendung |
-|---|---|---|
-| `filled` | `default` | Primäre Aktion: Speichern, Erstellen, Bestätigen |
-| `light` | `secondary` | Sekundäre Aktion: Abbrechen, Zurück, Filter |
-| `subtle` | `ghost` | Tertiäre Aktion: Inline-Aktionen, Navigation-Links |
-| `outline` | `outline` | Alternative zu Secondary, wenn mehr Präsenz nötig |
-| — | `destructive` | Löschen, Entfernen — immer rot |
-| — | `link` | Text-Links innerhalb von Content |
+| v1 (Mantine) | v2 (shadcn/ui) | Verwendung                                         |
+| ------------ | -------------- | -------------------------------------------------- |
+| `filled`     | `default`      | Primäre Aktion: Speichern, Erstellen, Bestätigen   |
+| `light`      | `secondary`    | Sekundäre Aktion: Abbrechen, Zurück, Filter        |
+| `subtle`     | `ghost`        | Tertiäre Aktion: Inline-Aktionen, Navigation-Links |
+| `outline`    | `outline`      | Alternative zu Secondary, wenn mehr Präsenz nötig  |
+| —            | `destructive`  | Löschen, Entfernen — immer rot                     |
+| —            | `link`         | Text-Links innerhalb von Content                   |
 
 ### Größen
 
-| Kontext | shadcn/ui Size | Verwendung |
-|---|---|---|
-| Standard | `default` | Formulare, Dialoge, Toolbars |
-| Kompakt | `sm` | Tabellen-Aktionen, Inline-Buttons |
-| Prominent | `lg` | Standalone-CTAs, leere Zustände |
-| Icon-Only | `icon` | Sidebar-Toggle, Close-Button |
+| Kontext   | shadcn/ui Size | Verwendung                        |
+| --------- | -------------- | --------------------------------- |
+| Standard  | `default`      | Formulare, Dialoge, Toolbars      |
+| Kompakt   | `sm`           | Tabellen-Aktionen, Inline-Buttons |
+| Prominent | `lg`           | Standalone-CTAs, leere Zustände   |
+| Icon-Only | `icon`         | Sidebar-Toggle, Close-Button      |
 
 ### Regeln
+
 - Maximal **eine** primäre Aktion pro sichtbarem Bereich.
 - Destruktive Aktionen (`destructive`) immer mit Confirmation-Dialog.
 - Icon-Buttons bekommen immer ein `title`-Attribut oder `aria-label`.
@@ -197,6 +205,7 @@ Sparsam mit Shadows. Default ist `shadow-sm` für Cards. Modale bekommen `shadow
 ## 7. Form-Elemente
 
 ### Inputs
+
 - Standard-Höhe: `h-9` (36px) — shadcn/ui Default
 - Border: `border-input` (Slate-200)
 - Focus: `ring-ring` (Frachtwerk Blau)
@@ -205,11 +214,13 @@ Sparsam mit Shadows. Default ist `shadow-sm` für Cards. Modale bekommen `shadow
 - Error: `border-destructive` + Error-Text darunter in `text-destructive text-xs`
 
 ### Labels
+
 - Immer über dem Input, nie inline
 - `text-sm font-medium`
 - Required-Felder: Label + `*` in `text-destructive`
 
 ### Validierung
+
 - Inline-Validierung: Error wird angezeigt, sobald das Feld verlassen wird (onBlur)
 - Error-Text direkt unter dem Feld: `text-xs text-destructive mt-1`
 - Erfolg wird **nicht** visuell angezeigt (kein grüner Rand) — Reduktion von visuellem Noise
@@ -229,23 +240,25 @@ Sparsam mit Shadows. Default ist `shadow-sm` für Cards. Modale bekommen `shadow
 ## 9. Feedback & Status
 
 ### Toasts (Sonner)
+
 - Erfolg: Grüner Akzent, kurze Message, verschwindet nach 4s
 - Fehler: Roter Akzent, bleibt sichtbar bis dismissed
 - Position: Bottom-right
 
 ### Badges / Status-Indikatoren
 
-| Status | Farbe | Tailwind |
-|---|---|---|
-| Aktiv / Erfolg | Grün | `bg-emerald-100 text-emerald-800` |
-| Warnung / Pending | Gelb | `bg-amber-100 text-amber-800` |
-| Fehler / Inaktiv | Rot | `bg-red-100 text-red-800` |
-| Info / Neutral | Blau | `bg-blue-100 text-blue-800` |
-| Default | Grau | `bg-slate-100 text-slate-800` |
+| Status            | Farbe | Tailwind                          |
+| ----------------- | ----- | --------------------------------- |
+| Aktiv / Erfolg    | Grün  | `bg-emerald-100 text-emerald-800` |
+| Warnung / Pending | Gelb  | `bg-amber-100 text-amber-800`     |
+| Fehler / Inaktiv  | Rot   | `bg-red-100 text-red-800`         |
+| Info / Neutral    | Blau  | `bg-blue-100 text-blue-800`       |
+| Default           | Grau  | `bg-slate-100 text-slate-800`     |
 
 In Dark Mode: invertierte Varianten (`bg-emerald-900/30 text-emerald-400` etc.)
 
 ### Leere Zustände
+
 - Zentriert in der Content-Area
 - Icon (muted) + Headline + Beschreibung + optionaler CTA-Button
 - Kein "Keine Daten gefunden" ohne Kontext — immer erklären, was der User tun kann
@@ -260,7 +273,8 @@ In Dark Mode: invertierte Varianten (`bg-emerald-900/30 text-emerald-400` etc.)
 - **Stroke-Width:** Default (2) — nicht anpassen
 
 ### Regeln
-- Icons allein sind nie ausreichend — immer mit Text-Label *oder* Tooltip
+
+- Icons allein sind nie ausreichend — immer mit Text-Label _oder_ Tooltip
 - Einzige Ausnahme: universell verstandene Icons (Close ✕, Search 🔍, Menu ☰)
 - Icon-Buttons in Tabellen: immer mit `title`-Attribut
 
@@ -269,12 +283,14 @@ In Dark Mode: invertierte Varianten (`bg-emerald-900/30 text-emerald-400` etc.)
 ## 11. Responsive Design
 
 ### Breakpoints (Tailwind Standard)
+
 - `sm:` — 640px (Mobil-Landscape)
 - `md:` — 768px (Tablet)
 - `lg:` — 1024px (Desktop)
 - `xl:` — 1280px (Wide Desktop)
 
 ### Regeln
+
 - **Mobile First:** Base-Styles sind für Mobile, erweitert via `sm:`, `md:`, `lg:`
 - **Sidebar:** Ab `lg:` sichtbar, darunter als Sheet/Drawer
 - **Tabellen:** Ab `md:` als Tabelle, darunter als Card-Stack
@@ -290,6 +306,7 @@ In Dark Mode: invertierte Varianten (`bg-emerald-900/30 text-emerald-400` etc.)
 - **Keine:** aufwändigen Page-Transitions, Parallax, oder Scroll-Animationen
 
 ### Regel
+
 Animationen dienen der Usability (Feedback, Orientierung), nicht der Dekoration. Weniger ist mehr.
 
 ---
