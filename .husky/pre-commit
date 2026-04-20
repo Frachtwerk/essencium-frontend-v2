@@ -1,1 +1,1 @@
-$HOME/.volta/bin/volta run pnpm exec lint-staged
+pnpm exec lint-staged
