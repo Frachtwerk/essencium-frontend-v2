@@ -48,7 +48,16 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ```bash
 pnpm build
+pnpm preview  # serve the production build locally
 ```
+
+### Environment Variables
+
+```bash
+cp .env.example .env
+```
+
+See `.env.example` for available variables. All `VITE_`-prefixed variables are embedded into the client bundle at build time.
 
 ## Contributing
 

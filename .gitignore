@@ -2,6 +2,7 @@ node_modules/
 dist/
 .vite/
 *.local
+.env
 src/routeTree.gen.ts
 .tanstack/
 .eslintcache
