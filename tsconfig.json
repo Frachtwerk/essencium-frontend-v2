@@ -16,5 +16,5 @@
     },
     "lib": ["ES2025", "DOM", "DOM.Iterable"]
   },
-  "include": ["src"]
+  "include": ["src", "vite.config.ts"]
 }

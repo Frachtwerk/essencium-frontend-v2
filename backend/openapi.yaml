@@ -1,0 +1,2240 @@
+openapi: 3.1.0
+info:
+  title: Essencium API
+  contact:
+    name: Frachtwerk GmbH
+    url: https://github.com/Frachtwerk/essencium-backend
+    email: essencium@frachtwerk.de
+  version: 3.3.2
+servers:
+- url: localhost:8098
+tags:
+- name: AuthenticationController
+  description: Set of endpoints used for authentication
+- name: RightController
+  description: Set of endpoints to manage global application rights / permissions
+- name: UserController
+  description: "Set of endpoints to manage system users, including yourself"
+- name: ContactController
+  description: Set of endpoints to send arbitrary emails
+- name: ExampleController
+  description: Example for implementing openAPI
+- name: SentryProxyController
+  description: Endpoints to proxy unauthenticated requests from the client to a configured
+    Sentry instance
+- name: ResetCredentialsController
+  description: "Set of endpoints used to reset a user's credentials, given a valid\
+    \ reset token as previously received via email"
+- name: TranslationController
+  description: Set of endpoints to manage language translations / i18n
+- name: ApiTokenController
+  description: CRUD operations for API tokens
+- name: RoleController
+  description: Set of endpoints to manage global application roles and their respective
+    rights / permissions
+paths:
+  /v1/users/{id}:
+    get:
+      tags:
+      - UserController
+      summary: Retrieve a user by her id
+      operationId: findById
+      parameters:
+      - name: id
+        in: path
+        description: ID of the user to retrieve
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserRepresentation"
+    put:
+      tags:
+      - UserController
+      summary: Update a user by passing the entire object
+      operationId: update
+      parameters:
+      - name: id
+        in: path
+        description: ID of the user to update
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserDto"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserRepresentation"
+    delete:
+      tags:
+      - UserController
+      summary: Delete a user by her id
+      operationId: delete
+      parameters:
+      - name: id
+        in: path
+        description: ID of the user to delete
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: No Content
+    patch:
+      tags:
+      - UserController
+      summary: Update a user by passing individual fields
+      operationId: update_1
+      parameters:
+      - name: id
+        in: path
+        description: ID of the user to update
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: {}
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserRepresentation"
+  /v1/users/me:
+    get:
+      tags:
+      - UserController
+      summary: Retrieve the currently logged-in user
+      operationId: getMe
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserRepresentation"
+    put:
+      tags:
+      - UserController
+      summary: Update the currently logged-in user by passing the entire update object
+      operationId: updateMe
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserDto"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserRepresentation"
+    patch:
+      tags:
+      - UserController
+      summary: Update the currently logged-in user by passing individual fields
+      operationId: updateMePartial
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: {}
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserRepresentation"
+  /v1/users/me/password:
+    put:
+      tags:
+      - UserController
+      summary: Change the currently logged-in user's password
+      operationId: updatePassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PasswordUpdateRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserRepresentation"
+  /v1/translations/{locale}:
+    get:
+      tags:
+      - TranslationController
+      description: Download all translations for the given locale as a file in the
+        given format
+      operationId: getTranslationFile
+      parameters:
+      - name: locale
+        in: path
+        description: Locale of the translations to retrieve
+        required: true
+        schema:
+          type: string
+      - name: type
+        in: query
+        required: true
+        schema:
+          type: string
+          default: json
+          enum:
+          - json
+          - properties
+          - resourcebundle
+          - xliff
+          - unknown
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: binary
+    put:
+      tags:
+      - TranslationController
+      description: Update multiple translation key-value pairs at once
+      operationId: updateTranslation
+      parameters:
+      - name: locale
+        in: path
+        description: Locale of the translations to update
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: {}
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Translation"
+  /v1/translations/{locale}/{key}:
+    put:
+      tags:
+      - TranslationController
+      description: Update an individual translation key-value pair
+      operationId: updateSingleTranslation
+      parameters:
+      - name: locale
+        in: path
+        description: Locale of the translation to update
+        required: true
+        schema:
+          type: string
+      - name: key
+        in: path
+        description: Key of the translation to update
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Translation"
+  /v1/roles/{name}:
+    get:
+      tags:
+      - RoleController
+      description: Retrieve a specific role by its name
+      operationId: findById_1
+      parameters:
+      - name: name
+        in: path
+        description: Name of the role to retrieve
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Role"
+    put:
+      tags:
+      - RoleController
+      description: Update a given role by passing an entire update object
+      operationId: updateObject
+      parameters:
+      - name: name
+        in: path
+        description: Name of the role to be updated
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RoleDto"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Role"
+    delete:
+      tags:
+      - RoleController
+      description: Delete a given role by its id
+      operationId: delete_1
+      parameters:
+      - name: name
+        in: path
+        description: Name of the role to be deleted
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: No Content
+    patch:
+      tags:
+      - RoleController
+      description: Update a given role by passing individual fields
+      operationId: update_2
+      parameters:
+      - name: name
+        in: path
+        description: Name of the role to be updated
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: {}
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Role"
+  /v1/example/{id}:
+    get:
+      tags:
+      - ExampleController
+      operationId: findById_2
+      parameters:
+      - name: id
+        in: path
+        description: ID of the entry to retrieve
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ExampleRepresentation"
+    put:
+      tags:
+      - ExampleController
+      operationId: update_3
+      parameters:
+      - name: id
+        in: path
+        description: ID of the entry to update
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExampleEntityDto"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ExampleRepresentation"
+    delete:
+      tags:
+      - ExampleController
+      operationId: delete_2
+      parameters:
+      - name: id
+        in: path
+        description: ID of the entry to delete
+        required: true
+        schema:
+          type: integer
+      responses:
+        "204":
+          description: No Content
+    patch:
+      tags:
+      - ExampleController
+      operationId: update_4
+      parameters:
+      - name: id
+        in: path
+        description: ID of the entry to update
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: {}
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ExampleRepresentation"
+  /v1/users:
+    get:
+      tags:
+      - UserController
+      summary: Find all users according to certain optional filter parameters and
+        return them as a page of user representations
+      operationId: findAll
+      parameters:
+      - name: page
+        in: query
+        description: Page you want to retrieve (0..N)
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: Number of records per page.
+        required: false
+        schema:
+          type: integer
+          default: 20
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property(,)(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - name: ids
+        in: query
+        description: "IDs of the requested entities. can contain multiple values separated\
+          \ by ','Multiple criteria are supported."
+        schema:
+          type: array
+          items:
+            type: integer
+        example: "1,2,5"
+      - name: createdBy
+        in: query
+        description: full username (email)
+        schema:
+          type: string
+        example: devnull@frachtwerk.de
+      - name: updatedBy
+        in: query
+        description: full username (email)
+        schema:
+          type: string
+        example: devnull@frachtwerk.de
+      - name: createdAtFrom
+        in: query
+        description: 'returns entries created after the submitted date and time '
+        schema:
+          type: string
+          format: date-time
+        example: 2021-01-01T00:00:01
+      - name: createdAtTo
+        in: query
+        description: 'returns entries created before the submitted date and time '
+        schema:
+          type: string
+          format: date-time
+        example: 2021-12-31T23:59:59
+      - name: updatedAtFrom
+        in: query
+        description: 'returns entries updated after the submitted date and time '
+        schema:
+          type: string
+          format: date-time
+        example: 2021-01-01T00:00:01
+      - name: updatedAtTo
+        in: query
+        description: 'returns entries updated before the submitted date and time '
+        schema:
+          type: string
+          format: date-time
+        example: 2021-12-31T23:59:59
+      - name: roles
+        in: query
+        description: A Role ID or name to filter by
+        schema:
+          type: array
+          items:
+            type: integer
+        example: "1,2,5"
+      - name: name
+        in: query
+        description: A firstName or lastName to filter by
+        schema:
+          type: string
+        example: Peter
+      - name: email
+        in: query
+        description: An email address to filter by
+        schema:
+          type: string
+        example: john.doe@frachtwerk.de
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PageUserRepresentation"
+    post:
+      tags:
+      - UserController
+      summary: Create a new user
+      operationId: create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserDto"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserRepresentation"
+  /v1/users/{id}/terminate:
+    post:
+      tags:
+      - UserController
+      summary: "Terminate all sessions of the given user, i.e. invalidate her tokens\
+        \ to effectively log the user out"
+      operationId: terminate
+      parameters:
+      - name: id
+        in: path
+        description: ID of the user to terminate
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: No Content
+  /v1/translations:
+    get:
+      tags:
+      - TranslationController
+      description: "Returns all translations grouped by their key, i.e. the returned\
+        \ result is a map of translation keys to a list of translations for every\
+        \ locale"
+      operationId: getTranslationsGroupedByKey
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Translation"
+    post:
+      tags:
+      - TranslationController
+      summary: Upload a set of translations given by a file.
+      description: Update an individual translation key-value pair
+      operationId: updateTranslation_1
+      parameters:
+      - name: locale
+        in: query
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+              required:
+              - file
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TranslationDto"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Translation"
+  /v1/set-password:
+    post:
+      tags:
+      - ResetCredentialsController
+      description: "Update the password of the user, who the given reset token belongs\
+        \ to"
+      operationId: setNewPassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PasswordUpdateRequest"
+        required: true
+      responses:
+        "204":
+          description: No Content
+  /v1/roles:
+    get:
+      tags:
+      - RoleController
+      description: "List all available roles, including their rights"
+      operationId: findAll_1
+      parameters:
+      - name: page
+        in: query
+        description: Page you want to retrieve (0..N)
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: Number of records per page.
+        required: false
+        schema:
+          type: integer
+          default: 20
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property(,)(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PageRole"
+    post:
+      tags:
+      - RoleController
+      description: Create a new role
+      operationId: create_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RoleDto"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Role"
+  /v1/reset-credentials:
+    post:
+      tags:
+      - ResetCredentialsController
+      description: Request a new reset token via email
+      operationId: requestResetToken
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+        required: true
+      responses:
+        "204":
+          description: No Content
+  /v1/example:
+    get:
+      tags:
+      - ExampleController
+      operationId: findAll_2
+      parameters:
+      - name: page
+        in: query
+        description: Page you want to retrieve (0..N)
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: Number of records per page.
+        required: false
+        schema:
+          type: integer
+          default: 20
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property(,asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - name: ids
+        in: query
+        description: "IDs of the requested entities. can contain multiple values separated\
+          \ by ','Multiple criteria are supported."
+        schema:
+          type: array
+          items:
+            type: integer
+        example: "1,2,5"
+      - name: createdBy
+        in: query
+        description: full username (email)
+        schema:
+          type: string
+        example: devnull@frachtwerk.de
+      - name: updatedBy
+        in: query
+        description: full username (email)
+        schema:
+          type: string
+        example: devnull@frachtwerk.de
+      - name: createdAtFrom
+        in: query
+        description: 'returns entries created after the submitted date and time '
+        schema:
+          type: string
+          format: date-time
+        example: 2021-01-01T00:00:01
+      - name: createdAtTo
+        in: query
+        description: 'returns entries created before the submitted date and time '
+        schema:
+          type: string
+          format: date-time
+        example: 2021-12-31T23:59:59
+      - name: updatedAtFrom
+        in: query
+        description: 'returns entries updated after the submitted date and time '
+        schema:
+          type: string
+          format: date-time
+        example: 2021-01-01T00:00:01
+      - name: updatedAtTo
+        in: query
+        description: 'returns entries updated before the submitted date and time '
+        schema:
+          type: string
+          format: date-time
+        example: 2021-12-31T23:59:59
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PageExampleRepresentation"
+    post:
+      tags:
+      - ExampleController
+      operationId: create_2
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExampleEntityDto"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ExampleRepresentation"
+  /v1/contact:
+    post:
+      tags:
+      - ContactController
+      description: "As a logged in user, send a certain message to the given address"
+      operationId: sendContactRequest
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContactRequestDto"
+        required: true
+      responses:
+        "200":
+          description: OK
+  /v1/api-tokens:
+    get:
+      tags:
+      - ApiTokenController
+      summary: Get paginated list of API tokens owned by the current user
+      description: Returns a paginated list of API tokens. Access is restricted to
+        tokens owned by the current user.
+      operationId: findAll_3
+      parameters:
+      - name: page
+        in: query
+        description: Page you want to retrieve (0..N)
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: Number of records per page.
+        required: false
+        schema:
+          type: integer
+          default: 20
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property(,asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - name: ids
+        in: query
+        description: "IDs of the requested entities. can contain multiple values separated\
+          \ by ','Multiple criteria are supported."
+        schema:
+          type: array
+          items:
+            type: integer
+        example: "1,2,5"
+      - name: createdBy
+        in: query
+        description: full username (email)
+        schema:
+          type: string
+        example: devnull@frachtwerk.de
+      - name: updatedBy
+        in: query
+        description: full username (email)
+        schema:
+          type: string
+        example: devnull@frachtwerk.de
+      - name: createdAtFrom
+        in: query
+        description: 'returns entries created after the submitted date and time '
+        schema:
+          type: string
+          format: date-time
+        example: 2021-01-01T00:00:01
+      - name: createdAtTo
+        in: query
+        description: 'returns entries created before the submitted date and time '
+        schema:
+          type: string
+          format: date-time
+        example: 2021-12-31T23:59:59
+      - name: updatedAtFrom
+        in: query
+        description: 'returns entries updated after the submitted date and time '
+        schema:
+          type: string
+          format: date-time
+        example: 2021-01-01T00:00:01
+      - name: updatedAtTo
+        in: query
+        description: 'returns entries updated before the submitted date and time '
+        schema:
+          type: string
+          format: date-time
+        example: 2021-12-31T23:59:59
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PageApiTokenRepresentation"
+    post:
+      tags:
+      - ApiTokenController
+      summary: Create a new API token
+      operationId: create_3
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ApiTokenDto"
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ApiTokenRepresentation"
+  /sentry/feedback:
+    post:
+      tags:
+      - SentryProxyController
+      description: Sends to Sentry a user feedback request
+      operationId: sendFeedback
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Feedback"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Feedback"
+  /auth/token:
+    post:
+      tags:
+      - AuthenticationController
+      summary: Login with username and password
+      description: Log in to request a new JWT token using username and password
+      operationId: postLogin
+      parameters:
+      - name: User-Agent
+        in: header
+        required: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/TokenResponse"
+  /auth/renew:
+    post:
+      tags:
+      - AuthenticationController
+      summary: Renew access token
+      description: "Request a new JWT access token, given a valid refresh token"
+      operationId: postRenew
+      parameters:
+      - name: User-Agent
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: refreshToken
+        in: cookie
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/TokenResponse"
+  /auth/logout:
+    post:
+      tags:
+      - AuthenticationController
+      summary: Logout the currently logged-in user
+      operationId: logout
+      parameters:
+      - name: Authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: redirectUrl
+        in: query
+        description: URL to redirect to after logout
+        required: false
+        schema:
+          type: string
+          format: uri
+          example: https://example.com/logout
+      responses:
+        "200":
+          description: OK
+  /v1/api-tokens/{id}:
+    get:
+      tags:
+      - ApiTokenController
+      summary: Get API token by ID
+      description: Returns the API token with the specified ID. Access is restricted
+        to tokens owned by the current user.
+      operationId: findById_3
+      parameters:
+      - name: id
+        in: path
+        description: ID of the entry to retrieve
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ApiTokenRepresentation"
+    delete:
+      tags:
+      - ApiTokenController
+      summary: Delete an API token by ID (admin only)
+      description: Deletes the API token with the specified ID. Admin access (API_TOKEN_ADMIN)
+        required.
+      operationId: delete_3
+      parameters:
+      - name: id
+        in: path
+        description: ID of the entry to delete
+        required: true
+        schema:
+          type: integer
+      responses:
+        "204":
+          description: No Content
+    patch:
+      tags:
+      - ApiTokenController
+      summary: Partially update an existing API token
+      description: Partially updates an existing API token. Only status updates to
+        'REVOKED' are allowed.
+      operationId: update_5
+      parameters:
+      - name: id
+        in: path
+        description: ID of the entry to update
+        required: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: {}
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ApiTokenRepresentation"
+  /v1/users/**:
+    options:
+      tags:
+      - UserController
+      operationId: collectionOptions
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /v1/translations/**:
+    options:
+      tags:
+      - TranslationController
+      operationId: collectionOptions_1
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /v1/roles/**:
+    options:
+      tags:
+      - RoleController
+      operationId: collectionOptions_2
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /v1/rights/**:
+    options:
+      tags:
+      - RightController
+      operationId: collectionOptions_3
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /v1/example/**:
+    options:
+      tags:
+      - ExampleController
+      operationId: collectionOptions_4
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /v1/contact/**:
+    options:
+      tags:
+      - ContactController
+      operationId: collectionOptions_5
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /v1/api-tokens/**:
+    options:
+      tags:
+      - ApiTokenController
+      operationId: collectionOptions_6
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /v1/**:
+    options:
+      tags:
+      - ResetCredentialsController
+      operationId: collectionOptions_7
+      responses:
+        "204":
+          description: No Content
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /sentry/**:
+    options:
+      tags:
+      - SentryProxyController
+      operationId: collectionOptions_8
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /auth/**:
+    options:
+      tags:
+      - AuthenticationController
+      summary: Collection options
+      description: Returns the allowed HTTP methods for the authentication endpoints.
+      operationId: collectionOptions_9
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+  /v1/users/{id}/tokens:
+    get:
+      tags:
+      - UserController
+      summary: Retrieve all session tokens for a user by her id
+      operationId: getTokensByUserId
+      parameters:
+      - name: id
+        in: path
+        description: ID of the user to retrieve tokens for
+        required: true
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/TokenRepresentation"
+  /v1/users/tokens:
+    get:
+      tags:
+      - UserController
+      summary: Find all users according to certain optional filter parameters and
+        return their tokens as a map of basic representations to list of token representations
+      operationId: findAllWithTokens
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/TokenRepresentation"
+  /v1/users/me/tokens:
+    get:
+      tags:
+      - UserController
+      summary: Retrieve refresh tokens of the currently logged-in user
+      operationId: getMyTokens
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TokenRepresentation"
+  /v1/users/me/roles:
+    get:
+      tags:
+      - UserController
+      summary: Retrieve the currently logged-in user's role
+      operationId: getMyRole
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Role"
+                uniqueItems: true
+  /v1/users/me/roles/rights:
+    get:
+      tags:
+      - UserController
+      summary: Retrieve the currently logged-in user's rights / permissions
+      operationId: getMyRights
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/GrantedAuthority"
+  /v1/users/basic:
+    get:
+      tags:
+      - UserController
+      summary: Find all users according to certain optional filter parameters and
+        returns all as list of basic representations
+      operationId: findAll_4
+      parameters:
+      - name: ids
+        in: query
+        description: "IDs of the requested entities. can contain multiple values separated\
+          \ by ','Multiple criteria are supported."
+        schema:
+          type: array
+          items:
+            type: integer
+        example: "1,2,5"
+      - name: createdBy
+        in: query
+        description: full username (email)
+        schema:
+          type: string
+        example: devnull@frachtwerk.de
+      - name: updatedBy
+        in: query
+        description: full username (email)
+        schema:
+          type: string
+        example: devnull@frachtwerk.de
+      - name: createdAtFrom
+        in: query
+        description: 'returns entries created after the submitted date and time '
+        schema:
+          type: string
+          format: date-time
+        example: 2021-01-01T00:00:01
+      - name: createdAtTo
+        in: query
+        description: 'returns entries created before the submitted date and time '
+        schema:
+          type: string
+          format: date-time
+        example: 2021-12-31T23:59:59
+      - name: updatedAtFrom
+        in: query
+        description: 'returns entries updated after the submitted date and time '
+        schema:
+          type: string
+          format: date-time
+        example: 2021-01-01T00:00:01
+      - name: updatedAtTo
+        in: query
+        description: 'returns entries updated before the submitted date and time '
+        schema:
+          type: string
+          format: date-time
+        example: 2021-12-31T23:59:59
+      - name: roles
+        in: query
+        description: A Role ID or name to filter by
+        schema:
+          type: array
+          items:
+            type: integer
+        example: "1,2,5"
+      - name: name
+        in: query
+        description: A firstName or lastName to filter by
+        schema:
+          type: string
+        example: Peter
+      - name: email
+        in: query
+        description: An email address to filter by
+        schema:
+          type: string
+        example: john.doe@frachtwerk.de
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BasicRepresentation"
+  /v1/translations/locales:
+    get:
+      tags:
+      - TranslationController
+      description: List all available locales
+      operationId: getAvailableLocales
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+                  additionalProperties:
+                    type: string
+  /v1/translations/file:
+    get:
+      tags:
+      - TranslationController
+      description: Download a specific translation file in the given format
+      operationId: getTranslationFile_1
+      parameters:
+      - name: type
+        in: query
+        description: Type of the translation file to download
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: binary
+  /v1/rights:
+    get:
+      tags:
+      - RightController
+      description: List all available rights
+      operationId: findAll_5
+      parameters:
+      - name: page
+        in: query
+        description: Page you want to retrieve (0..N)
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: Number of records per page.
+        required: false
+        schema:
+          type: integer
+          default: 20
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property(,)(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PageRight"
+  /v1/example/basic:
+    get:
+      tags:
+      - ExampleController
+      operationId: findAll_6
+      parameters:
+      - name: ids
+        in: query
+        description: "IDs of the requested entities. can contain multiple values separated\
+          \ by ','Multiple criteria are supported."
+        schema:
+          type: array
+          items:
+            type: integer
+        example: "1,2,5"
+      - name: createdBy
+        in: query
+        description: full username (email)
+        schema:
+          type: string
+        example: devnull@frachtwerk.de
+      - name: updatedBy
+        in: query
+        description: full username (email)
+        schema:
+          type: string
+        example: devnull@frachtwerk.de
+      - name: createdAtFrom
+        in: query
+        description: 'returns entries created after the submitted date and time '
+        schema:
+          type: string
+          format: date-time
+        example: 2021-01-01T00:00:01
+      - name: createdAtTo
+        in: query
+        description: 'returns entries created before the submitted date and time '
+        schema:
+          type: string
+          format: date-time
+        example: 2021-12-31T23:59:59
+      - name: updatedAtFrom
+        in: query
+        description: 'returns entries updated after the submitted date and time '
+        schema:
+          type: string
+          format: date-time
+        example: 2021-01-01T00:00:01
+      - name: updatedAtTo
+        in: query
+        description: 'returns entries updated before the submitted date and time '
+        schema:
+          type: string
+          format: date-time
+        example: 2021-12-31T23:59:59
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BasicRepresentation"
+  /v1/api-tokens/token-expiration-info:
+    get:
+      tags:
+      - ApiTokenController
+      summary: Get token expiration info in seconds
+      description: Returns the default API token expiration time in seconds. This
+        information can be used by clients to understand token validity duration.
+      operationId: getTokenExpirationInfo
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: integer
+                format: int32
+  /v1/api-tokens/basic:
+    get:
+      tags:
+      - ApiTokenController
+      summary: Get list of basic API token representations owned by the current user
+      description: Returns a list of basic API token representations. Access is restricted
+        to tokens owned by the current user.
+      operationId: findAll_7
+      parameters:
+      - name: ids
+        in: query
+        description: "IDs of the requested entities. can contain multiple values separated\
+          \ by ','Multiple criteria are supported."
+        schema:
+          type: array
+          items:
+            type: integer
+        example: "1,2,5"
+      - name: createdBy
+        in: query
+        description: full username (email)
+        schema:
+          type: string
+        example: devnull@frachtwerk.de
+      - name: updatedBy
+        in: query
+        description: full username (email)
+        schema:
+          type: string
+        example: devnull@frachtwerk.de
+      - name: createdAtFrom
+        in: query
+        description: 'returns entries created after the submitted date and time '
+        schema:
+          type: string
+          format: date-time
+        example: 2021-01-01T00:00:01
+      - name: createdAtTo
+        in: query
+        description: 'returns entries created before the submitted date and time '
+        schema:
+          type: string
+          format: date-time
+        example: 2021-12-31T23:59:59
+      - name: updatedAtFrom
+        in: query
+        description: 'returns entries updated after the submitted date and time '
+        schema:
+          type: string
+          format: date-time
+        example: 2021-01-01T00:00:01
+      - name: updatedAtTo
+        in: query
+        description: 'returns entries updated before the submitted date and time '
+        schema:
+          type: string
+          format: date-time
+        example: 2021-12-31T23:59:59
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BasicRepresentation"
+  /v1/api-tokens/all:
+    get:
+      tags:
+      - ApiTokenController
+      summary: Get all API tokens grouped by linked user (admin only)
+      description: Returns all API tokens grouped by their linked user. Admin access
+        (API_TOKEN_ADMIN) required.
+      operationId: findAllAdmin
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/ApiTokenRepresentation"
+  /auth/oauth-registrations:
+    get:
+      tags:
+      - AuthenticationController
+      summary: Get OAuth2 client registrations
+      description: "Returns a map of OAuth2 client registrations with their names,\
+        \ URLs, and images"
+      operationId: getRegistrations
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: object
+                  additionalProperties: {}
+  /v1/users/{id}/tokens/{tokenId}:
+    delete:
+      tags:
+      - UserController
+      summary: Delete a session token by its id
+      operationId: deleteTokenById
+      parameters:
+      - name: id
+        in: path
+        description: ID of the user to delete token for
+        required: true
+        schema:
+          type: integer
+      - name: tokenId
+        in: path
+        description: ID of the token to delete
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: No Content
+  /v1/users/me/tokens/{id}:
+    delete:
+      tags:
+      - UserController
+      summary: Retrieve refresh tokens of the currently logged-in user
+      operationId: deleteToken
+      parameters:
+      - name: id
+        in: path
+        description: ID of the token to delete
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: No Content
+  /v1/translations/delete/{key}:
+    delete:
+      tags:
+      - TranslationController
+      description: Delete an individual translation by its key
+      operationId: deleteTranslation
+      parameters:
+      - name: key
+        in: path
+        description: Key of the translation to delete
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+components:
+  schemas:
+    UserDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        enabled:
+          type: boolean
+        email:
+          type: string
+          format: email
+          minLength: 1
+        firstName:
+          type: string
+          minLength: 1
+        lastName:
+          type: string
+          minLength: 1
+        password:
+          type: string
+          writeOnly: true
+        locale:
+          type: string
+        roles:
+          type: array
+          items:
+            type: string
+          uniqueItems: true
+        loginDisabled:
+          type: boolean
+        phone:
+          type: string
+        mobile:
+          type: string
+      required:
+      - email
+      - firstName
+      - lastName
+      - locale
+      - roles
+    Right:
+      type: object
+      properties:
+        authority:
+          type: string
+        description:
+          type: string
+        id:
+          type: string
+        title:
+          type: string
+      required:
+      - authority
+    Role:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        rights:
+          type: array
+          items:
+            $ref: "#/components/schemas/Right"
+          uniqueItems: true
+        id:
+          type: string
+        protected:
+          type: boolean
+        title:
+          type: string
+        defaultRole:
+          type: boolean
+        systemRole:
+          type: boolean
+        editable:
+          type: boolean
+      required:
+      - name
+    UserRepresentation:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        firstName:
+          type: string
+        lastName:
+          type: string
+        phone:
+          type: string
+        mobile:
+          type: string
+        email:
+          type: string
+        locale:
+          type: string
+        roles:
+          type: array
+          items:
+            $ref: "#/components/schemas/Role"
+          uniqueItems: true
+        enabled:
+          type: boolean
+        loginDisabled:
+          type: boolean
+        source:
+          type: string
+    PasswordUpdateRequest:
+      type: object
+      properties:
+        password:
+          type: string
+          minLength: 1
+        verification:
+          type: string
+          minLength: 1
+      required:
+      - password
+      - verification
+    Translation:
+      type: object
+      properties:
+        locale:
+          type: string
+        key:
+          type: string
+        value:
+          type: string
+    RoleDto:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        rights:
+          type: array
+          items: {}
+          uniqueItems: true
+        protected:
+          type: boolean
+        defaultRole:
+          type: boolean
+      required:
+      - name
+    ExampleEntityDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        content:
+          type: string
+    ExampleRepresentation:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        content:
+          type: string
+    TranslationDto:
+      type: object
+      properties:
+        locale:
+          type: string
+        key:
+          type: string
+          minLength: 1
+        value:
+          type: string
+      required:
+      - key
+      - locale
+      - value
+    ContactRequestDto:
+      type: object
+      properties:
+        name:
+          type: string
+        mailAddress:
+          type: string
+        subject:
+          type: string
+        message:
+          type: string
+      required:
+      - message
+      - subject
+    ApiTokenDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        description:
+          type: string
+          minLength: 1
+        validUntil:
+          type: string
+          format: date
+        rights:
+          type: array
+          items:
+            type: string
+          minItems: 1
+          uniqueItems: true
+      required:
+      - description
+      - rights
+    ApiTokenRepresentation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+        updatedAt:
+          type: string
+          format: date-time
+        updatedBy:
+          type: string
+        linkedUser:
+          $ref: "#/components/schemas/BasicRepresentation"
+        description:
+          type: string
+        validUntil:
+          type: string
+          format: date
+        status:
+          type: string
+          enum:
+          - ACTIVE
+          - REVOKED
+          - REVOKED_ROLE_CHANGED
+          - REVOKED_RIGHTS_CHANGED
+          - REVOKED_USER_CHANGED
+          - EXPIRED
+          - USER_DELETED
+        rights:
+          type: array
+          items:
+            $ref: "#/components/schemas/Right"
+          uniqueItems: true
+        token:
+          type: string
+    BasicRepresentation:
+      type: object
+      properties:
+        id: {}
+        name:
+          type: string
+    Feedback:
+      type: object
+      properties:
+        eventId:
+          type: string
+          minLength: 1
+        name:
+          type: string
+          minLength: 1
+        email:
+          type: string
+          minLength: 1
+        comments:
+          type: string
+          minLength: 1
+      required:
+      - comments
+      - email
+      - eventId
+      - name
+    LoginRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 1
+      required:
+      - password
+    TokenResponse:
+      type: object
+      properties:
+        token:
+          type: string
+    PageUserRepresentation:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserRepresentation"
+        number:
+          type: integer
+          format: int32
+        sort:
+          $ref: "#/components/schemas/SortObject"
+        numberOfElements:
+          type: integer
+          format: int32
+        pageable:
+          $ref: "#/components/schemas/PageableObject"
+        first:
+          type: boolean
+        last:
+          type: boolean
+        empty:
+          type: boolean
+    PageableObject:
+      type: object
+      properties:
+        offset:
+          type: integer
+          format: int64
+        sort:
+          $ref: "#/components/schemas/SortObject"
+        paged:
+          type: boolean
+        pageNumber:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+        unpaged:
+          type: boolean
+    SortObject:
+      type: object
+      properties:
+        empty:
+          type: boolean
+        unsorted:
+          type: boolean
+        sorted:
+          type: boolean
+    TokenRepresentation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          type: string
+          enum:
+          - ACCESS
+          - REFRESH
+          - API
+        username:
+          type: string
+        issuedAt:
+          type: string
+          format: date-time
+        expiration:
+          type: string
+          format: date-time
+        userAgent:
+          type: string
+        lastUsed:
+          type: string
+          format: date-time
+    GrantedAuthority:
+      type: object
+      properties:
+        authority:
+          type: string
+    PageRole:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/Role"
+        number:
+          type: integer
+          format: int32
+        sort:
+          $ref: "#/components/schemas/SortObject"
+        numberOfElements:
+          type: integer
+          format: int32
+        pageable:
+          $ref: "#/components/schemas/PageableObject"
+        first:
+          type: boolean
+        last:
+          type: boolean
+        empty:
+          type: boolean
+    PageRight:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/Right"
+        number:
+          type: integer
+          format: int32
+        sort:
+          $ref: "#/components/schemas/SortObject"
+        numberOfElements:
+          type: integer
+          format: int32
+        pageable:
+          $ref: "#/components/schemas/PageableObject"
+        first:
+          type: boolean
+        last:
+          type: boolean
+        empty:
+          type: boolean
+    PageExampleRepresentation:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/ExampleRepresentation"
+        number:
+          type: integer
+          format: int32
+        sort:
+          $ref: "#/components/schemas/SortObject"
+        numberOfElements:
+          type: integer
+          format: int32
+        pageable:
+          $ref: "#/components/schemas/PageableObject"
+        first:
+          type: boolean
+        last:
+          type: boolean
+        empty:
+          type: boolean
+    PageApiTokenRepresentation:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/ApiTokenRepresentation"
+        number:
+          type: integer
+          format: int32
+        sort:
+          $ref: "#/components/schemas/SortObject"
+        numberOfElements:
+          type: integer
+          format: int32
+        pageable:
+          $ref: "#/components/schemas/PageableObject"
+        first:
+          type: boolean
+        last:
+          type: boolean
+        empty:
+          type: boolean

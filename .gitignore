@@ -4,5 +4,6 @@ dist/
 *.local
 .env
 src/routeTree.gen.ts
+src/generated/
 .tanstack/
 .eslintcache
