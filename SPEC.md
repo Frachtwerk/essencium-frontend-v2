@@ -144,11 +144,13 @@ Die vollständige Konfiguration (inkl. Hot-Reload auf YAML-Änderungen) liegt in
 ### Sprint 2 (Mai 19–30): Routing & Auth
 
 > Ziel: Boilerplate mit Login-Flow und geschützten Seiten.
+>
+> **Referenz-Implementierung:** `../eps-core/frontend/` — Sprint 2 ist dort vollständig umgesetzt. Code-Referenzen: `src/lib/auth-store.ts`, `src/routes/__root.tsx`, `src/routes/_authenticated.tsx`, `src/hooks/data/persons.ts`.
 
-- [ ] **2.1** TanStack Router Grundstruktur (0,5 PT) — `_authenticated.tsx` Layout, Login, Dashboard, 404 — Directory-Pattern
-- [ ] **2.2** API-Client + Type-Generierung (1 PT) — Hey-API (`@hey-api/openapi-ts` + `@hey-api/vite-plugin`) einbinden; `backend/openapi.yaml` als Quelle; generiert `src/generated/client/` (Types + TanStack-Query-Helpers) automatisch bei `pnpm dev`; Hey-API-Client mit Auth-Token-Injection, Base-URL und 401-Redirect konfigurieren — kein handgeschriebener fetch-Wrapper nötig
-- [ ] **2.3** TanStack Query Setup (0,5 PT) — QueryClient, `useCurrentUser()`, `useLogin()`, DevTools
-- [ ] **2.4** Authentication-Flow (1 PT) — Login-Seite mit RHF + Zod, Token-Handling, Refresh, Logout, Route-Guard via `beforeLoad`
+- [ ] **2.1** TanStack Router Grundstruktur (0,5 PT) — `_authenticated.tsx` Layout, Login-Route, Dashboard-Route, 404 — Directory-Pattern; `__root.tsx` rendert HTML-Dokument + alle Providers (QueryClientProvider, AuthProvider, ErrorBoundary, Suspense)
+- [ ] **2.2** API-Client + Type-Generierung + Dev-Proxy (1 PT) — Hey-API (`@hey-api/openapi-ts` + `@hey-api/vite-plugin`) einbinden; `backend/openapi.yaml` als Quelle; generiert `src/generated/client/` automatisch bei `pnpm dev`; zwei Clients: `baseClient` (unauthentifiziert, für Login/Refresh) + `authenticatedClient` (Bearer-Token via Request-Interceptor); Vite Dev-Proxy `/api → localhost:8098` mit `proxyRes`-Handler der `Secure`-Flag und `Path` im `set-cookie`-Header des Refresh-Tokens korrigiert (sonst verwirft der Browser das Cookie unter HTTP)
+- [ ] **2.3** TanStack Query Setup (0,5 PT) — QueryClient in `__root.tsx`, `RouterContext` mit `queryClient` für Loader, `useCurrentUser()` via generierter `getMeUserOptions()`, DevTools im Dev-Mode
+- [ ] **2.4** Authentication-Flow (1,5 PT) — `src/lib/auth-store.ts`: Token in-memory + localStorage, `initAuth()` (Token aus Storage lesen + Refresh-Versuch beim App-Start), `waitForAuth()` (Promise das Loader abwarten), Response-Interceptor für 401 (Refresh → bei Fehler Redirect zu `/login`); `AuthContext` mit `login()` + `logout()` (invalidiert TanStack Query Cache); Route-Guard in `_authenticated.tsx` via `beforeLoad: await waitForAuth()` + `redirect` wenn kein Token; Login-Seite mit RHF + Zod
 - [ ] **2.5** i18n + dayjs (0,5 PT) — i18next Setup, Language-Detection, Basis-Translations (de/en), dayjs mit Locale
 - [ ] **2.R** Sprint Review (0,5 PT)
 
