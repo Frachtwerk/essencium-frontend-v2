@@ -61,22 +61,23 @@ Docs: https://docs.essencium.dev/
 
 ## Vollständiger Tech-Stack
 
-| Kategorie     | Technologie                                      | Begründung                                                     |
-| ------------- | ------------------------------------------------ | -------------------------------------------------------------- |
-| Framework     | React 19 + Vite via TanStack Start (SPA)         | Schnellster Dev-Server, SSR bei Bedarf aktivierbar             |
-| Compiler      | React Compiler                                   | Automatische Memoization, kein manuelles useMemo/useCallback   |
-| Routing       | TanStack Router (in Start integriert)            | Type-safe, file-based, `__root.tsx` rendert das HTML-Dokument  |
-| Server-State  | TanStack Query + fetch-Wrapper                   | Caching, Mutations, kein Axios nötig                           |
-| Client-State  | Jotai (optional)                                 | Atomic, lightweight, nur für globalen UI-State                 |
-| UI Primitives | shadcn/ui + Base UI                              | Aktiv maintained (vs. Radix), Copy-Ownership                   |
-| Tabellen      | TanStack Table                                   | Headless, passt zu shadcn/ui DataTable                         |
-| Styling       | Tailwind CSS v4                                  | Utility-first, CSS-first config, keine tailwind.config.ts      |
-| Typing        | TypeScript 6 + strict + noUncheckedIndexedAccess | Zero-any, explizite Return Types, maximale Typsicherheit       |
-| i18n          | i18next + react-i18next                          | Standard, kein Next.js-Wrapper nötig                           |
-| Forms         | React Hook Form + Zod                            | shadcn/ui-Standard, type-safe Validation                       |
-| Datum/Zeit    | dayjs                                            | Lightweight, immutable                                         |
-| Testing       | Vitest + Playwright                              | Unit + E2E, Vite-nativ                                         |
-| Linting       | ESLint 10 + Prettier → später Vite+ (Oxlint)     | ESLint 10 mit @eslint-react nativer Support, Migration geplant |
+| Kategorie     | Technologie                                      | Begründung                                                                       |
+| ------------- | ------------------------------------------------ | -------------------------------------------------------------------------------- |
+| Framework     | React 19 + Vite via TanStack Start (SPA)         | Schnellster Dev-Server, SSR bei Bedarf aktivierbar                               |
+| Compiler      | React Compiler                                   | Automatische Memoization, kein manuelles useMemo/useCallback                     |
+| Routing       | TanStack Router (in Start integriert)            | Type-safe, file-based, `__root.tsx` rendert das HTML-Dokument                    |
+| Server-State  | TanStack Query + fetch-Wrapper                   | Caching, Mutations, kein Axios nötig                                             |
+| API-Typen     | Hey-API (`@hey-api/openapi-ts`)                  | Generiert TypeScript-Types + TanStack-Query-Helpers aus OpenAPI-Spec automatisch |
+| Client-State  | Jotai (optional)                                 | Atomic, lightweight, nur für globalen UI-State                                   |
+| UI Primitives | shadcn/ui + Base UI                              | Aktiv maintained (vs. Radix), Copy-Ownership                                     |
+| Tabellen      | TanStack Table                                   | Headless, passt zu shadcn/ui DataTable                                           |
+| Styling       | Tailwind CSS v4                                  | Utility-first, CSS-first config, keine tailwind.config.ts                        |
+| Typing        | TypeScript 6 + strict + noUncheckedIndexedAccess | Zero-any, explizite Return Types, maximale Typsicherheit                         |
+| i18n          | i18next + react-i18next                          | Standard, kein Next.js-Wrapper nötig                                             |
+| Forms         | React Hook Form + Zod                            | shadcn/ui-Standard, type-safe Validation                                         |
+| Datum/Zeit    | dayjs                                            | Lightweight, immutable                                                           |
+| Testing       | Vitest + Playwright                              | Unit + E2E, Vite-nativ                                                           |
+| Linting       | ESLint 10 + Prettier → später Vite+ (Oxlint)     | ESLint 10 mit @eslint-react nativer Support, Migration geplant                   |
 
 ---
 
@@ -89,6 +90,41 @@ Docs: https://docs.essencium.dev/
 - **`__root.tsx`** rendert das vollständige HTML-Dokument (`<html>`, `<head>`, `<body>`, Providers)
 - **`router.tsx`** ist die zentrale Router-Konfiguration (`getRouter()` + Route-Tree)
 - **`routeTree.gen.ts`** wird automatisch generiert — niemals manuell bearbeiten
+
+---
+
+## OpenAPI-Workflow (Type-Generierung)
+
+Kein manuelles Schreiben von TypeScript-Interfaces für Backend-Typen. Die komplette Kette:
+
+```
+Spring-Annotationen (@RestController, @GetMapping, …)
+       ↓  springdoc-openapi (bereits im Essencium Backend enthalten)
+backend/openapi.yaml          ← im Git-Repo versioniert
+       ↓  Hey-API (@hey-api/vite-plugin, automatisch bei pnpm dev)
+src/generated/client/         ← TypeScript-Types + TanStack-Query-Helpers (gitignored)
+       ↓  dein Code
+useSuspenseQuery({...findAllUsersOptions(...)})
+```
+
+### YAML aktualisieren
+
+Die YAML wird **nicht** automatisch beim Backend-Build erzeugt. Manuell nach Backend-Änderungen:
+
+```bash
+curl http://localhost:8080/v3/api-docs.yaml > backend/openapi.yaml
+```
+
+Dann die YAML committen — das Frontend regeneriert die Types beim nächsten `pnpm dev` automatisch.
+
+### Was generiert wird
+
+- `src/generated/client/types.gen.ts` — alle TypeScript-Interfaces (z.B. `UserRepresentation`)
+- `src/generated/client/@tanstack/react-query.gen.ts` — fertige Query-Option-Factories (z.B. `findAllUsersOptions(...)`)
+
+### Referenz-Implementierung
+
+Die vollständige Konfiguration (inkl. Hot-Reload auf YAML-Änderungen) liegt in `eps-core/frontend/vite.config.ts`.
 
 ---
 
@@ -110,7 +146,7 @@ Docs: https://docs.essencium.dev/
 > Ziel: Boilerplate mit Login-Flow und geschützten Seiten.
 
 - [ ] **2.1** TanStack Router Grundstruktur (0,5 PT) — `_authenticated.tsx` Layout, Login, Dashboard, 404 — Directory-Pattern
-- [ ] **2.2** fetch-Wrapper / API-Client (0,5 PT) — Dünner Wrapper mit Base-URL, Auth-Token-Injection, 401-Redirect, typisierte Helpers
+- [ ] **2.2** API-Client + Type-Generierung (1 PT) — Hey-API (`@hey-api/openapi-ts` + `@hey-api/vite-plugin`) einbinden; `backend/openapi.yaml` als Quelle; generiert `src/generated/client/` (Types + TanStack-Query-Helpers) automatisch bei `pnpm dev`; Hey-API-Client mit Auth-Token-Injection, Base-URL und 401-Redirect konfigurieren — kein handgeschriebener fetch-Wrapper nötig
 - [ ] **2.3** TanStack Query Setup (0,5 PT) — QueryClient, `useCurrentUser()`, `useLogin()`, DevTools
 - [ ] **2.4** Authentication-Flow (1 PT) — Login-Seite mit RHF + Zod, Token-Handling, Refresh, Logout, Route-Guard via `beforeLoad`
 - [ ] **2.5** i18n + dayjs (0,5 PT) — i18next Setup, Language-Detection, Basis-Translations (de/en), dayjs mit Locale

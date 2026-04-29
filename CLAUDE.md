@@ -32,31 +32,36 @@ Das bestehende Essencium Frontend liegt im gleichen Verzeichnis:
 
 ## Tech-Stack
 
-| Kategorie       | Technologie                                              |
-| --------------- | -------------------------------------------------------- |
-| Framework       | React 19 + Vite (via TanStack Start, SPA-Modus)          |
-| Compiler        | React Compiler (automatische Memoization)                |
-| Routing         | TanStack Router (in TanStack Start integriert)           |
-| Server-State    | TanStack Query + dünner fetch-Wrapper (kein Axios)       |
-| Client-State    | Jotai (optional, für globalen UI-State)                  |
-| UI Primitives   | shadcn/ui + Base UI (nicht Radix)                        |
-| Tabellen        | TanStack Table + shadcn/ui DataTable                     |
-| Styling         | Tailwind CSS                                             |
-| i18n            | i18next + react-i18next                                  |
-| Forms           | React Hook Form + Zod                                    |
-| Datum/Zeit      | dayjs                                                    |
-| Testing         | Vitest (Unit) + Playwright (E2E)                         |
-| Linting         | ESLint 10 + Prettier (Migration zu Vite+/Oxlint geplant) |
-| Package Manager | pnpm                                                     |
+| Kategorie       | Technologie                                                                                           |
+| --------------- | ----------------------------------------------------------------------------------------------------- |
+| Framework       | React 19 + Vite (via TanStack Start, SPA-Modus)                                                       |
+| Compiler        | React Compiler (automatische Memoization)                                                             |
+| Routing         | TanStack Router (in TanStack Start integriert)                                                        |
+| Server-State    | TanStack Query + Hey-API-Client (kein Axios, kein handgeschriebener fetch-Wrapper)                    |
+| API-Typen       | Hey-API (`@hey-api/openapi-ts`) — generiert Types + TanStack-Query-Helpers aus `backend/openapi.yaml` |
+| Client-State    | Jotai (optional, für globalen UI-State)                                                               |
+| UI Primitives   | shadcn/ui + Base UI (nicht Radix)                                                                     |
+| Tabellen        | TanStack Table + shadcn/ui DataTable                                                                  |
+| Styling         | Tailwind CSS                                                                                          |
+| i18n            | i18next + react-i18next                                                                               |
+| Forms           | React Hook Form + Zod                                                                                 |
+| Datum/Zeit      | dayjs                                                                                                 |
+| Testing         | Vitest (Unit) + Playwright (E2E)                                                                      |
+| Linting         | ESLint 10 + Prettier (Migration zu Vite+/Oxlint geplant)                                              |
+| Package Manager | pnpm                                                                                                  |
 
 ## Projektstruktur
 
 ```
 essencium-frontend-v2/
+├── backend/
+│   └── openapi.yaml               # Manuell gepflegter Snapshot der Backend-API (committed)
 ├── src/
+│   ├── generated/
+│   │   └── client/                # Auto-generiert via Hey-API — NICHT committen, NICHT manuell bearbeiten
 │   ├── api/
-│   │   ├── client.ts              # fetch-Wrapper mit Auth-Token-Injection
-│   │   └── queries/               # TanStack Query Hooks (useUsers, useRoles, etc.)
+│   │   └── client.ts              # Hey-API-Client-Konfiguration (Auth-Token, Base-URL, 401-Redirect)
+│   ├── hooks/data/                # Domain-Hooks: importieren generierte *Options()-Factories
 │   ├── components/
 │   │   ├── ui/                    # shadcn/ui + Base UI Components (via CLI)
 │   │   └── shared/                # Eigene wiederverwendbare Components
@@ -166,8 +171,10 @@ ESLint 10 (Feb 2026) hat Breaking Changes gegenüber eslint-plugin-react, das no
 
 ### Data-Fetching
 
-- Alle Server-Daten via TanStack Query Hooks
-- Query-Keys in `src/api/queries/` zentralisiert
+- API-Types und Query-Helpers werden **automatisch generiert** aus `backend/openapi.yaml` via Hey-API (`pnpm dev` triggert die Regenerierung)
+- Niemals TypeScript-Interfaces für Backend-Typen manuell schreiben — sie kommen aus `src/generated/client/` (gitignored)
+- YAML nach Backend-Änderungen manuell aktualisieren: `curl http://localhost:8080/v3/api-docs.yaml > backend/openapi.yaml`
+- Alle Server-Daten via TanStack Query Hooks mit den generierten `*Options()`-Factories
 - Mutations invalidieren relevante Queries
 - Optimistic Updates für bessere UX wo sinnvoll
 
