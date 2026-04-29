@@ -11,7 +11,13 @@ import tseslint from 'typescript-eslint'
 export default tseslint.config(
   // --- Ignored files ---
   {
-    ignores: ['dist/', '.tanstack/', '.vinxi/', 'src/routeTree.gen.ts'],
+    ignores: [
+      'dist/',
+      '.tanstack/',
+      '.vinxi/',
+      'src/routeTree.gen.ts',
+      'src/generated/',
+    ],
   },
 
   // --- JS + TypeScript base ---

@@ -9,7 +9,6 @@
     "jsx": "react-jsx",
     "noEmit": true,
     "skipLibCheck": true,
-    "rootDir": "./src",
     "types": ["vite/client", "node"],
     "paths": {
       "@/*": ["./src/*"]

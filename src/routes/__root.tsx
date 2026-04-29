@@ -1,13 +1,24 @@
 import '@/styles/globals.css'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import {
   HeadContent,
   Outlet,
   Scripts,
-  createRootRoute,
+  createRootRouteWithContext,
 } from '@tanstack/react-router'
+import { TanStackRouterDevtools } from '@tanstack/router-devtools'
+import { Suspense } from 'react'
 import type { JSX, ReactNode } from 'react'
+import { ErrorBoundary } from 'react-error-boundary'
 
-export const Route = createRootRoute({
+export const queryClient = new QueryClient()
+
+export interface RouterContext {
+  queryClient: QueryClient
+}
+
+export const Route = createRootRouteWithContext<RouterContext>()({
   head: () => ({
     meta: [
       { charSet: 'utf-8' },
@@ -22,7 +33,19 @@ export const Route = createRootRoute({
 function RootComponent(): JSX.Element {
   return (
     <RootDocument>
-      <Outlet />
+      <QueryClientProvider client={queryClient}>
+        <ErrorBoundary fallback={<p>Unbekannter Fehler</p>}>
+          <Suspense>
+            <Outlet />
+          </Suspense>
+        </ErrorBoundary>
+        {import.meta.env.DEV && (
+          <>
+            <TanStackRouterDevtools position="bottom-right" />
+            <ReactQueryDevtools buttonPosition="bottom-left" />
+          </>
+        )}
+      </QueryClientProvider>
     </RootDocument>
   )
 }
