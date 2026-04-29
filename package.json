@@ -14,10 +14,6 @@
     "format:write": "prettier --write .",
     "prepare": "husky"
   },
-  "volta": {
-    "node": "24.14.0",
-    "pnpm": "10.33.0"
-  },
   "dependencies": {
     "@base-ui/react": "1.4.0",
     "@fontsource-variable/inter": "5.2.8",

@@ -32,7 +32,7 @@ React 19 + Vite 8 + TanStack Start + shadcn/ui.
 
 ### Prerequisites
 
-- [Node.js 24 LTS](https://nodejs.org/) — managed via [Volta](https://volta.sh)
+- [Node.js 24 LTS](https://nodejs.org/) — managed via [mise](https://mise.jdx.dev)
 - [pnpm 10](https://pnpm.io/)
 
 ### Development
