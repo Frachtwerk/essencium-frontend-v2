@@ -138,8 +138,8 @@ Die vollständige Konfiguration (inkl. Hot-Reload auf YAML-Änderungen) liegt in
 - [x] **1.2** React Compiler + Tailwind (0,5 PT) — babel-plugin-react-compiler einbinden, Tailwind v4 installieren und konfigurieren
 - [x] **1.3** shadcn/ui + Base UI Init (0,5 PT) — `npx shadcn init` mit Base UI, erste Components (Button, Input, Card) hinzufügen
 - [x] **1.4** Projektstruktur + Tooling (0,5 PT) — Ordnerstruktur, TypeScript strict flags, ESLint 10/Prettier, Husky + lint-staged, CLAUDE.md + SPEC.md korrigieren
-- [ ] **1.5** Environment-Config + CI (1 PT) — .env-Handling, GitHub Actions (Install → Lint → Type-Check → Build), README
-- [ ] **1.R** Sprint Review (0,5 PT)
+- [x] **1.5** Environment-Config + CI (1 PT) — .env-Handling, GitHub Actions (Install → Lint → Type-Check → Build), README
+- [x] **1.R** Sprint Review (0,5 PT)
 
 ### Sprint 2 (Mai 19–30): Routing & Auth
 
