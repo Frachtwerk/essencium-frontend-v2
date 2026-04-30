@@ -1,0 +1,21 @@
+{
+  "auth": {
+    "login": "Anmelden",
+    "loginPending": "Anmeldung läuft...",
+    "loginFailed": "Login fehlgeschlagen",
+    "loginSubtitle": "Melde dich an um fortzufahren",
+    "email": "E-Mail",
+    "password": "Passwort"
+  },
+  "common": {
+    "appName": "Essencium"
+  },
+  "error": {
+    "title": "Es ist ein Fehler aufgetreten",
+    "unknown": "Ein unbekannter Fehler ist aufgetreten",
+    "retry": "Nochmal versuchen"
+  },
+  "navigation": {
+    "dashboard": "Dashboard"
+  }
+}

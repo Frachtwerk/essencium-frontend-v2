@@ -1,0 +1,21 @@
+{
+  "auth": {
+    "login": "Login",
+    "loginPending": "Logging in...",
+    "loginFailed": "Login failed",
+    "loginSubtitle": "Sign in to continue",
+    "email": "Email",
+    "password": "Password"
+  },
+  "common": {
+    "appName": "Essencium"
+  },
+  "error": {
+    "title": "An error occurred",
+    "unknown": "An unknown error occurred",
+    "retry": "Try again"
+  },
+  "navigation": {
+    "dashboard": "Dashboard"
+  }
+}

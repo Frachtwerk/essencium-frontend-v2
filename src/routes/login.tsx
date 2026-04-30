@@ -2,6 +2,7 @@ import { useMutation } from '@tanstack/react-query'
 import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import type { FormEvent } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { RouteError } from '@/components/error-fallback'
 import { FullPageSpinner } from '@/components/spinner'
@@ -32,6 +33,7 @@ export const Route = createFileRoute('/login')({
 })
 
 function LoginPage(): React.ReactElement {
+  const { t } = useTranslation()
   const { login } = useAuth()
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
@@ -50,15 +52,15 @@ function LoginPage(): React.ReactElement {
   const errorMessage = loginMutation.error
     ? loginMutation.error instanceof Error
       ? loginMutation.error.message
-      : 'Login fehlgeschlagen'
+      : t('auth.loginFailed')
     : null
 
   return (
     <div className="bg-background flex min-h-svh items-center justify-center p-4">
       <Card className="w-full max-w-sm">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl">Essencium</CardTitle>
-          <CardDescription>Melde dich an um fortzufahren</CardDescription>
+          <CardTitle className="text-2xl">{t('common.appName')}</CardTitle>
+          <CardDescription>{t('auth.loginSubtitle')}</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -68,7 +70,7 @@ function LoginPage(): React.ReactElement {
               </div>
             )}
             <div className="space-y-2">
-              <Label htmlFor="email">E-Mail</Label>
+              <Label htmlFor="email">{t('auth.email')}</Label>
               <Input
                 id="email"
                 type="email"
@@ -80,7 +82,7 @@ function LoginPage(): React.ReactElement {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Passwort</Label>
+              <Label htmlFor="password">{t('auth.password')}</Label>
               <Input
                 id="password"
                 type="password"
@@ -95,7 +97,9 @@ function LoginPage(): React.ReactElement {
               className="w-full"
               disabled={loginMutation.isPending}
             >
-              {loginMutation.isPending ? 'Anmeldung läuft...' : 'Anmelden'}
+              {loginMutation.isPending
+                ? t('auth.loginPending')
+                : t('auth.login')}
             </Button>
           </form>
         </CardContent>

@@ -105,8 +105,7 @@ export async function login(
 
   if (error || !data?.token) {
     throw new Error(
-      'Login fehlgeschlagen: ' +
-        ((error as Error | undefined)?.message ?? 'Kein Token erhalten'),
+      (error as Error | undefined)?.message ?? 'No token received',
     )
   }
 

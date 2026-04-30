@@ -11,6 +11,7 @@ import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 import { Suspense } from 'react'
 import type { JSX, ReactNode } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
+import { useTranslation } from 'react-i18next'
 
 import { FullPageError } from '@/components/error-fallback'
 import { FullPageSpinner } from '@/components/spinner'
@@ -59,8 +60,9 @@ function RootComponent(): JSX.Element {
 function RootDocument({
   children,
 }: Readonly<{ children: ReactNode }>): JSX.Element {
+  const { i18n } = useTranslation()
   return (
-    <html lang="de">
+    <html lang={i18n.language}>
       <head>
         <HeadContent />
       </head>

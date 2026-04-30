@@ -4,6 +4,7 @@ import { queryClient, type RouterContext } from './routes/__root'
 import { routeTree } from './routeTree.gen'
 
 import { initAuth } from '@/lib/auth-store'
+import '@/lib/i18n'
 
 // Kick off token refresh immediately so route guards can await waitForAuth().
 void initAuth()
