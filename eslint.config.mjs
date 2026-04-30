@@ -17,6 +17,7 @@ export default tseslint.config(
       '.vinxi/',
       'src/routeTree.gen.ts',
       'src/generated/',
+      'src/components/ui/',
     ],
   },
 

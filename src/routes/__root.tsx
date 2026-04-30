@@ -12,6 +12,10 @@ import { Suspense } from 'react'
 import type { JSX, ReactNode } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 
+import { FullPageError } from '@/components/error-fallback'
+import { FullPageSpinner } from '@/components/spinner'
+import { AuthProvider } from '@/context/auth-context'
+
 export const queryClient = new QueryClient()
 
 export interface RouterContext {
@@ -34,11 +38,13 @@ function RootComponent(): JSX.Element {
   return (
     <RootDocument>
       <QueryClientProvider client={queryClient}>
-        <ErrorBoundary fallback={<p>Unbekannter Fehler</p>}>
-          <Suspense>
-            <Outlet />
-          </Suspense>
-        </ErrorBoundary>
+        <AuthProvider>
+          <ErrorBoundary FallbackComponent={FullPageError}>
+            <Suspense fallback={<FullPageSpinner />}>
+              <Outlet />
+            </Suspense>
+          </ErrorBoundary>
+        </AuthProvider>
         {import.meta.env.DEV && (
           <>
             <TanStackRouterDevtools position="bottom-right" />
