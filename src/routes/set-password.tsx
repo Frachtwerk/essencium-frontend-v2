@@ -46,15 +46,14 @@ const setPasswordSchema = z
   })
   .refine(data => data.password === data.confirmPassword, {
     path: ['confirmPassword'],
-    message: 'passwordMismatch',
+    message: 'auth.passwordMismatch',
   })
 
 type SetPasswordForm = z.infer<typeof setPasswordSchema>
 
 function SetPasswordPage(): React.ReactElement {
   const { t } = useTranslation()
-  const search = Route.useSearch()
-  const token = 'token' in search ? search.token : undefined
+  const { token } = Route.useSearch()
 
   const {
     register,
@@ -144,9 +143,7 @@ function SetPasswordPage(): React.ReactElement {
               />
               {errors.password && (
                 <p className="text-destructive text-sm">
-                  {errors.password.message === 'passwordMismatch'
-                    ? t('auth.passwordMismatch')
-                    : t('auth.passwordMinLength')}
+                  {t('auth.passwordMinLength')}
                 </p>
               )}
             </div>
@@ -162,7 +159,7 @@ function SetPasswordPage(): React.ReactElement {
               />
               {errors.confirmPassword && (
                 <p className="text-destructive text-sm">
-                  {errors.confirmPassword.message === 'passwordMismatch'
+                  {errors.confirmPassword.message === 'auth.passwordMismatch'
                     ? t('auth.passwordMismatch')
                     : t('auth.passwordMinLength')}
                 </p>
@@ -174,7 +171,7 @@ function SetPasswordPage(): React.ReactElement {
               disabled={mutation.isPending}
             >
               {mutation.isPending
-                ? t('auth.loginPending')
+                ? t('auth.setPasswordPending')
                 : t('auth.setPassword')}
             </Button>
           </form>

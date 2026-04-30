@@ -1,11 +1,11 @@
-import { useQuery, useMutation } from '@tanstack/react-query'
+import { useMutation, useSuspenseQuery } from '@tanstack/react-query'
 import {
   Link,
   createFileRoute,
   redirect,
   useNavigate,
 } from '@tanstack/react-router'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import type { FormEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
@@ -22,13 +22,12 @@ import {
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { getRegistrations } from '@/generated/client/sdk.gen'
-import { useAuth } from '@/hooks/use-auth'
+import { useAuth } from '@/context/auth-context'
+import { getRegistrationsOptions } from '@/generated/client/@tanstack/react-query.gen'
 import {
   API_BASE_URL,
   baseClient,
   getAccessToken,
-  scheduleRefresh,
   setAccessToken,
   waitForAuth,
 } from '@/lib/auth-store'
@@ -53,6 +52,45 @@ export const Route = createFileRoute('/login')({
 
 type SsoProvider = { imageUrl: string; name: string; url: string }
 
+function SsoSection(): React.ReactElement | null {
+  const { t } = useTranslation()
+  const { data: ssoProviders } = useSuspenseQuery(
+    getRegistrationsOptions({ client: baseClient }),
+  )
+  const appUrl = import.meta.env.VITE_APP_URL ?? window.location.origin
+  const ssoEntries = Object.entries(
+    (ssoProviders as Record<string, SsoProvider> | undefined) ?? {},
+  )
+
+  if (ssoEntries.length === 0) return null
+
+  return (
+    <>
+      <div className="relative my-4">
+        <div className="absolute inset-0 flex items-center">
+          <span className="border-border w-full border-t" />
+        </div>
+        <div className="relative flex justify-center text-xs uppercase">
+          <span className="bg-card text-muted-foreground px-2">
+            {t('auth.ssoLogin')}
+          </span>
+        </div>
+      </div>
+      <div className="space-y-2">
+        {ssoEntries.map(([key, provider]) => (
+          <a
+            key={key}
+            href={`${API_BASE_URL}${provider.url}?redirect_uri=${encodeURIComponent(`${appUrl}/login`)}`}
+            className={cn(buttonVariants({ variant: 'outline' }), 'w-full')}
+          >
+            {provider.name}
+          </a>
+        ))}
+      </div>
+    </>
+  )
+}
+
 function LoginPage(): React.ReactElement {
   const { t } = useTranslation()
   const { login } = useAuth()
@@ -65,23 +103,12 @@ function LoginPage(): React.ReactElement {
   useEffect(() => {
     if (!oauthToken) return
     setAccessToken(oauthToken)
-    scheduleRefresh(oauthToken)
     void navigate({ to: redirectTo ?? '/' })
   }, [oauthToken, redirectTo, navigate])
 
   const loginMutation = useMutation({
     mutationFn: () => login(email, password),
-    onSuccess: () => navigate({ to: '/' }),
-  })
-
-  const { data: ssoProviders } = useQuery({
-    queryKey: ['sso-providers'],
-    queryFn: async () => {
-      const { data } = await getRegistrations({ client: baseClient })
-      if (!data) return {}
-      return data as Record<string, SsoProvider>
-    },
-    staleTime: Infinity,
+    onSuccess: () => void navigate({ to: '/' }),
   })
 
   function handleSubmit(e: FormEvent<HTMLFormElement>): void {
@@ -94,9 +121,6 @@ function LoginPage(): React.ReactElement {
       ? loginMutation.error.message
       : t('auth.loginFailed')
     : null
-
-  const ssoEntries = Object.entries(ssoProviders ?? {})
-  const appUrl = import.meta.env.VITE_APP_URL ?? window.location.origin
 
   // Show spinner while processing OAuth callback token
   if (oauthToken) {
@@ -167,34 +191,9 @@ function LoginPage(): React.ReactElement {
               </Link>
             </div>
           </form>
-          {ssoEntries.length > 0 && (
-            <>
-              <div className="relative my-4">
-                <div className="absolute inset-0 flex items-center">
-                  <span className="border-border w-full border-t" />
-                </div>
-                <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-card text-muted-foreground px-2">
-                    {t('auth.ssoLogin')}
-                  </span>
-                </div>
-              </div>
-              <div className="space-y-2">
-                {ssoEntries.map(([key, provider]) => (
-                  <a
-                    key={key}
-                    href={`${API_BASE_URL}${provider.url}?redirect_uri=${encodeURIComponent(`${appUrl}/login`)}`}
-                    className={cn(
-                      buttonVariants({ variant: 'outline' }),
-                      'w-full',
-                    )}
-                  >
-                    {provider.name}
-                  </a>
-                ))}
-              </div>
-            </>
-          )}
+          <Suspense fallback={null}>
+            <SsoSection />
+          </Suspense>
         </CardContent>
       </Card>
     </div>

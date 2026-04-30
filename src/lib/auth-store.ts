@@ -1,6 +1,5 @@
 import { createClient } from '@/generated/client/client'
 import {
-  getMe,
   logout as sdkLogout,
   postLogin,
   postRenew,
@@ -27,24 +26,19 @@ export const authenticatedClient = createClient({
   auth: () => accessToken ?? undefined,
 })
 
-authenticatedClient.interceptors.request.use(request => {
-  if (accessToken) {
-    request.headers.set('Authorization', `Bearer ${accessToken}`)
-  }
-  return request
-})
-
-// On 401: attempt a single token refresh, then redirect to /login on failure.
+// On 401: refresh token, then retry the original request. Redirect on failure.
 let isRefreshing = false
-authenticatedClient.interceptors.response.use(async response => {
+authenticatedClient.interceptors.response.use(async (response, request) => {
   if (response.status === 401 && accessToken && !isRefreshing) {
     isRefreshing = true
     try {
       const refreshed = await refreshToken()
-      if (!refreshed) {
-        resetAuth()
-        window.location.href = '/login'
+      if (refreshed) {
+        request.headers.set('Authorization', `Bearer ${accessToken}`)
+        return fetch(request)
       }
+      resetAuth()
+      window.location.href = '/login'
     } finally {
       isRefreshing = false
     }
@@ -83,7 +77,7 @@ export function scheduleRefresh(token: string): void {
 export function setAccessToken(token: string | null): void {
   accessToken = token
   if (token) {
-    localStorage.setItem(AUTH_TOKEN_KEY, JSON.stringify(token))
+    localStorage.setItem(AUTH_TOKEN_KEY, token)
     scheduleRefresh(token)
   } else {
     localStorage.removeItem(AUTH_TOKEN_KEY)
@@ -92,12 +86,7 @@ export function setAccessToken(token: string | null): void {
 }
 
 function restoreAccessToken(): void {
-  try {
-    const stored = localStorage.getItem(AUTH_TOKEN_KEY)
-    accessToken = stored ? (JSON.parse(stored) as string) : null
-  } catch {
-    accessToken = null
-  }
+  accessToken = localStorage.getItem(AUTH_TOKEN_KEY)
 }
 
 export async function refreshToken(): Promise<boolean> {
@@ -185,6 +174,3 @@ export function resetAuth(): void {
   authInitPromise = null
   setAccessToken(null)
 }
-
-/** Convenience: fetches the current user without a token (used for type-only imports). */
-export { getMe }

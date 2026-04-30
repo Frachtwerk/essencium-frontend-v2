@@ -38,7 +38,7 @@ function syncDayjsLocale(lng: string): void {
   dayjs.locale(lng)
 }
 
-syncDayjsLocale(i18n.language)
+if (i18n.language) syncDayjsLocale(i18n.language)
 i18n.on('languageChanged', syncDayjsLocale)
 
 export default i18n

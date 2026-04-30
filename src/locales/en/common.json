@@ -20,6 +20,8 @@
     "setPasswordDescription": "Set a new password.",
     "invalidResetToken": "Invalid or expired link.",
     "goToLogin": "Go to login",
+    "resetPasswordPending": "Sending link...",
+    "setPasswordPending": "Setting password...",
     "ssoLogin": "Or sign in with",
     "ssoLoading": "Processing login..."
   },

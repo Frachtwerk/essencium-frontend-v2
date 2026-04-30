@@ -20,6 +20,8 @@
     "setPasswordDescription": "Lege ein neues Passwort fest.",
     "invalidResetToken": "Ungültiger oder abgelaufener Link.",
     "goToLogin": "Zum Login",
+    "resetPasswordPending": "Link wird gesendet...",
+    "setPasswordPending": "Passwort wird gesetzt...",
     "ssoLogin": "Oder anmelden mit",
     "ssoLoading": "Anmeldung wird verarbeitet..."
   },

@@ -123,7 +123,7 @@ function ResetPasswordPage(): React.ReactElement {
               disabled={mutation.isPending}
             >
               {mutation.isPending
-                ? t('auth.loginPending')
+                ? t('auth.resetPasswordPending')
                 : t('auth.resetPassword')}
             </Button>
             <Link

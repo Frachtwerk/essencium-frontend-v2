@@ -1,13 +1,19 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useCallback } from 'react'
+import { createContext, use, useCallback } from 'react'
 
-import { AuthContext } from '@/hooks/use-auth'
 import { currentUserQueryKey } from '@/hooks/use-current-user'
 import {
   login as authLogin,
   logout as authLogout,
   resetAuth,
 } from '@/lib/auth-store'
+
+export interface AuthContextValue {
+  login: (username: string, password: string) => Promise<void>
+  logout: () => Promise<void>
+}
+
+export const AuthContext = createContext<AuthContextValue | null>(null)
 
 export function AuthProvider({
   children,
@@ -36,4 +42,12 @@ export function AuthProvider({
   )
 
   return <AuthContext value={{ login, logout }}>{children}</AuthContext>
+}
+
+export function useAuth(): AuthContextValue {
+  const context = use(AuthContext)
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider')
+  }
+  return context
 }
