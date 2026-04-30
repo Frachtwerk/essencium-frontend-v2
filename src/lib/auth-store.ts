@@ -76,6 +76,7 @@ export function scheduleRefresh(token: string): void {
 
 export function setAccessToken(token: string | null): void {
   accessToken = token
+  if (typeof window === 'undefined') return
   if (token) {
     localStorage.setItem(AUTH_TOKEN_KEY, token)
     scheduleRefresh(token)
@@ -86,6 +87,7 @@ export function setAccessToken(token: string | null): void {
 }
 
 function restoreAccessToken(): void {
+  if (typeof window === 'undefined') return
   accessToken = localStorage.getItem(AUTH_TOKEN_KEY)
 }
 

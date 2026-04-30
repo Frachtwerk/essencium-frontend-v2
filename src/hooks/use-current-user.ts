@@ -5,7 +5,10 @@ import {
   getMeOptions,
   getMeQueryKey,
 } from '@/generated/client/@tanstack/react-query.gen'
-import type { UserRepresentation } from '@/generated/client/types.gen'
+import type {
+  GetMeError,
+  UserRepresentation,
+} from '@/generated/client/types.gen'
 import { authenticatedClient } from '@/lib/auth-store'
 
 export const currentUserQueryKey = getMeQueryKey({
@@ -14,7 +17,7 @@ export const currentUserQueryKey = getMeQueryKey({
 
 export function useCurrentUser(): UseSuspenseQueryResult<
   UserRepresentation,
-  Error
+  GetMeError
 > {
   return useSuspenseQuery(getMeOptions({ client: authenticatedClient }))
 }

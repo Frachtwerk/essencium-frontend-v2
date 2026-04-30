@@ -6,8 +6,8 @@ import { routeTree } from './routeTree.gen'
 import { initAuth } from '@/lib/auth-store'
 import '@/lib/i18n'
 
-// Kick off token refresh immediately so route guards can await waitForAuth().
-void initAuth()
+// Kick off token refresh in the browser only — localStorage is not available on the server.
+if (typeof window !== 'undefined') void initAuth()
 
 const router = createRouter({
   routeTree,

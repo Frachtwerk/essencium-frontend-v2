@@ -7,7 +7,7 @@ import {
   Scripts,
   createRootRouteWithContext,
 } from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/router-devtools'
+import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import { Suspense } from 'react'
 import type { JSX, ReactNode } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
