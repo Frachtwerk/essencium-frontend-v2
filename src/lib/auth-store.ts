@@ -5,6 +5,7 @@ import {
   postLogin,
   postRenew,
 } from '@/generated/client/sdk.gen'
+import { getTokenExpiry } from '@/lib/jwt'
 
 export const API_BASE_URL = import.meta.env.VITE_API_URL ?? '/api'
 
@@ -12,6 +13,7 @@ const AUTH_TOKEN_KEY = 'authToken'
 
 let authInitPromise: Promise<void> | null = null
 let accessToken: string | null = null
+let refreshTimer: ReturnType<typeof setTimeout> | null = null
 
 /** Unauthenticated client — used for login and token renewal. */
 export const baseClient = createClient({ baseUrl: API_BASE_URL })
@@ -54,12 +56,38 @@ export function getAccessToken(): string | null {
   return accessToken
 }
 
+function cancelRefresh(): void {
+  if (refreshTimer) {
+    clearTimeout(refreshTimer)
+    refreshTimer = null
+  }
+}
+
+/** Schedules a proactive token refresh 2 minutes before expiration. */
+export function scheduleRefresh(token: string): void {
+  cancelRefresh()
+  const expiresIn = getTokenExpiry(token)
+  if (!expiresIn || expiresIn <= 0) return
+  const refreshIn = Math.max(expiresIn - 2 * 60 * 1000, 0)
+  refreshTimer = setTimeout(() => {
+    void (async () => {
+      const ok = await refreshToken()
+      if (!ok) {
+        resetAuth()
+        window.location.href = '/login'
+      }
+    })()
+  }, refreshIn)
+}
+
 export function setAccessToken(token: string | null): void {
   accessToken = token
   if (token) {
     localStorage.setItem(AUTH_TOKEN_KEY, JSON.stringify(token))
+    scheduleRefresh(token)
   } else {
     localStorage.removeItem(AUTH_TOKEN_KEY)
+    cancelRefresh()
   }
 }
 

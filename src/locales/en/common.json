@@ -5,7 +5,23 @@
     "loginFailed": "Login failed",
     "loginSubtitle": "Sign in to continue",
     "email": "Email",
-    "password": "Password"
+    "password": "Password",
+    "forgotPassword": "Forgot password?",
+    "resetPassword": "Reset password",
+    "resetPasswordDescription": "Enter your email address to receive a link to reset your password.",
+    "resetPasswordSuccess": "If an account with this email exists, a reset email has been sent.",
+    "backToLogin": "Back to login",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm password",
+    "passwordMismatch": "Passwords do not match",
+    "passwordMinLength": "Password must be at least 8 characters long",
+    "setPassword": "Set password",
+    "setPasswordSuccess": "Your password has been changed successfully.",
+    "setPasswordDescription": "Set a new password.",
+    "invalidResetToken": "Invalid or expired link.",
+    "goToLogin": "Go to login",
+    "ssoLogin": "Or sign in with",
+    "ssoLoading": "Processing login..."
   },
   "common": {
     "appName": "Essencium"
