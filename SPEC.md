@@ -150,7 +150,10 @@ Die vollständige Konfiguration (inkl. Hot-Reload auf YAML-Änderungen) liegt in
 - [ ] **2.1** TanStack Router Grundstruktur (0,5 PT) — `_authenticated.tsx` Layout, Login-Route, Dashboard-Route, 404 — Directory-Pattern; `__root.tsx` rendert HTML-Dokument + alle Providers (QueryClientProvider, AuthProvider, ErrorBoundary, Suspense)
 - [ ] **2.2** API-Client + Type-Generierung + Dev-Proxy (1 PT) — Hey-API (`@hey-api/openapi-ts` + `@hey-api/vite-plugin`) einbinden; `backend/openapi.yaml` als Quelle; generiert `src/generated/client/` automatisch bei `pnpm dev`; zwei Clients: `baseClient` (unauthentifiziert, für Login/Refresh) + `authenticatedClient` (Bearer-Token via Request-Interceptor); Vite Dev-Proxy `/api → localhost:8098` mit `proxyRes`-Handler der `Secure`-Flag und `Path` im `set-cookie`-Header des Refresh-Tokens korrigiert (sonst verwirft der Browser das Cookie unter HTTP)
 - [ ] **2.3** TanStack Query Setup (0,5 PT) — QueryClient in `__root.tsx`, `RouterContext` mit `queryClient` für Loader, `useCurrentUser()` via generierter `getMeUserOptions()`, DevTools im Dev-Mode
-- [ ] **2.4** Authentication-Flow (1,5 PT) — `src/lib/auth-store.ts`: Token in-memory + localStorage, `initAuth()` (Token aus Storage lesen + Refresh-Versuch beim App-Start), `waitForAuth()` (Promise das Loader abwarten), Response-Interceptor für 401 (Refresh → bei Fehler Redirect zu `/login`); `AuthContext` mit `login()` + `logout()` (invalidiert TanStack Query Cache); Route-Guard in `_authenticated.tsx` via `beforeLoad: await waitForAuth()` + `redirect` wenn kein Token; Login-Seite mit RHF + Zod
+- [x] **2.4** Authentication-Flow (1,5 PT) — `src/lib/auth-store.ts`: Token in-memory + localStorage, `initAuth()` (Token aus Storage lesen + Refresh-Versuch beim App-Start), `waitForAuth()` (Promise das Loader abwarten), Response-Interceptor für 401 (Refresh → bei Fehler Redirect zu `/login`); `AuthContext` mit `login()` + `logout()` (invalidiert TanStack Query Cache); Route-Guard in `_authenticated.tsx` via `beforeLoad: await waitForAuth()` + `redirect` wenn kein Token; Login-Seite mit RHF + Zod
+- [ ] **2.4a** Password Reset + Set Password (0,5 PT) — Öffentliche Routen `/reset-password` und `/set-password`; Backend-Endpoints `/auth/reset-credentials` (E-Mail anfordern) + Token-basiertes Setzen des neuen Passworts; RHF + Zod Formulare; Referenz: `../essencium-frontend/packages/app/src/api/auth.ts`
+- [ ] **2.4b** OAuth/SSO-Login (0,5 PT) — Backend liefert verfügbare Provider via `/auth/oauth-registrations` (bereits in `openapi.yaml`); Login-Seite zeigt SSO-Buttons dynamisch; OAuth-Callback-Route verarbeitet `?token=...` Query-Param; Referenz: `../essencium-frontend/packages/app/src/app/[locale]/(public)/login/LoginView.tsx`
+- [ ] **2.4c** Proaktiver Token-Refresh (0,5 PT) — Token-Ablaufzeit aus JWT parsen (`exp`-Claim); Refresh 2 Minuten vor Ablauf einplanen (`setTimeout`); verhindert dass laufende Sessions durch einen abgelaufenen Token unterbrochen werden; in `auth-store.ts` ergänzen
 - [ ] **2.5** i18n + dayjs (0,5 PT) — i18next Setup, Language-Detection, Basis-Translations (de/en), dayjs mit Locale
 - [ ] **2.R** Sprint Review (0,5 PT)
 
@@ -158,7 +161,8 @@ Die vollständige Konfiguration (inkl. Hot-Reload auf YAML-Änderungen) liegt in
 
 > Ziel: Boilerplate deckt den Kern-Scope des aktuellen Essencium ab.
 
-- [ ] **3.1** Sidebar (1 PT) — shadcn/ui Sidebar, Navigation-Items, Responsive (Collapsible/Drawer), Active-State
+- [ ] **3.0** Jotai Setup (0,25 PT) — Jotai installieren; `atomWithStorage` für persistenten UI-State (z.B. Sidebar collapsed); kein Einsatz für Auth-State (bleibt in React Context)
+- [ ] **3.1** Sidebar (1 PT) — shadcn/ui Sidebar, Navigation-Items, Responsive (Collapsible/Drawer), Active-State; Sidebar-State via Jotai `atomWithStorage` persistent
 - [ ] **3.2** Header + Breadcrumbs (0,5 PT) — Sidebar-Toggle, Auto-Breadcrumbs aus Router, User-Dropdown, Language-Switcher
 - [ ] **3.3** User-Liste (0,5 PT) — TanStack Table mit Sortierung, Pagination, Suche, Server-side via TanStack Query
 - [ ] **3.4** User Create/Edit (0,5 PT) — RHF + Zod Formular, Create/Edit via Route-Param, Mutations, Toast
