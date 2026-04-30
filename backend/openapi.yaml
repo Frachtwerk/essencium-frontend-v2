@@ -5,9 +5,9 @@ info:
     name: Frachtwerk GmbH
     url: https://github.com/Frachtwerk/essencium-backend
     email: essencium@frachtwerk.de
-  version: 3.3.2
+  version: 3.4.0-SNAPSHOT
 servers:
-- url: localhost:8098
+- url: staging.essencium.dev
 tags:
 - name: AuthenticationController
   description: Set of endpoints used for authentication
@@ -47,6 +47,24 @@ paths:
         schema:
           type: integer
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -72,6 +90,24 @@ paths:
               $ref: "#/components/schemas/UserDto"
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -91,6 +127,24 @@ paths:
         schema:
           type: string
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "204":
           description: No Content
     patch:
@@ -113,6 +167,24 @@ paths:
               additionalProperties: {}
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -126,6 +198,24 @@ paths:
       summary: Retrieve the currently logged-in user
       operationId: getMe
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -144,6 +234,24 @@ paths:
               $ref: "#/components/schemas/UserDto"
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -163,6 +271,24 @@ paths:
               additionalProperties: {}
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -182,6 +308,24 @@ paths:
               $ref: "#/components/schemas/PasswordUpdateRequest"
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -215,6 +359,24 @@ paths:
           - xliff
           - unknown
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -242,6 +404,24 @@ paths:
               additionalProperties: {}
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -276,6 +456,24 @@ paths:
               type: string
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -296,6 +494,24 @@ paths:
         schema:
           type: string
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -321,6 +537,24 @@ paths:
               $ref: "#/components/schemas/RoleDto"
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -340,6 +574,24 @@ paths:
         schema:
           type: string
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "204":
           description: No Content
     patch:
@@ -362,6 +614,24 @@ paths:
               additionalProperties: {}
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -381,6 +651,24 @@ paths:
         schema:
           type: integer
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -405,6 +693,24 @@ paths:
               $ref: "#/components/schemas/ExampleEntityDto"
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -423,6 +729,24 @@ paths:
         schema:
           type: integer
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "204":
           description: No Content
     patch:
@@ -444,6 +768,24 @@ paths:
               additionalProperties: {}
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -551,6 +893,24 @@ paths:
           type: string
         example: john.doe@frachtwerk.de
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -569,6 +929,24 @@ paths:
               $ref: "#/components/schemas/UserDto"
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "201":
           description: Created
           content:
@@ -590,6 +968,24 @@ paths:
         schema:
           type: string
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "204":
           description: No Content
   /v1/translations:
@@ -601,6 +997,24 @@ paths:
         \ locale"
       operationId: getTranslationsGroupedByKey
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -639,6 +1053,24 @@ paths:
               $ref: "#/components/schemas/TranslationDto"
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -661,6 +1093,24 @@ paths:
       responses:
         "204":
           description: No Content
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
   /v1/roles:
     get:
       tags:
@@ -692,6 +1142,24 @@ paths:
           items:
             type: string
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -710,6 +1178,24 @@ paths:
               $ref: "#/components/schemas/RoleDto"
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "201":
           description: Created
           content:
@@ -731,6 +1217,24 @@ paths:
       responses:
         "204":
           description: No Content
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
   /v1/example:
     get:
       tags:
@@ -810,6 +1314,24 @@ paths:
           format: date-time
         example: 2021-12-31T23:59:59
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -827,6 +1349,24 @@ paths:
               $ref: "#/components/schemas/ExampleEntityDto"
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "201":
           description: Created
           content:
@@ -846,6 +1386,24 @@ paths:
               $ref: "#/components/schemas/ContactRequestDto"
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
   /v1/api-tokens:
@@ -930,6 +1488,24 @@ paths:
           format: date-time
         example: 2021-12-31T23:59:59
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -948,6 +1524,24 @@ paths:
               $ref: "#/components/schemas/ApiTokenDto"
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "201":
           description: Created
           content:
@@ -967,6 +1561,24 @@ paths:
               $ref: "#/components/schemas/Feedback"
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -993,6 +1605,24 @@ paths:
               $ref: "#/components/schemas/LoginRequest"
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -1018,6 +1648,24 @@ paths:
         schema:
           type: string
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -1045,6 +1693,24 @@ paths:
           format: uri
           example: https://example.com/logout
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
   /v1/api-tokens/{id}:
@@ -1063,6 +1729,24 @@ paths:
         schema:
           type: integer
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -1084,6 +1768,24 @@ paths:
         schema:
           type: integer
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "204":
           description: No Content
     patch:
@@ -1108,6 +1810,24 @@ paths:
               additionalProperties: {}
         required: true
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -1120,6 +1840,24 @@ paths:
       - UserController
       operationId: collectionOptions
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -1132,6 +1870,24 @@ paths:
       - TranslationController
       operationId: collectionOptions_1
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -1144,6 +1900,24 @@ paths:
       - RoleController
       operationId: collectionOptions_2
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -1156,6 +1930,24 @@ paths:
       - RightController
       operationId: collectionOptions_3
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -1168,6 +1960,24 @@ paths:
       - ExampleController
       operationId: collectionOptions_4
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -1180,6 +1990,24 @@ paths:
       - ContactController
       operationId: collectionOptions_5
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -1192,6 +2020,24 @@ paths:
       - ApiTokenController
       operationId: collectionOptions_6
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -1206,6 +2052,24 @@ paths:
       responses:
         "204":
           description: No Content
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -1218,6 +2082,24 @@ paths:
       - SentryProxyController
       operationId: collectionOptions_8
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -1232,6 +2114,24 @@ paths:
       description: Returns the allowed HTTP methods for the authentication endpoints.
       operationId: collectionOptions_9
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -1252,6 +2152,24 @@ paths:
         schema:
           type: integer
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -1270,6 +2188,24 @@ paths:
         return their tokens as a map of basic representations to list of token representations
       operationId: findAllWithTokens
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -1287,6 +2223,24 @@ paths:
       summary: Retrieve refresh tokens of the currently logged-in user
       operationId: getMyTokens
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -1302,6 +2256,24 @@ paths:
       summary: Retrieve the currently logged-in user's role
       operationId: getMyRole
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -1318,6 +2290,24 @@ paths:
       summary: Retrieve the currently logged-in user's rights / permissions
       operationId: getMyRights
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -1404,6 +2394,24 @@ paths:
           type: string
         example: john.doe@frachtwerk.de
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -1419,6 +2427,24 @@ paths:
       description: List all available locales
       operationId: getAvailableLocales
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -1443,6 +2469,24 @@ paths:
         schema:
           type: string
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -1481,6 +2525,24 @@ paths:
           items:
             type: string
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -1543,6 +2605,24 @@ paths:
           format: date-time
         example: 2021-12-31T23:59:59
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -1560,6 +2640,24 @@ paths:
         information can be used by clients to understand token validity duration.
       operationId: getTokenExpirationInfo
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -1626,6 +2724,24 @@ paths:
           format: date-time
         example: 2021-12-31T23:59:59
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -1643,6 +2759,24 @@ paths:
         (API_TOKEN_ADMIN) required.
       operationId: findAllAdmin
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -1662,6 +2796,24 @@ paths:
         \ URLs, and images"
       operationId: getRegistrations
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
           content:
@@ -1691,6 +2843,24 @@ paths:
         schema:
           type: string
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "204":
           description: No Content
   /v1/users/me/tokens/{id}:
@@ -1707,6 +2877,24 @@ paths:
         schema:
           type: string
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "204":
           description: No Content
   /v1/translations/delete/{key}:
@@ -1723,6 +2911,24 @@ paths:
         schema:
           type: string
       responses:
+        "403":
+          description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                type: object
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                type: object
         "200":
           description: OK
 components:
@@ -1796,12 +3002,12 @@ components:
           type: string
         protected:
           type: boolean
-        title:
-          type: string
         defaultRole:
           type: boolean
         systemRole:
           type: boolean
+        title:
+          type: string
         editable:
           type: boolean
       required:
@@ -2024,12 +3230,12 @@ components:
     PageUserRepresentation:
       type: object
       properties:
-        totalPages:
-          type: integer
-          format: int32
         totalElements:
           type: integer
           format: int64
+        totalPages:
+          type: integer
+          format: int32
         size:
           type: integer
           format: int32
@@ -2040,13 +3246,13 @@ components:
         number:
           type: integer
           format: int32
+        pageable:
+          $ref: "#/components/schemas/PageableObject"
         sort:
           $ref: "#/components/schemas/SortObject"
         numberOfElements:
           type: integer
           format: int32
-        pageable:
-          $ref: "#/components/schemas/PageableObject"
         first:
           type: boolean
         last:
@@ -2059,8 +3265,6 @@ components:
         offset:
           type: integer
           format: int64
-        sort:
-          $ref: "#/components/schemas/SortObject"
         paged:
           type: boolean
         pageNumber:
@@ -2071,14 +3275,16 @@ components:
           format: int32
         unpaged:
           type: boolean
+        sort:
+          $ref: "#/components/schemas/SortObject"
     SortObject:
       type: object
       properties:
         empty:
           type: boolean
-        unsorted:
-          type: boolean
         sorted:
+          type: boolean
+        unsorted:
           type: boolean
     TokenRepresentation:
       type: object
@@ -2113,12 +3319,12 @@ components:
     PageRole:
       type: object
       properties:
-        totalPages:
-          type: integer
-          format: int32
         totalElements:
           type: integer
           format: int64
+        totalPages:
+          type: integer
+          format: int32
         size:
           type: integer
           format: int32
@@ -2129,13 +3335,13 @@ components:
         number:
           type: integer
           format: int32
+        pageable:
+          $ref: "#/components/schemas/PageableObject"
         sort:
           $ref: "#/components/schemas/SortObject"
         numberOfElements:
           type: integer
           format: int32
-        pageable:
-          $ref: "#/components/schemas/PageableObject"
         first:
           type: boolean
         last:
@@ -2145,12 +3351,12 @@ components:
     PageRight:
       type: object
       properties:
-        totalPages:
-          type: integer
-          format: int32
         totalElements:
           type: integer
           format: int64
+        totalPages:
+          type: integer
+          format: int32
         size:
           type: integer
           format: int32
@@ -2161,13 +3367,13 @@ components:
         number:
           type: integer
           format: int32
+        pageable:
+          $ref: "#/components/schemas/PageableObject"
         sort:
           $ref: "#/components/schemas/SortObject"
         numberOfElements:
           type: integer
           format: int32
-        pageable:
-          $ref: "#/components/schemas/PageableObject"
         first:
           type: boolean
         last:
@@ -2177,12 +3383,12 @@ components:
     PageExampleRepresentation:
       type: object
       properties:
-        totalPages:
-          type: integer
-          format: int32
         totalElements:
           type: integer
           format: int64
+        totalPages:
+          type: integer
+          format: int32
         size:
           type: integer
           format: int32
@@ -2193,13 +3399,13 @@ components:
         number:
           type: integer
           format: int32
+        pageable:
+          $ref: "#/components/schemas/PageableObject"
         sort:
           $ref: "#/components/schemas/SortObject"
         numberOfElements:
           type: integer
           format: int32
-        pageable:
-          $ref: "#/components/schemas/PageableObject"
         first:
           type: boolean
         last:
@@ -2209,12 +3415,12 @@ components:
     PageApiTokenRepresentation:
       type: object
       properties:
-        totalPages:
-          type: integer
-          format: int32
         totalElements:
           type: integer
           format: int64
+        totalPages:
+          type: integer
+          format: int32
         size:
           type: integer
           format: int32
@@ -2225,13 +3431,13 @@ components:
         number:
           type: integer
           format: int32
+        pageable:
+          $ref: "#/components/schemas/PageableObject"
         sort:
           $ref: "#/components/schemas/SortObject"
         numberOfElements:
           type: integer
           format: int32
-        pageable:
-          $ref: "#/components/schemas/PageableObject"
         first:
           type: boolean
         last:
