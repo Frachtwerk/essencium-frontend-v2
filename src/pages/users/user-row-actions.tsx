@@ -53,6 +53,7 @@ export function UserRowActions({
           variant="ghost"
           size="icon"
           aria-label={t('common.edit')}
+          nativeButton={false}
           render={
             <Link to="/users/$userId" params={{ userId: String(user.id) }} />
           }

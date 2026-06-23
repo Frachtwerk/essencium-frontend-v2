@@ -33,12 +33,24 @@
     "cancel": "Abbrechen",
     "edit": "Bearbeiten",
     "delete": "Löschen",
-    "noResults": "Keine Einträge"
+    "noResults": "Keine Einträge",
+    "pageInfo": "Seite {{page}} von {{pages}} · {{total}} Einträge"
   },
   "error": {
     "title": "Es ist ein Fehler aufgetreten",
     "unknown": "Ein unbekannter Fehler ist aufgetreten",
     "retry": "Nochmal versuchen"
+  },
+  "dashboard": {
+    "greeting": "Willkommen zurück",
+    "greetingName": "Willkommen zurück, {{name}}",
+    "subtitle": "Schön, dass du da bist. Hier geht es zu den wichtigsten Bereichen.",
+    "quickAccess": "Schnellzugriff",
+    "cards": {
+      "users": "Benutzer anlegen, bearbeiten und Rollen zuweisen",
+      "roles": "Rollen und deren Rechte verwalten",
+      "profile": "Eigene Daten und Einstellungen bearbeiten"
+    }
   },
   "navigation": {
     "menu": "Menü",

@@ -139,14 +139,24 @@ function LoginPage(): React.ReactElement {
   return (
     <div className="bg-background flex min-h-svh items-center justify-center p-4">
       <Card className="w-full max-w-sm">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl">{t('common.appName')}</CardTitle>
+        <CardHeader className="items-center text-center">
+          <img
+            src="/img/logo.svg"
+            alt={t('common.appName')}
+            className="mb-2 h-9 dark:hidden"
+          />
+          <img
+            src="/img/logo-white.svg"
+            alt={t('common.appName')}
+            className="mb-2 hidden h-9 dark:block"
+          />
+          <CardTitle className="text-xl">{t('auth.login')}</CardTitle>
           <CardDescription>{t('auth.loginSubtitle')}</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             {errorMessage && (
-              <div className="bg-destructive/10 text-destructive rounded-md p-3 text-sm">
+              <div className="bg-destructive text-destructive-foreground rounded-md p-3 text-sm">
                 {errorMessage}
               </div>
             )}

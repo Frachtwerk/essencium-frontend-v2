@@ -107,11 +107,20 @@ export function DataTable<TData, TValue>(
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        {props.renderPreviousPageButton({
-          disabled: !table.getCanPreviousPage(),
-        })}
-        {props.renderNextPageButton({ disabled: !table.getCanNextPage() })}
+      <div className="flex items-center justify-between gap-2 py-4">
+        <p className="text-muted-foreground text-sm">
+          {t('common.pageInfo', {
+            page: props.currentPage + 1,
+            pages: Math.max(props.totalPages, 1),
+            total: props.totalElements,
+          })}
+        </p>
+        <div className="flex items-center gap-2">
+          {props.renderPreviousPageButton({
+            disabled: !table.getCanPreviousPage(),
+          })}
+          {props.renderNextPageButton({ disabled: !table.getCanNextPage() })}
+        </div>
       </div>
     </div>
   )

@@ -33,12 +33,24 @@
     "cancel": "Cancel",
     "edit": "Edit",
     "delete": "Delete",
-    "noResults": "No results"
+    "noResults": "No results",
+    "pageInfo": "Page {{page}} of {{pages}} · {{total}} entries"
   },
   "error": {
     "title": "An error occurred",
     "unknown": "An unknown error occurred",
     "retry": "Try again"
+  },
+  "dashboard": {
+    "greeting": "Welcome back",
+    "greetingName": "Welcome back, {{name}}",
+    "subtitle": "Good to see you. Jump to the most important areas below.",
+    "quickAccess": "Quick access",
+    "cards": {
+      "users": "Create and edit users and assign roles",
+      "roles": "Manage roles and their rights",
+      "profile": "Edit your own data and settings"
+    }
   },
   "navigation": {
     "menu": "Menu",

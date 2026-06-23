@@ -127,7 +127,7 @@ function SetPasswordPage(): React.ReactElement {
             className="space-y-4"
           >
             {mutation.isError && (
-              <div className="bg-destructive/10 text-destructive rounded-md p-3 text-sm">
+              <div className="bg-destructive text-destructive-foreground rounded-md p-3 text-sm">
                 {mutation.error instanceof Error
                   ? mutation.error.message
                   : t('error.unknown')}
