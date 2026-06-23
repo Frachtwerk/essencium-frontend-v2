@@ -1,0 +1,62 @@
+# nginx config for the Essencium v2 SPA.
+# ${BACKEND_URL} is substituted by the nginx entrypoint (envsubst) at
+# container start — only that variable is replaced, nginx's own $variables
+# (e.g. $uri, $host) are left untouched.
+
+server {
+    listen       8080;
+    server_name  _;
+
+    root   /usr/share/nginx/html;
+    # TanStack Start (SPA mode) emits _shell.html as the app entry, not index.html.
+    index  _shell.html;
+
+    gzip              on;
+    gzip_vary         on;
+    gzip_min_length   1024;
+    gzip_proxied      any;
+    gzip_types        text/plain text/css text/javascript application/javascript
+                      application/json image/svg+xml font/woff2;
+
+    # Liveness/readiness probe.
+    location = /healthz {
+        access_log off;
+        add_header Content-Type text/plain;
+        return 200 'ok';
+    }
+
+    # Hashed, content-addressed assets — safe to cache forever.
+    location /assets/ {
+        expires    1y;
+        add_header Cache-Control "public, immutable";
+        try_files  $uri =404;
+    }
+
+    # Reverse proxy to the backend. Mirrors the Vite dev proxy:
+    # the /api prefix is stripped, and the refresh-token cookie Path is
+    # rewritten from /auth to /api/auth so the browser sends it back under
+    # the proxied prefix.
+    #
+    # BACKEND_URL is assigned to a variable so nginx resolves the host at
+    # request time (via the resolver) instead of at startup — this prevents a
+    # crash-loop when the backend isn't reachable yet. DNS_RESOLVER defaults to
+    # the Docker embedded DNS (127.0.0.11); set it to your cluster DNS on k8s.
+    location /api/ {
+        resolver           ${DNS_RESOLVER} valid=30s;
+        set                $upstream ${BACKEND_URL};
+        rewrite            ^/api/(.*)$ /$1 break;
+        proxy_pass         $upstream;
+        proxy_http_version 1.1;
+        proxy_set_header   Host              $host;
+        proxy_set_header   X-Real-IP         $remote_addr;
+        proxy_set_header   X-Forwarded-For   $proxy_add_x_forwarded_for;
+        proxy_set_header   X-Forwarded-Proto $scheme;
+        proxy_cookie_path  /auth /api/auth;
+    }
+
+    # SPA fallback: any non-asset, non-API route serves the app shell so
+    # client-side routing (TanStack Router) can take over.
+    location / {
+        try_files $uri $uri/ /_shell.html;
+    }
+}
