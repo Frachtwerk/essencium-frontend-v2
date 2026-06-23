@@ -3,4 +3,6 @@ dist/
 .vinxi/
 node_modules/
 src/routeTree.gen.ts
+src/generated/
+backend/
 pnpm-lock.yaml

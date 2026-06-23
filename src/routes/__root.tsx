@@ -15,6 +15,9 @@ import { useTranslation } from 'react-i18next'
 
 import { FullPageError } from '@/components/error-fallback'
 import { FullPageSpinner } from '@/components/spinner'
+import { ThemeProvider } from '@/components/theme-provider'
+import { Toaster } from '@/components/ui/sonner'
+import { TooltipProvider } from '@/components/ui/tooltip'
 import { AuthProvider } from '@/context/auth-context'
 
 export const queryClient = new QueryClient()
@@ -39,13 +42,18 @@ function RootComponent(): JSX.Element {
   return (
     <RootDocument>
       <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <ErrorBoundary FallbackComponent={FullPageError}>
-            <Suspense fallback={<FullPageSpinner />}>
-              <Outlet />
-            </Suspense>
-          </ErrorBoundary>
-        </AuthProvider>
+        <ThemeProvider>
+          <TooltipProvider>
+            <AuthProvider>
+              <ErrorBoundary FallbackComponent={FullPageError}>
+                <Suspense fallback={<FullPageSpinner />}>
+                  <Outlet />
+                </Suspense>
+              </ErrorBoundary>
+              <Toaster />
+            </AuthProvider>
+          </TooltipProvider>
+        </ThemeProvider>
         {import.meta.env.DEV && (
           <>
             <TanStackRouterDevtools position="bottom-right" />

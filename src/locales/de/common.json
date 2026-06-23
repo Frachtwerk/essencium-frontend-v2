@@ -23,7 +23,8 @@
     "resetPasswordPending": "Link wird gesendet...",
     "setPasswordPending": "Passwort wird gesetzt...",
     "ssoLogin": "Oder anmelden mit",
-    "ssoLoading": "Anmeldung wird verarbeitet..."
+    "ssoLoading": "Anmeldung wird verarbeitet...",
+    "logoutFailed": "Abmeldung fehlgeschlagen"
   },
   "common": {
     "appName": "Essencium"
@@ -34,6 +35,33 @@
     "retry": "Nochmal versuchen"
   },
   "navigation": {
-    "dashboard": "Dashboard"
+    "menu": "Menü",
+    "dashboard": "Dashboard",
+    "users": "Benutzer",
+    "roles": "Rollen",
+    "profile": "Profil",
+    "settings": "Einstellungen",
+    "logout": "Abmelden"
+  },
+  "theme": {
+    "toggle": "Erscheinungsbild umschalten",
+    "light": "Hell",
+    "dark": "Dunkel",
+    "system": "System"
+  },
+  "language": {
+    "switch": "Sprache wechseln"
+  },
+  "users": {
+    "title": "Benutzer"
+  },
+  "roles": {
+    "title": "Rollen"
+  },
+  "profile": {
+    "title": "Profil"
+  },
+  "settings": {
+    "title": "Einstellungen"
   }
 }

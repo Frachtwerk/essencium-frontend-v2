@@ -3,7 +3,10 @@ import { Suspense } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 
 import { ContentError, RouteError } from '@/components/error-fallback'
+import { AppHeader } from '@/components/layout/app-header'
+import { AppSidebar } from '@/components/layout/app-sidebar'
 import { ContentSpinner, FullPageSpinner } from '@/components/spinner'
+import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
 import { getAccessToken, waitForAuth } from '@/lib/auth-store'
 
 export const Route = createFileRoute('/_authenticated')({
@@ -21,10 +24,16 @@ export const Route = createFileRoute('/_authenticated')({
 
 function AuthenticatedLayout(): React.ReactElement {
   return (
-    <ErrorBoundary FallbackComponent={ContentError}>
-      <Suspense fallback={<ContentSpinner />}>
-        <Outlet />
-      </Suspense>
-    </ErrorBoundary>
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
+        <AppHeader />
+        <ErrorBoundary FallbackComponent={ContentError}>
+          <Suspense fallback={<ContentSpinner />}>
+            <Outlet />
+          </Suspense>
+        </ErrorBoundary>
+      </SidebarInset>
+    </SidebarProvider>
   )
 }

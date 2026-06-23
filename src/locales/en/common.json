@@ -23,7 +23,8 @@
     "resetPasswordPending": "Sending link...",
     "setPasswordPending": "Setting password...",
     "ssoLogin": "Or sign in with",
-    "ssoLoading": "Processing login..."
+    "ssoLoading": "Processing login...",
+    "logoutFailed": "Logout failed"
   },
   "common": {
     "appName": "Essencium"
@@ -34,6 +35,33 @@
     "retry": "Try again"
   },
   "navigation": {
-    "dashboard": "Dashboard"
+    "menu": "Menu",
+    "dashboard": "Dashboard",
+    "users": "Users",
+    "roles": "Roles",
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Log out"
+  },
+  "theme": {
+    "toggle": "Toggle theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "language": {
+    "switch": "Switch language"
+  },
+  "users": {
+    "title": "Users"
+  },
+  "roles": {
+    "title": "Roles"
+  },
+  "profile": {
+    "title": "Profile"
+  },
+  "settings": {
+    "title": "Settings"
   }
 }
