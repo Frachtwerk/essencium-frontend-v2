@@ -1,4 +1,4 @@
-import { Languages } from 'lucide-react'
+import { RiTranslate2 } from '@remixicon/react'
 import { useTranslation } from 'react-i18next'
 
 import { Button } from '@/components/ui/button'
@@ -25,7 +25,7 @@ export function LanguageSwitcher(): React.ReactElement {
       <DropdownMenuTrigger
         render={
           <Button variant="ghost" size="icon" aria-label={t('language.switch')}>
-            <Languages className="size-5" />
+            <RiTranslate2 className="size-5" />
           </Button>
         }
       />

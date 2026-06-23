@@ -130,9 +130,23 @@ Die vollständige Konfiguration (inkl. Hot-Reload auf YAML-Änderungen) liegt in
 
 ## Roadmap: 10 Sprints
 
-> **Aktueller Stand (Stand 2026-06-22):** Sprint 1 + Sprint 2 abgeschlossen. Auth-Fundament (Login, Guards, Token-Refresh, Reset/Set-Password, OAuth/SSO), Hey-API Type-Gen, TanStack Query, i18n/dayjs stehen. **Nächster Fokus: Sprint 3 (App-Shell + User-/Rollen-Verwaltung)** — die eigentliche Essencium-UI. Offene Kleinigkeit aus Sprint 2: dedizierte 404-Route.
+> **Aktueller Stand (Stand 2026-06-23):** Sprint 1 + 2 abgeschlossen, Sprint 3 im Kern fertig (App-Shell, User-/Rollen-Verwaltung), Teile von Sprint 4 vorgezogen (Dark Mode, DataTable). **Aktueller Fokus: Sprint 4.5 — Design-System einbacken** (siehe unten). Offene Reste: 404-Route, Tabellen-Sortierung/Suche, Profil/Settings, dedizierte 403/500-Seiten, Rechte-Matrix.
 >
-> **Nachträglich ergänzt (nicht ursprünglich gescoped): Deployment-Setup** (Docker + nginx, statische SPA + `/api`-Reverse-Proxy) — eingeführt um den Stand früh deploybar zu machen und mit mehreren Entwicklern weiterzuarbeiten. Siehe `Dockerfile`, `nginx.conf`, `docker-compose.yml`.
+> **Nachträglich ergänzt (nicht ursprünglich gescoped):**
+>
+> - **Deployment-Setup** (Docker + nginx, statische SPA + `/api`-Reverse-Proxy) — `Dockerfile`, `nginx.conf.template`, `docker-compose.yml`.
+> - **Staging-Anbindung** — lokales `pnpm dev` proxyt via `.env.local` auf `https://backend.staging.essencium.dev` (echte Daten).
+
+### Sprint 4.5 (eingeschoben): Design-System einbacken
+
+> Ziel: Der Frachtwerk-Styleguide (https://essencium-styleguide.frachtwerk.de/) ist fest im Code verankert — Tokens, Font, Icons, Basiskomponenten. Muss **vor** der Component Library laufen, sonst muss jede Komponente nachträglich umgefärbt werden.
+
+- [x] **DS-1** Token-Layer in `globals.css` — OKLCH-Skalen (primary/lime), Light/Dark-Slots inkl. `-hover/-active`, success/warning/info, chart-1..6, Sidebar-Tokens, radius 0.5rem, Motion/Z-Index. Werte = Styleguide (WIP); nur hier ändern, nie inline.
+- [x] **DS-2** Font auf **Fira Sans** (`@fontsource/fira-sans`, 300–800); Inter/JetBrains entfernt.
+- [x] **DS-3** App-/Feature-Icons auf **Remix** (`@remixicon/react`). shadcn-interne Indikator-Icons bleiben lucide (shadcn kennt Remix nicht nativ → sonst Nacharbeit bei jedem `shadcn add`).
+- [x] **DS-4** `buttonVariants` nach Styleguide-Spec (6 Varianten mit hover/active-Tokens, Größen sm/default/lg/icon, radius 6px, Focus-Ring + Offset).
+- [ ] **DS-5** Verankern: STYLE_GUIDE.md mit echten Tokens, CLAUDE.md-Regel (nur Tokens/Remix/Fira), optional ESLint `no-restricted-imports` gegen lucide in App-Code. Input/Card/Dialog/Form gegen Tokens feinprüfen sobald die Styleguide-Komponentenseiten live sind.
+  > **Hinweis (Abweichung):** Styleguide mappt `--destructive` auf einen hellen Tint (#FFD8CC). Damit `text-destructive`-Icons sichtbar bleiben, nutzen Lösch-Icons `text-destructive-400`. Bei Brand-Book-Finalisierung prüfen.
 
 ### Sprint 1 (Mai 5–16): Foundation
 

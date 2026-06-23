@@ -1,17 +1,15 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { useTranslation } from 'react-i18next'
 
-import { PageHeader } from '@/components/layout/page-header'
+import { getFindAllUsersQueryOptions } from '@/hooks/data/users'
+import { paginationSearchParamsSchema } from '@/lib/pagination'
+import { UsersListPage } from '@/pages/users/users-list-page'
 
 export const Route = createFileRoute('/_authenticated/users/')({
-  component: UsersPage,
+  component: UsersListPage,
+  validateSearch: paginationSearchParamsSchema,
+  loaderDeps: ({ search: { page, size } }) => ({ page, size }),
+  loader: ({ context: { queryClient }, deps: { page, size } }) =>
+    queryClient.ensureQueryData(
+      getFindAllUsersQueryOptions({ page, size, sort: ['email,asc'] }),
+    ),
 })
-
-function UsersPage(): React.ReactElement {
-  const { t } = useTranslation()
-  return (
-    <div className="p-6">
-      <PageHeader title={t('users.title')} />
-    </div>
-  )
-}

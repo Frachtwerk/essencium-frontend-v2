@@ -1,4 +1,4 @@
-import { Loader2 } from 'lucide-react'
+import { RiLoader4Line } from '@remixicon/react'
 
 import { cn } from '@/lib/utils'
 
@@ -6,7 +6,7 @@ export function Spinner({
   className,
 }: Readonly<{ className?: string }>): React.ReactElement {
   return (
-    <Loader2
+    <RiLoader4Line
       className={cn('text-muted-foreground h-6 w-6 animate-spin', className)}
     />
   )

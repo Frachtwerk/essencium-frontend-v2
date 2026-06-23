@@ -185,12 +185,15 @@ ESLint 10 (Feb 2026) hat Breaking Changes gegenüber eslint-plugin-react, das no
 - Schemas leben neben den Formularen, nicht in einem separaten Ordner
 - Form-Submit via TanStack Query Mutation
 
-### Styling
+### Styling & Design-System
+
+Quelle der Wahrheit: **Frachtwerk-Styleguide** (https://essencium-styleguide.frachtwerk.de/), eingebacken in `src/styles/globals.css`.
 
 - Tailwind CSS Utility-Klassen
-- shadcn/ui CSS-Variablen für Theming (in `globals.css`)
-- Keine inline-styles, keine CSS-Module
-- Dark Mode via Tailwind `dark:` Klassen + CSS-Variablen
+- **Nur Design-Tokens** (semantische CSS-Variablen aus `globals.css`) — keine Hex-/RGB-Werte im Code, keine inline-styles, keine CSS-Module
+- Farbwerte/Tokens ausschließlich in `globals.css` ändern (Styleguide ist WIP, Slot-Mappings stabil)
+- **Font:** Fira Sans · **Icons:** `@remixicon/react` (line) für App-/Feature-Icons; lucide nur in shadcn-internen Primitives
+- Dark Mode via `next-themes` (`.dark`-Klasse) + CSS-Variablen
 
 ### i18n
 

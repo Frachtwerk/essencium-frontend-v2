@@ -1,75 +1,176 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
-@import '@fontsource-variable/inter';
-@import '@fontsource-variable/jetbrains-mono';
+@import '@fontsource/fira-sans/300.css';
+@import '@fontsource/fira-sans/400.css';
+@import '@fontsource/fira-sans/500.css';
+@import '@fontsource/fira-sans/600.css';
+@import '@fontsource/fira-sans/700.css';
+@import '@fontsource/fira-sans/800.css';
 
-/* --- Frachtwerk Farben (Light Mode) --- */
+/*
+ * Frachtwerk Design System tokens.
+ * Source of truth: https://essencium-styleguide.frachtwerk.de/ (v0.7.0, WIP).
+ * Colors are OKLCH where the styleguide provides scales, hex where it pins
+ * semantic slots. Raw values may change until the brand book finalizes —
+ * slot mappings are stable, so only edit values here, never inline.
+ */
 :root {
-  --background: hsl(0 0% 100%);
-  --foreground: hsl(215 28% 17%);
-  --card: hsl(210 40% 98%);
-  --card-foreground: hsl(215 28% 17%);
-  --popover: hsl(0 0% 100%);
-  --popover-foreground: hsl(215 28% 17%);
-  --primary: hsl(213 52% 23%);
-  --primary-foreground: hsl(0 0% 100%);
-  --secondary: hsl(210 40% 96%);
-  --secondary-foreground: hsl(215 28% 17%);
-  --accent: hsl(189 94% 37%);
-  --accent-foreground: hsl(0 0% 100%);
-  --muted: hsl(210 40% 96%);
-  --muted-foreground: hsl(215 16% 47%);
-  --destructive: hsl(0 84% 60%);
-  --border: hsl(214 32% 91%);
-  --input: hsl(214 32% 91%);
-  --ring: hsl(213 52% 23%);
-  --radius: 0.375rem;
+  /* Primary scale (FW Cyan) */
+  --primary-100: oklch(0.941 0.05 202.5);
+  --primary-200: oklch(0.815 0.099 211.1);
+  --primary-300: oklch(0.713 0.127 217.1);
+  --primary-400: oklch(0.582 0.102 216.9);
+  --primary-500: oklch(0.434 0.072 219.4);
+  --primary-600: oklch(0.359 0.061 220.3);
+  --primary-700: oklch(0.267 0.049 219.8);
 
-  --sidebar: hsl(213 52% 23%);
-  --sidebar-foreground: hsl(0 0% 100%);
-  --sidebar-primary: hsl(189 94% 37%);
-  --sidebar-primary-foreground: hsl(0 0% 100%);
-  --sidebar-accent: hsl(213 45% 30%);
-  --sidebar-accent-foreground: hsl(0 0% 100%);
-  --sidebar-border: hsl(213 40% 32%);
-  --sidebar-ring: hsl(189 94% 37%);
+  /* Brand accent scale (Lime) */
+  --brand-accent-100: oklch(0.978 0.067 118.4);
+  --brand-accent-200: oklch(0.961 0.129 119.3);
+  --brand-accent-300: oklch(0.946 0.181 120.9);
+  --brand-accent-400: oklch(0.927 0.231 124.4);
+  --brand-accent-500: oklch(0.86 0.215 124.4);
+  --brand-accent-600: oklch(0.735 0.183 124.3);
+  --brand-accent-700: oklch(0.296 0.072 122);
+
+  /* Semantic scales (key steps) */
+  --success-100: #ccf4dc;
+  --success-300: #4bd885;
+  --success-400: #00c853;
+  --success-700: #002710;
+  --warning-100: #fff2cd;
+  --warning-300: #ffcd38;
+  --warning-400: #fbbf24;
+  --warning-700: #322601;
+  --destructive-100: #ffd8cc;
+  --destructive-300: #ff7347;
+  --destructive-400: #ff3d00;
+  --destructive-700: #320c00;
+  --neutral-100: #eceded;
+  --neutral-200: #d1d5d9;
+  --neutral-300: #b8bbbe;
+  --neutral-500: #595a5f;
+  --neutral-700: #1a1b1e;
+
+  /* Light-mode semantic slots */
+  --background: #ffffff;
+  --foreground: #002b36;
+  --card: #ffffff;
+  --card-foreground: #002b36;
+  --popover: #ffffff;
+  --popover-foreground: #002b36;
+  --primary: #00b5d6;
+  --primary-foreground: #002b36;
+  --primary-hover: #0989a2;
+  --primary-active: #135a6c;
+  --secondary: #135a6c;
+  --secondary-foreground: #ffffff;
+  --secondary-hover: #0a4453;
+  --secondary-active: #002b36;
+  --muted: #eceded;
+  --muted-foreground: #595a5f;
+  --accent: #c5f6fa;
+  --accent-foreground: #002b36;
+  --border: #d1d5d9;
+  --input: #d1d5d9;
+  --ring: #135a6c;
+  --destructive: #ffd8cc;
+  --destructive-foreground: #320c00;
+  --destructive-hover: #ff7347;
+  --destructive-active: #ff3d00;
+  --success: #ccf4dc;
+  --success-foreground: #002710;
+  --warning: #fff2cd;
+  --warning-foreground: #322601;
+  --info: #c5f6fa;
+  --info-foreground: #002b36;
+
+  /* Charts */
+  --chart-1: #00b5d6;
+  --chart-2: #c6ff00;
+  --chart-3: #fbbf24;
+  --chart-4: #00c853;
+  --chart-5: #ff3d00;
+  --chart-6: #595a5f;
+
+  /* Sidebar (derived from the primary scale — not pinned by the styleguide) */
+  --sidebar: #002b36;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #00b5d6;
+  --sidebar-primary-foreground: #002b36;
+  --sidebar-accent: #0a4453;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #135a6c;
+  --sidebar-ring: #6dd4e7;
+
+  --radius: 0.5rem;
+
+  /* Motion (styleguide) */
+  --duration-fast: 150ms;
+  --duration-base: 200ms;
+  --duration-slow: 300ms;
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Z-index stack (styleguide) */
+  --z-dropdown: 1000;
+  --z-sticky: 1100;
+  --z-modal: 1200;
+  --z-popover: 1300;
+  --z-toast: 1400;
+  --z-tooltip: 1500;
 }
 
-/* --- Frachtwerk Farben (Dark Mode) --- */
+/* Dark-mode semantic slots. Slots pinned by the styleguide use its values;
+ * the rest are derived (lighter on hover/active in dark). */
 .dark {
-  --background: hsl(217 33% 11%);
-  --foreground: hsl(210 40% 98%);
-  --card: hsl(215 28% 17%);
-  --card-foreground: hsl(210 40% 98%);
-  --popover: hsl(215 28% 17%);
-  --popover-foreground: hsl(210 40% 98%);
-  --primary: hsl(210 40% 98%);
-  --primary-foreground: hsl(217 33% 17%);
-  --secondary: hsl(215 25% 27%);
-  --secondary-foreground: hsl(210 40% 98%);
-  --accent: hsl(189 94% 37%);
-  --accent-foreground: hsl(0 0% 100%);
-  --muted: hsl(215 25% 27%);
-  --muted-foreground: hsl(215 20% 65%);
-  --destructive: hsl(0 63% 31%);
-  --border: hsl(215 25% 27%);
-  --input: hsl(215 25% 27%);
-  --ring: hsl(189 94% 37%);
+  --background: #002b36;
+  --foreground: #ffffff;
+  --card: #0a4453;
+  --card-foreground: #ffffff;
+  --popover: #0a4453;
+  --popover-foreground: #ffffff;
+  --primary: #00b5d6;
+  --primary-foreground: #002b36;
+  --primary-hover: #6dd4e7;
+  --primary-active: #c5f6fa;
+  --secondary: #135a6c;
+  --secondary-foreground: #ffffff;
+  --secondary-hover: #0989a2;
+  --secondary-active: #00b5d6;
+  --muted: #0a4453;
+  --muted-foreground: #b8bbbe;
+  --accent: #135a6c;
+  --accent-foreground: #ffffff;
+  --border: #0989a2;
+  --input: #0989a2;
+  --ring: #6dd4e7;
+  --destructive: #ff3d00;
+  --destructive-foreground: #ffffff;
+  --destructive-hover: #ff7347;
+  --destructive-active: #ffd8cc;
+  --success: #002710;
+  --success-foreground: #ccf4dc;
+  --warning: #322601;
+  --warning-foreground: #fff2cd;
+  --info: #135a6c;
+  --info-foreground: #ffffff;
 
-  --sidebar: hsl(215 28% 17%);
-  --sidebar-foreground: hsl(210 40% 98%);
-  --sidebar-primary: hsl(189 94% 37%);
-  --sidebar-primary-foreground: hsl(0 0% 100%);
-  --sidebar-accent: hsl(215 25% 27%);
-  --sidebar-accent-foreground: hsl(210 40% 98%);
-  --sidebar-border: hsl(215 25% 27%);
-  --sidebar-ring: hsl(189 94% 37%);
+  --sidebar: #0a4453;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #00b5d6;
+  --sidebar-primary-foreground: #002b36;
+  --sidebar-accent: #135a6c;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #0989a2;
+  --sidebar-ring: #6dd4e7;
 }
 
-/* --- Tailwind v4: CSS-Variablen als Utility-Klassen exponieren --- */
+/* Tailwind v4: expose tokens as utilities */
 @theme inline {
-  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
+  --font-sans: 'Fira Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', 'JetBrains Mono', monospace;
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -77,18 +178,55 @@
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
+
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-active: var(--primary-active);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
+  --color-secondary-hover: var(--secondary-hover);
+  --color-secondary-active: var(--secondary-active);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
-  --color-destructive: var(--destructive);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-destructive-hover: var(--destructive-hover);
+  --color-destructive-active: var(--destructive-active);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+
+  /* Palette scales (for explicit step usage, e.g. text-primary-500) */
+  --color-primary-100: var(--primary-100);
+  --color-primary-200: var(--primary-200);
+  --color-primary-300: var(--primary-300);
+  --color-primary-400: var(--primary-400);
+  --color-primary-500: var(--primary-500);
+  --color-primary-600: var(--primary-600);
+  --color-primary-700: var(--primary-700);
+  --color-destructive-100: var(--destructive-100);
+  --color-destructive-300: var(--destructive-300);
+  --color-destructive-400: var(--destructive-400);
+  --color-destructive-700: var(--destructive-700);
+  --color-success-400: var(--success-400);
+  --color-warning-400: var(--warning-400);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-chart-6: var(--chart-6);
 
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
@@ -99,8 +237,8 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  --radius-sm: calc(var(--radius) - 2px);
-  --radius-md: var(--radius);
-  --radius-lg: calc(var(--radius) + 2px);
-  --radius-xl: calc(var(--radius) + 6px);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
 }

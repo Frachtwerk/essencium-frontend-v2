@@ -1,6 +1,11 @@
+import {
+  RiExpandUpDownLine,
+  RiLogoutBoxRLine,
+  RiSettings3Line,
+  RiUserLine,
+} from '@remixicon/react'
 import { useMutation } from '@tanstack/react-query'
 import { Link, useNavigate } from '@tanstack/react-router'
-import { ChevronsUpDown, LogOut, Settings, User } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
@@ -65,7 +70,7 @@ export function NavUser(): React.ReactElement {
                   <span className="truncate font-medium">{fullName}</span>
                   <span className="truncate text-xs">{user.email}</span>
                 </div>
-                <ChevronsUpDown className="ml-auto size-4" />
+                <RiExpandUpDownLine className="ml-auto size-4" />
               </SidebarMenuButton>
             }
           />
@@ -84,11 +89,11 @@ export function NavUser(): React.ReactElement {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem render={<Link to="/profile" />}>
-              <User className="size-4" />
+              <RiUserLine className="size-4" />
               {t('navigation.profile')}
             </DropdownMenuItem>
             <DropdownMenuItem render={<Link to="/settings" />}>
-              <Settings className="size-4" />
+              <RiSettings3Line className="size-4" />
               {t('navigation.settings')}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
@@ -96,7 +101,7 @@ export function NavUser(): React.ReactElement {
               onClick={() => logoutMutation.mutate()}
               disabled={logoutMutation.isPending}
             >
-              <LogOut className="size-4" />
+              <RiLogoutBoxRLine className="size-4" />
               {t('navigation.logout')}
             </DropdownMenuItem>
           </DropdownMenuContent>

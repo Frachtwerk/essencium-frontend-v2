@@ -27,7 +27,13 @@
     "logoutFailed": "Logout failed"
   },
   "common": {
-    "appName": "Essencium"
+    "appName": "Essencium",
+    "save": "Save",
+    "saving": "Saving…",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "noResults": "No results"
   },
   "error": {
     "title": "An error occurred",
@@ -53,10 +59,78 @@
     "switch": "Switch language"
   },
   "users": {
-    "title": "Users"
+    "title": "Users",
+    "create": "Add user",
+    "createTitle": "Add user",
+    "editTitle": "Edit user",
+    "createSuccess": "User created",
+    "updateSuccess": "User updated",
+    "saveError": "Could not save user",
+    "deleteTitle": "Delete user",
+    "deleteConfirm": "Do you really want to delete the user {{name}}?",
+    "deleteSuccess": "User deleted",
+    "deleteError": "Could not delete user",
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "table": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "roles": "Roles",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "form": {
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "phone": "Phone",
+      "mobile": "Mobile",
+      "password": "Password",
+      "passwordCreateHint": "Leave empty to send the user an email to set their password.",
+      "passwordEditHint": "Leave empty to keep the current password.",
+      "locale": "Language",
+      "enabled": "Active",
+      "enabledHint": "Disabled users cannot sign in.",
+      "roles": "Roles"
+    },
+    "validation": {
+      "firstName": "First name must be at least 2 characters long",
+      "lastName": "Last name must be at least 2 characters long",
+      "email": "Please enter a valid email address",
+      "password": "Password must be at least 8 characters long",
+      "roles": "Please select at least one role"
+    }
   },
   "roles": {
-    "title": "Roles"
+    "title": "Roles",
+    "create": "Add role",
+    "createTitle": "Add role",
+    "editTitle": "Edit role",
+    "formDescription": "Name, description and assigned rights of the role.",
+    "createSuccess": "Role created",
+    "updateSuccess": "Role updated",
+    "saveError": "Could not save role",
+    "deleteTitle": "Delete role",
+    "deleteConfirm": "Do you really want to delete the role {{name}}?",
+    "deleteSuccess": "Role deleted",
+    "deleteError": "Could not delete role",
+    "table": {
+      "name": "Name",
+      "description": "Description",
+      "rights": "Rights",
+      "actions": "Actions"
+    },
+    "form": {
+      "name": "Name",
+      "description": "Description",
+      "rights": "Rights"
+    },
+    "validation": {
+      "name": "Role name must be at least 2 characters long"
+    }
   },
   "profile": {
     "title": "Profile"

@@ -1,4 +1,4 @@
-import { Monitor, Moon, Sun } from 'lucide-react'
+import { RiComputerLine, RiMoonLine, RiSunLine } from '@remixicon/react'
 import { useTheme } from 'next-themes'
 import { useTranslation } from 'react-i18next'
 
@@ -20,22 +20,22 @@ export function ThemeToggle(): React.ReactElement {
       <DropdownMenuTrigger
         render={
           <Button variant="ghost" size="icon" aria-label={t('theme.toggle')}>
-            <Sun className="size-5 scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
-            <Moon className="absolute size-5 scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
+            <RiSunLine className="size-5 scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90" />
+            <RiMoonLine className="absolute size-5 scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
           </Button>
         }
       />
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => setTheme('light')}>
-          <Sun className="size-4" />
+          <RiSunLine className="size-4" />
           {t('theme.light')}
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme('dark')}>
-          <Moon className="size-4" />
+          <RiMoonLine className="size-4" />
           {t('theme.dark')}
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme('system')}>
-          <Monitor className="size-4" />
+          <RiComputerLine className="size-4" />
           {t('theme.system')}
         </DropdownMenuItem>
       </DropdownMenuContent>

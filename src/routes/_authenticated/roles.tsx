@@ -1,17 +1,15 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { useTranslation } from 'react-i18next'
 
-import { PageHeader } from '@/components/layout/page-header'
+import { getFindAllRolesQueryOptions } from '@/hooks/data/roles'
+import { paginationSearchParamsSchema } from '@/lib/pagination'
+import { RolesListPage } from '@/pages/roles/roles-list-page'
 
 export const Route = createFileRoute('/_authenticated/roles')({
-  component: RolesPage,
+  component: RolesListPage,
+  validateSearch: paginationSearchParamsSchema,
+  loaderDeps: ({ search: { page, size } }) => ({ page, size }),
+  loader: ({ context: { queryClient }, deps: { page, size } }) =>
+    queryClient.ensureQueryData(
+      getFindAllRolesQueryOptions({ page, size, sort: ['name,asc'] }),
+    ),
 })
-
-function RolesPage(): React.ReactElement {
-  const { t } = useTranslation()
-  return (
-    <div className="p-6">
-      <PageHeader title={t('roles.title')} />
-    </div>
-  )
-}

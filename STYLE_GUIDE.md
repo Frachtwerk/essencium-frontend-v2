@@ -1,7 +1,9 @@
 # STYLE_GUIDE.md — Frachtwerk UI Style Guide für Essencium v2
 
-> **Status: Interim Style Guide.**
-> Dieser Guide basiert auf dem bestehenden Essencium v1, der Frachtwerk Corporate Identity (frachtwerk.de) und den Konventionen von shadcn/ui. Er dient als Arbeitsgrundlage, bis die UI/UX-Gilde ein vollständiges Design-System liefert. Anpassungen durch die UI/UX-Gilde haben Vorrang.
+> **Kanonische Quelle: der Frachtwerk-Styleguide — https://essencium-styleguide.frachtwerk.de/**
+> Das verbindliche Design-System ist dort definiert und im Code in **`src/styles/globals.css`** als Tokens eingebacken (OKLCH-Farben, Light/Dark-Slots, Radius, Motion, Z-Index). Font: **Fira Sans**. Icons: **@remixicon/react** (line) für App-Icons, lucide nur in shadcn-internen Primitives. Tokens **nur** in `globals.css` ändern — nie Hex-Werte inline.
+>
+> Der Styleguide ist Stand v0.7.0 „Work in Progress": Rohwerte können sich noch ändern, Slot-Mappings sind stabil. Die folgenden Abschnitte sind die historische Interim-Grundlage; bei Abweichungen gilt der Styleguide.
 
 ---
 
