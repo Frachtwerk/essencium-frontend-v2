@@ -31,6 +31,7 @@ const buttonVariants = cva(
         icon: "size-10 [&_svg:not([class*='size-'])]:size-5",
         // Compact icon button used by shadcn primitives (dialog/sheet/sidebar close & triggers).
         'icon-sm': "size-8 [&_svg:not([class*='size-'])]:size-4",
+        'icon-xs': "size-6 [&_svg:not([class*='size-'])]:size-3.5",
       },
     },
     defaultVariants: {
