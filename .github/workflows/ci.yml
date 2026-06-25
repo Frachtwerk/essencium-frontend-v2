@@ -32,6 +32,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # API client (Hey-API) and route tree are generated, gitignored, and
+      # required by lint/type-check. Generate them before those steps.
+      - name: Generate API client and route tree
+        run: pnpm generate
+
       - name: Lint
         run: pnpm lint
 
