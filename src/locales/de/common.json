@@ -74,6 +74,12 @@
     "title": "Benutzer",
     "create": "Benutzer hinzufügen",
     "createTitle": "Benutzer hinzufügen",
+    "filter": {
+      "name": "Name",
+      "email": "E-Mail",
+      "roles": "Rollen",
+      "noRoles": "Keine Rollen gefunden"
+    },
     "editTitle": "Benutzer bearbeiten",
     "createSuccess": "Benutzer erstellt",
     "updateSuccess": "Benutzer aktualisiert",
