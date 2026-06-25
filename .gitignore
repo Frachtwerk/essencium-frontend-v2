@@ -7,3 +7,4 @@ src/routeTree.gen.ts
 src/generated/
 .tanstack/
 .eslintcache
+/SPEC.md
