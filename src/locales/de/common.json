@@ -106,7 +106,8 @@
       "locale": "Sprache",
       "enabled": "Aktiv",
       "enabledHint": "Deaktivierte Benutzer können sich nicht anmelden.",
-      "roles": "Rollen"
+      "roles": "Rollen",
+      "ssoManaged": "Diese Felder werden vom SSO-Anbieter verwaltet und können hier nicht geändert werden."
     },
     "validation": {
       "firstName": "Vorname muss mindestens 2 Zeichen lang sein",

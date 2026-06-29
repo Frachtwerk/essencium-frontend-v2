@@ -106,7 +106,8 @@
       "locale": "Language",
       "enabled": "Active",
       "enabledHint": "Disabled users cannot sign in.",
-      "roles": "Roles"
+      "roles": "Roles",
+      "ssoManaged": "These fields are managed by the SSO provider and cannot be changed here."
     },
     "validation": {
       "firstName": "First name must be at least 2 characters long",
