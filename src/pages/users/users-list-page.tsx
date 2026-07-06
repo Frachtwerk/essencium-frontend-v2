@@ -8,6 +8,7 @@ import type { ColumnDef } from '@tanstack/react-table'
 import { useTranslation } from 'react-i18next'
 
 import { UserRowActions } from './user-row-actions'
+import { UsersFilterBar } from './users-filter-bar'
 
 import { DataTable } from '@/components/data-table'
 import { PageHeader } from '@/components/layout/page-header'
@@ -24,11 +25,14 @@ const route = getRouteApi('/_authenticated/users/')
 
 export function UsersListPage(): React.ReactElement {
   const { t } = useTranslation()
-  const { page, size } = route.useSearch()
+  const { page, size, name, email, roles } = route.useSearch()
   const { data: usersPage } = useFindAllUsers({
     page,
     size,
     sort: ['email,asc'],
+    name,
+    email,
+    roles,
   })
   const navigate = useNavigate()
 
@@ -91,6 +95,7 @@ export function UsersListPage(): React.ReactElement {
           </CanAccess>
         }
       />
+      <UsersFilterBar />
       <DataTable
         columns={columns}
         data={usersPage.content ?? []}

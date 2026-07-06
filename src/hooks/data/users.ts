@@ -37,12 +37,26 @@ interface ListOptions {
   page: number
   size: number
   sort?: string[]
+  name?: string
+  email?: string
+  roles?: string[]
 }
 
 export function getFindAllUsersQueryOptions(
   options: ListOptions,
 ): ReturnType<typeof findAllOptions> {
-  return findAllOptions({ client: authenticatedClient, query: options })
+  const { page, size, sort, name, email, roles } = options
+  return findAllOptions({
+    client: authenticatedClient,
+    query: {
+      page,
+      size,
+      sort,
+      ...(name ? { name } : {}),
+      ...(email ? { email } : {}),
+      ...(roles && roles.length ? { roles: roles as unknown as number[] } : {}),
+    },
+  })
 }
 
 export function useFindAllUsers(
