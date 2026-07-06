@@ -71,6 +71,7 @@ export function UserEditPage(): React.ReactElement {
         initialValues={initialValues}
         onSubmit={handleSubmit}
         isSubmitting={updateUser.isPending}
+        ssoProvider={user.source}
       />
     </div>
   )

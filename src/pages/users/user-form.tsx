@@ -8,6 +8,7 @@ import {
   type UserFormValues,
 } from './user-form-schema'
 
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
@@ -37,6 +38,7 @@ interface UserFormProps {
   initialValues?: UserFormValues
   onSubmit: (values: UserFormValues) => void
   isSubmitting?: boolean
+  ssoProvider?: string
 }
 
 export function UserForm({
@@ -44,10 +46,12 @@ export function UserForm({
   initialValues,
   onSubmit,
   isSubmitting,
+  ssoProvider,
 }: UserFormProps): React.ReactElement {
   const { t } = useTranslation()
   const { data: rolesPage } = useAllRoles()
   const roles = rolesPage.content ?? []
+  const isSso = Boolean(ssoProvider && ssoProvider !== 'LOCAL')
 
   const form = useForm<UserFormValues>({
     resolver: zodFormResolver(userFormSchema),
@@ -60,6 +64,14 @@ export function UserForm({
         onSubmit={e => void form.handleSubmit(onSubmit)(e)}
         className="max-w-2xl space-y-6"
       >
+        {isSso && (
+          <div className="flex items-center gap-2 rounded-md border p-3 text-sm">
+            <Badge variant="secondary">{ssoProvider}</Badge>
+            <span className="text-muted-foreground">
+              {t('users.form.ssoManaged')}
+            </span>
+          </div>
+        )}
         <div className="grid gap-4 sm:grid-cols-2">
           <FormField
             control={form.control}
@@ -68,7 +80,7 @@ export function UserForm({
               <FormItem>
                 <FormLabel>{t('users.form.firstName')}</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input {...field} disabled={isSso} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -81,7 +93,7 @@ export function UserForm({
               <FormItem>
                 <FormLabel>{t('users.form.lastName')}</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input {...field} disabled={isSso} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -96,7 +108,12 @@ export function UserForm({
             <FormItem>
               <FormLabel>{t('users.form.email')}</FormLabel>
               <FormControl>
-                <Input type="email" autoComplete="off" {...field} />
+                <Input
+                  type="email"
+                  autoComplete="off"
+                  {...field}
+                  disabled={isSso}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -139,7 +156,12 @@ export function UserForm({
             <FormItem>
               <FormLabel>{t('users.form.password')}</FormLabel>
               <FormControl>
-                <Input type="password" autoComplete="new-password" {...field} />
+                <Input
+                  type="password"
+                  autoComplete="new-password"
+                  {...field}
+                  disabled={isSso}
+                />
               </FormControl>
               <FormDescription>
                 {mode === 'create'
@@ -211,6 +233,7 @@ export function UserForm({
                     >
                       <Checkbox
                         checked={checked}
+                        disabled={isSso}
                         onCheckedChange={isChecked => {
                           field.onChange(
                             isChecked
