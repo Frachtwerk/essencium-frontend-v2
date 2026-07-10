@@ -18,6 +18,7 @@ import {
 import { Button } from '@/components/ui/button'
 import type { UserRepresentation } from '@/generated/client/types.gen'
 import { useDeleteUser } from '@/hooks/data/users'
+import { isDefaultUser } from '@/lib/default-user'
 import { RIGHTS } from '@/lib/permissions'
 
 interface UserRowActionsProps {
@@ -31,6 +32,7 @@ export function UserRowActions({
   const { t } = useTranslation()
   const [confirmOpen, setConfirmOpen] = useState(false)
   const deleteUser = useDeleteUser()
+  const isDefault = isDefaultUser(user.email)
 
   function handleDelete(): void {
     if (user.id === undefined) return
@@ -53,10 +55,18 @@ export function UserRowActions({
           variant="ghost"
           size="icon"
           aria-label={t('common.edit')}
-          nativeButton={false}
-          render={
-            <Link to="/users/$userId" params={{ userId: String(user.id) }} />
-          }
+          disabled={isDefault}
+          {...(isDefault
+            ? {}
+            : {
+                nativeButton: false,
+                render: (
+                  <Link
+                    to="/users/$userId"
+                    params={{ userId: String(user.id) }}
+                  />
+                ),
+              })}
         >
           <RiEditLine className="size-4" />
         </Button>
@@ -66,9 +76,11 @@ export function UserRowActions({
           variant="ghost"
           size="icon"
           aria-label={t('common.delete')}
+          disabled={isDefault}
           onClick={e => {
             // Don't trigger the row's click-to-edit navigation.
             e.stopPropagation()
+            if (isDefault) return
             setConfirmOpen(true)
           }}
         >

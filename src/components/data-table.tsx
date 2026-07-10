@@ -28,6 +28,12 @@ interface DataTableProps<TData, TValue> {
   renderNextPageButton: (props: { disabled: boolean }) => ReactNode
   renderPreviousPageButton: (props: { disabled: boolean }) => ReactNode
   onRowClick?: (row: Row<TData>) => void
+  /**
+   * Decides per row whether {@link onRowClick} applies. Rows for which this
+   * returns `false` are not clickable and show no pointer cursor. Defaults to
+   * all rows being clickable when `onRowClick` is set.
+   */
+  isRowClickable?: (row: Row<TData>) => boolean
 }
 
 /**
@@ -76,24 +82,29 @@ export function DataTable<TData, TValue>(
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows.length ? (
-              table.getRowModel().rows.map(row => (
-                <TableRow
-                  key={row.id}
-                  className={props.onRowClick ? 'cursor-pointer' : undefined}
-                  onClick={
-                    props.onRowClick ? () => props.onRowClick?.(row) : undefined
-                  }
-                >
-                  {row.getVisibleCells().map(cell => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
+              table.getRowModel().rows.map(row => {
+                const clickable =
+                  props.onRowClick !== undefined &&
+                  (props.isRowClickable?.(row) ?? true)
+                return (
+                  <TableRow
+                    key={row.id}
+                    className={clickable ? 'cursor-pointer' : undefined}
+                    onClick={
+                      clickable ? () => props.onRowClick?.(row) : undefined
+                    }
+                  >
+                    {row.getVisibleCells().map(cell => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                )
+              })
             ) : (
               <TableRow>
                 <TableCell
