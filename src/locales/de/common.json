@@ -34,7 +34,8 @@
     "edit": "Bearbeiten",
     "delete": "Löschen",
     "noResults": "Keine Einträge",
-    "pageInfo": "Seite {{page}} von {{pages}} · {{total}} Einträge"
+    "pageInfo": "Seite {{page}} von {{pages}} · {{total}} Einträge",
+    "sortBy": "Nach dieser Spalte sortieren"
   },
   "error": {
     "title": "Es ist ein Fehler aufgetreten",
