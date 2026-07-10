@@ -1,10 +1,17 @@
+import {
+  RiArrowDownSLine,
+  RiArrowUpDownLine,
+  RiArrowUpSLine,
+} from '@remixicon/react'
 /* eslint-disable import-x/named -- import-x cannot statically resolve @tanstack/react-table's exports */
 import {
   flexRender,
   getCoreRowModel,
   useReactTable,
   type ColumnDef,
+  type OnChangeFn,
   type Row,
+  type SortingState,
 } from '@tanstack/react-table'
 /* eslint-enable import-x/named */
 import type { ReactNode } from 'react'
@@ -18,6 +25,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { cn } from '@/lib/utils'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -34,6 +42,9 @@ interface DataTableProps<TData, TValue> {
    * all rows being clickable when `onRowClick` is set.
    */
   isRowClickable?: (row: Row<TData>) => boolean
+  /** Current sort state; when provided, sortable headers become clickable. */
+  sorting?: SortingState
+  onSortingChange?: OnChangeFn<SortingState>
 }
 
 /**
@@ -49,14 +60,17 @@ export function DataTable<TData, TValue>(
     data: props.data,
     columns: props.columns,
     manualPagination: true,
+    manualSorting: true,
     rowCount: props.totalElements,
     pageCount: props.totalPages,
     getCoreRowModel: getCoreRowModel(),
+    onSortingChange: props.onSortingChange,
     state: {
       pagination: {
         pageIndex: props.currentPage,
         pageSize: props.data.length || 1,
       },
+      sorting: props.sorting ?? [],
     },
   })
 
@@ -67,16 +81,41 @@ export function DataTable<TData, TValue>(
           <TableHeader>
             {table.getHeaderGroups().map(headerGroup => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map(header => (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
+                {headerGroup.headers.map(header => {
+                  if (header.isPlaceholder) {
+                    return <TableHead key={header.id} />
+                  }
+                  const content = flexRender(
+                    header.column.columnDef.header,
+                    header.getContext(),
+                  )
+                  if (!header.column.getCanSort()) {
+                    return <TableHead key={header.id}>{content}</TableHead>
+                  }
+                  const sorted = header.column.getIsSorted()
+                  return (
+                    <TableHead key={header.id}>
+                      <button
+                        type="button"
+                        onClick={header.column.getToggleSortingHandler()}
+                        className={cn(
+                          '-ml-1 flex items-center gap-1 rounded px-1 py-0.5',
+                          'hover:text-foreground cursor-pointer select-none',
                         )}
-                  </TableHead>
-                ))}
+                        aria-label={t('common.sortBy')}
+                      >
+                        {content}
+                        {sorted === 'asc' ? (
+                          <RiArrowUpSLine className="size-4" />
+                        ) : sorted === 'desc' ? (
+                          <RiArrowDownSLine className="size-4" />
+                        ) : (
+                          <RiArrowUpDownLine className="text-muted-foreground size-4" />
+                        )}
+                      </button>
+                    </TableHead>
+                  )
+                })}
               </TableRow>
             ))}
           </TableHeader>
