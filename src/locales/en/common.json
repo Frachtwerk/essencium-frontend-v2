@@ -152,7 +152,9 @@
     }
   },
   "profile": {
-    "title": "Profile"
+    "title": "Profile",
+    "updateSuccess": "Profile updated",
+    "saveError": "Could not save profile"
   },
   "settings": {
     "title": "Settings"

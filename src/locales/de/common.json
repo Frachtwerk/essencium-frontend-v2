@@ -152,7 +152,9 @@
     }
   },
   "profile": {
-    "title": "Profil"
+    "title": "Profil",
+    "updateSuccess": "Profil aktualisiert",
+    "saveError": "Profil konnte nicht gespeichert werden"
   },
   "settings": {
     "title": "Einstellungen"

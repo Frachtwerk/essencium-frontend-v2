@@ -1,26 +1,19 @@
-import { useForm } from 'react-hook-form'
+import type { UseFormReturn } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
-import {
-  defaultUserFormValues,
-  userFormSchema,
-  type UserFormValues,
-} from './user-form-schema'
+import { ProfileFormValues } from './profile-form-schema'
 
 import { SsoManagedNotice } from '@/components/shared/sso-managed-notice'
 import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import {
   Select,
   SelectContent,
@@ -28,36 +21,25 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { Switch } from '@/components/ui/switch'
-import { useAllRoles } from '@/hooks/data/roles'
 import { SUPPORTED_LOCALES } from '@/lib/locale'
 import { isSsoManaged } from '@/lib/sso'
-import { zodFormResolver } from '@/lib/zod-resolver'
 
-interface UserFormProps {
-  mode: 'create' | 'edit'
-  initialValues?: UserFormValues
-  onSubmit: (values: UserFormValues) => void
+interface ProfileFormProps {
+  form: UseFormReturn<ProfileFormValues>
+  onSubmit: (values: ProfileFormValues) => void
   isSubmitting?: boolean
   ssoProvider?: string
 }
 
-export function UserForm({
-  mode,
-  initialValues,
+export function ProfileForm({
+  form,
   onSubmit,
   isSubmitting,
   ssoProvider,
-}: UserFormProps): React.ReactElement {
+}: ProfileFormProps): React.ReactElement {
   const { t } = useTranslation()
-  const { data: rolesPage } = useAllRoles()
-  const roles = rolesPage.content ?? []
-  const isSso = isSsoManaged(ssoProvider)
 
-  const form = useForm<UserFormValues>({
-    resolver: zodFormResolver(userFormSchema),
-    defaultValues: initialValues ?? defaultUserFormValues,
-  })
+  const isSso = isSsoManaged(ssoProvider)
 
   return (
     <Form {...form}>
@@ -145,30 +127,6 @@ export function UserForm({
 
         <FormField
           control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t('users.form.password')}</FormLabel>
-              <FormControl>
-                <Input
-                  type="password"
-                  autoComplete="new-password"
-                  {...field}
-                  disabled={isSso}
-                />
-              </FormControl>
-              <FormDescription>
-                {mode === 'create'
-                  ? t('users.form.passwordCreateHint')
-                  : t('users.form.passwordEditHint')}
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
           name="locale"
           render={({ field }) => (
             <FormItem>
@@ -187,60 +145,6 @@ export function UserForm({
                   </SelectContent>
                 </Select>
               </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="enabled"
-          render={({ field }) => (
-            <FormItem className="flex items-center justify-between rounded-md border p-3">
-              <div className="space-y-0.5">
-                <FormLabel>{t('users.form.enabled')}</FormLabel>
-                <FormDescription>{t('users.form.enabledHint')}</FormDescription>
-              </div>
-              <FormControl>
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="roles"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t('users.form.roles')}</FormLabel>
-              <div className="grid gap-2 sm:grid-cols-2">
-                {roles.map(role => {
-                  const checked = field.value.includes(role.name)
-                  return (
-                    <Label
-                      key={role.name}
-                      className="flex items-center gap-2 rounded-md border p-2 font-normal"
-                    >
-                      <Checkbox
-                        checked={checked}
-                        disabled={isSso}
-                        onCheckedChange={isChecked => {
-                          field.onChange(
-                            isChecked
-                              ? [...field.value, role.name]
-                              : field.value.filter(r => r !== role.name),
-                          )
-                        }}
-                      />
-                      {role.name}
-                    </Label>
-                  )
-                })}
-              </div>
               <FormMessage />
             </FormItem>
           )}

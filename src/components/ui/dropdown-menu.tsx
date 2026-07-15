@@ -61,16 +61,20 @@ function DropdownMenuLabel({
 }: MenuPrimitive.GroupLabel.Props & {
   inset?: boolean
 }) {
+  // Base UI requires GroupLabel to be a descendant of Group — wrap it here so
+  // consumers can use DropdownMenuLabel standalone, without their own Group.
   return (
-    <MenuPrimitive.GroupLabel
-      data-slot="dropdown-menu-label"
-      data-inset={inset}
-      className={cn(
-        'text-muted-foreground px-1.5 py-1 text-xs font-medium data-inset:pl-7',
-        className,
-      )}
-      {...props}
-    />
+    <MenuPrimitive.Group>
+      <MenuPrimitive.GroupLabel
+        data-slot="dropdown-menu-label"
+        data-inset={inset}
+        className={cn(
+          'text-muted-foreground px-1.5 py-1 text-xs font-medium data-inset:pl-7',
+          className,
+        )}
+        {...props}
+      />
+    </MenuPrimitive.Group>
   )
 }
 

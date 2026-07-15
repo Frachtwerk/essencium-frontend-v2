@@ -3,11 +3,12 @@ import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
 import { UserForm } from './user-form'
-import { SUPPORTED_LOCALES, type UserFormValues } from './user-form-schema'
+import type { UserFormValues } from './user-form-schema'
 
 import { PageHeader } from '@/components/layout/page-header'
 import type { UserDtoWritable } from '@/generated/client/types.gen'
 import { useFindByIdUser, useUpdateUser } from '@/hooks/data/users'
+import { SUPPORTED_LOCALES } from '@/lib/locale'
 
 const route = getRouteApi('/_authenticated/users/$userId')
 

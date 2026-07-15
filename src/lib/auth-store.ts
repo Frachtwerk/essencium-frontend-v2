@@ -26,6 +26,16 @@ export const authenticatedClient = createClient({
   auth: () => accessToken ?? undefined,
 })
 
+// The generated client only sends an Authorization header for operations with
+// an OpenAPI `security` scheme, and this spec doesn't declare one anywhere —
+// so the `auth` callback above is never invoked. Set the header here instead.
+authenticatedClient.interceptors.request.use(request => {
+  if (accessToken && !request.headers.has('Authorization')) {
+    request.headers.set('Authorization', `Bearer ${accessToken}`)
+  }
+  return request
+})
+
 // On 401: refresh token, then retry the original request. Redirect on failure.
 let isRefreshing = false
 authenticatedClient.interceptors.response.use(async (response, request) => {

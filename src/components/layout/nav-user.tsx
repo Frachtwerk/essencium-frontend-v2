@@ -13,6 +13,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -88,14 +89,16 @@ export function NavUser(): React.ReactElement {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem render={<Link to="/profile" />}>
-              <RiUserLine className="size-4" />
-              {t('navigation.profile')}
-            </DropdownMenuItem>
-            <DropdownMenuItem render={<Link to="/settings" />}>
-              <RiSettings3Line className="size-4" />
-              {t('navigation.settings')}
-            </DropdownMenuItem>
+            <DropdownMenuGroup>
+              <DropdownMenuItem render={<Link to="/profile" />}>
+                <RiUserLine className="size-4" />
+                {t('navigation.profile')}
+              </DropdownMenuItem>
+              <DropdownMenuItem render={<Link to="/settings" />}>
+                <RiSettings3Line className="size-4" />
+                {t('navigation.settings')}
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={() => logoutMutation.mutate()}
