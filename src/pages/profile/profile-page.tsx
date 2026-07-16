@@ -11,7 +11,7 @@ import {
 
 import { PageHeader } from '@/components/layout/page-header'
 import { useGetMe, useUpdateMePartial } from '@/hooks/data/me'
-import { SUPPORTED_LOCALES } from '@/lib/locale'
+import { toSupportedLocale } from '@/lib/locale'
 import { zodFormResolver } from '@/lib/zod-resolver'
 
 export function ProfilePage(): React.ReactElement {
@@ -21,21 +21,18 @@ export function ProfilePage(): React.ReactElement {
   const { mutate: updateCurrentUser, isPending } = useUpdateMePartial()
 
   const initialValues: ProfileFormValues = {
+    ...defaultProfileFormValues,
     firstName: currentUser.firstName ?? '',
     lastName: currentUser.lastName ?? '',
     email: currentUser.email ?? '',
     phone: currentUser.phone ?? '',
     mobile: currentUser.mobile ?? '',
-    locale: SUPPORTED_LOCALES.includes(
-      currentUser.locale as (typeof SUPPORTED_LOCALES)[number],
-    )
-      ? (currentUser.locale as (typeof SUPPORTED_LOCALES)[number])
-      : 'de',
+    locale: toSupportedLocale(currentUser.locale),
   }
 
   const form = useForm<ProfileFormValues>({
     resolver: zodFormResolver(profileFormSchema),
-    defaultValues: initialValues ?? defaultProfileFormValues,
+    defaultValues: initialValues,
   })
 
   const { dirtyFields } = form.formState

@@ -8,7 +8,7 @@ import type { UserFormValues } from './user-form-schema'
 import { PageHeader } from '@/components/layout/page-header'
 import type { UserDtoWritable } from '@/generated/client/types.gen'
 import { useFindByIdUser, useUpdateUser } from '@/hooks/data/users'
-import { SUPPORTED_LOCALES } from '@/lib/locale'
+import { toSupportedLocale } from '@/lib/locale'
 
 const route = getRouteApi('/_authenticated/users/$userId')
 
@@ -27,11 +27,7 @@ export function UserEditPage(): React.ReactElement {
     phone: user.phone ?? '',
     mobile: user.mobile ?? '',
     password: '',
-    locale: SUPPORTED_LOCALES.includes(
-      user.locale as (typeof SUPPORTED_LOCALES)[number],
-    )
-      ? (user.locale as (typeof SUPPORTED_LOCALES)[number])
-      : 'de',
+    locale: toSupportedLocale(user.locale),
     enabled: user.enabled ?? true,
     roles: (user.roles ?? []).map(r => r.name),
   }

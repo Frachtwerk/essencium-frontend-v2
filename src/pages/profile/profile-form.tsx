@@ -1,4 +1,4 @@
-import type { UseFormReturn } from 'react-hook-form'
+import { useFormState, type UseFormReturn } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 
 import { ProfileFormValues } from './profile-form-schema'
@@ -41,6 +41,8 @@ export function ProfileForm({
 
   const isSso = isSsoManaged(ssoProvider)
 
+  const { isDirty } = useFormState({ control: form.control })
+
   return (
     <Form {...form}>
       <form
@@ -56,7 +58,7 @@ export function ProfileForm({
               <FormItem>
                 <FormLabel>{t('users.form.firstName')}</FormLabel>
                 <FormControl>
-                  <Input {...field} disabled={isSso} />
+                  <Input {...field} readOnly={isSso} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -69,7 +71,7 @@ export function ProfileForm({
               <FormItem>
                 <FormLabel>{t('users.form.lastName')}</FormLabel>
                 <FormControl>
-                  <Input {...field} disabled={isSso} />
+                  <Input {...field} readOnly={isSso} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -84,12 +86,7 @@ export function ProfileForm({
             <FormItem>
               <FormLabel>{t('users.form.email')}</FormLabel>
               <FormControl>
-                <Input
-                  type="email"
-                  autoComplete="off"
-                  {...field}
-                  disabled={isSso}
-                />
+                <Input type="email" autoComplete="off" {...field} readOnly />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -151,7 +148,7 @@ export function ProfileForm({
         />
 
         <div className="flex justify-end">
-          <Button type="submit" disabled={isSubmitting}>
+          <Button type="submit" disabled={isSubmitting || !isDirty}>
             {isSubmitting ? t('common.saving') : t('common.save')}
           </Button>
         </div>

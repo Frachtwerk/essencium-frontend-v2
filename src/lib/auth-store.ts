@@ -17,18 +17,14 @@ let refreshTimer: ReturnType<typeof setTimeout> | null = null
 /** Unauthenticated client — used for login and token renewal. */
 export const baseClient = createClient({ baseUrl: API_BASE_URL })
 
-/**
- * Authenticated client — used for all protected API calls.
- * The token is resolved dynamically at request time via the `auth` callback.
- */
+/** Authenticated client — used for all protected API calls. */
 export const authenticatedClient = createClient({
   baseUrl: API_BASE_URL,
-  auth: () => accessToken ?? undefined,
 })
 
 // The generated client only sends an Authorization header for operations with
 // an OpenAPI `security` scheme, and this spec doesn't declare one anywhere —
-// so the `auth` callback above is never invoked. Set the header here instead.
+// so we set the header here instead.
 authenticatedClient.interceptors.request.use(request => {
   if (accessToken && !request.headers.has('Authorization')) {
     request.headers.set('Authorization', `Bearer ${accessToken}`)
