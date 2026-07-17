@@ -34,7 +34,8 @@
     "edit": "Edit",
     "delete": "Delete",
     "noResults": "No results",
-    "pageInfo": "Page {{page}} of {{pages}} · {{total}} entries"
+    "pageInfo": "Page {{page}} of {{pages}} · {{total}} entries",
+    "sortBy": "Sort by this column"
   },
   "error": {
     "title": "An error occurred",
