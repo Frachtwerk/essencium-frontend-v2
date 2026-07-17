@@ -17,6 +17,9 @@ import type {
   FindByIdError,
   Options,
   PageUserRepresentation,
+  TerminateData,
+  TerminateError,
+  TerminateResponse,
   UpdateData,
   UpdateError,
   UpdateResponse,
@@ -29,6 +32,7 @@ import {
   findAllQueryKey,
   findByIdOptions,
   findByIdQueryKey,
+  terminateMutation,
   updateMutation,
 } from '@/generated/client/@tanstack/react-query.gen'
 import { authenticatedClient } from '@/lib/auth-store'
@@ -130,4 +134,12 @@ export function useDeleteUser(): UseMutationResult<
       })
     },
   })
+}
+
+export function useTerminateUser(): UseMutationResult<
+  TerminateResponse,
+  TerminateError,
+  Options<TerminateData>
+> {
+  return useMutation(terminateMutation({ client: authenticatedClient }))
 }

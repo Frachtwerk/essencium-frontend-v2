@@ -88,6 +88,11 @@
     "deleteConfirm": "Do you really want to delete the user {{name}}?",
     "deleteSuccess": "User deleted",
     "deleteError": "Could not delete user",
+    "terminate": "Log out",
+    "terminateTitle": "Log out user",
+    "terminateConfirm": "Do you really want to log out the user {{name}}? Their current session will be invalidated.",
+    "terminateSuccess": "User logged out",
+    "terminateError": "Could not log out user",
     "status": {
       "active": "Active",
       "inactive": "Inactive"

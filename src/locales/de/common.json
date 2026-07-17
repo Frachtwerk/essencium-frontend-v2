@@ -88,6 +88,11 @@
     "deleteConfirm": "Möchten Sie den Benutzer {{name}} wirklich löschen?",
     "deleteSuccess": "Benutzer gelöscht",
     "deleteError": "Benutzer konnte nicht gelöscht werden",
+    "terminate": "Abmelden",
+    "terminateTitle": "Benutzer abmelden",
+    "terminateConfirm": "Möchten Sie den Benutzer {{name}} wirklich abmelden? Seine aktuelle Sitzung wird ungültig.",
+    "terminateSuccess": "Benutzer abgemeldet",
+    "terminateError": "Benutzer konnte nicht abgemeldet werden",
     "status": {
       "active": "Aktiv",
       "inactive": "Inaktiv"
