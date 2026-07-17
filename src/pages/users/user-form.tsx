@@ -7,6 +7,7 @@ import {
   type UserFormValues,
 } from './user-form-schema'
 
+import { PasswordInput } from '@/components/password-input'
 import { SsoManagedNotice } from '@/components/shared/sso-managed-notice'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -150,8 +151,7 @@ export function UserForm({
             <FormItem>
               <FormLabel>{t('users.form.password')}</FormLabel>
               <FormControl>
-                <Input
-                  type="password"
+                <PasswordInput
                   autoComplete="new-password"
                   {...field}
                   disabled={isSso}

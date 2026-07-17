@@ -8,13 +8,18 @@ import {
 
 import type {
   GetMeError,
+  Options,
   UpdateMePartialError,
   UpdateMePartialResponse,
+  UpdatePasswordData,
+  UpdatePasswordError,
+  UpdatePasswordResponse,
   UserRepresentation,
 } from '@/generated/client'
 import {
   getMeOptions,
   getMeQueryKey,
+  updatePasswordMutation,
 } from '@/generated/client/@tanstack/react-query.gen'
 import { updateMePartial } from '@/generated/client/sdk.gen'
 import { authenticatedClient } from '@/lib/auth-store'
@@ -61,6 +66,20 @@ export function useUpdateMePartial(): UseMutationResult<
       })
       return data
     },
+    onSuccess: updated => {
+      queryClient.setQueryData(meQueryKey, updated)
+    },
+  })
+}
+
+export function useUpdateMePassword(): UseMutationResult<
+  UpdatePasswordResponse,
+  UpdatePasswordError,
+  Options<UpdatePasswordData>
+> {
+  const queryClient = useQueryClient()
+  return useMutation({
+    ...updatePasswordMutation({ client: authenticatedClient }),
     onSuccess: updated => {
       queryClient.setQueryData(meQueryKey, updated)
     },
