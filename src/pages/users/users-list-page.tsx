@@ -45,7 +45,7 @@ export function UsersListPage(): React.ReactElement {
     void navigate({
       search: prev => ({
         ...prev,
-        sort: serializeSort(next) ?? 'email,asc',
+        sort: serializeSort(next),
         page: 0,
       }),
     })
@@ -53,13 +53,15 @@ export function UsersListPage(): React.ReactElement {
 
   const columns: ColumnDef<UserRepresentation>[] = [
     {
+      // Derived column: the accessor produces the full name, used both as the
+      // cell value and as TanStack's sortability signal (getCanSort needs an
+      // accessor). The backend maps the `name` sort key to firstName + lastName.
       id: 'name',
+      accessorFn: row =>
+        [row.firstName, row.lastName].filter(Boolean).join(' '),
       header: t('users.table.name'),
       enableSorting: true,
-      cell: ({ row }) =>
-        [row.original.firstName, row.original.lastName]
-          .filter(Boolean)
-          .join(' ') || '—',
+      cell: ({ getValue }) => getValue<string>() || '—',
     },
     {
       accessorKey: 'email',
@@ -87,7 +89,9 @@ export function UsersListPage(): React.ReactElement {
       ),
     },
     {
-      id: 'enabled',
+      // Real field → accessorKey gives us the accessor (and thus sortability)
+      // for free; the badge cell renders the value.
+      accessorKey: 'enabled',
       header: t('users.table.status'),
       enableSorting: true,
       cell: ({ row }) => (
