@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export const SUPPORTED_LOCALES = ['de', 'en'] as const
+import { SUPPORTED_LOCALES } from '@/lib/locale'
 
 /**
  * User create/edit form schema. Password is optional: on create an empty

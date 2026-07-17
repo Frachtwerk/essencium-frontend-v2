@@ -1,23 +1,17 @@
-import { useSuspenseQuery } from '@tanstack/react-query'
 import type { UseSuspenseQueryResult } from '@tanstack/react-query'
 
-import {
-  getMeOptions,
-  getMeQueryKey,
-} from '@/generated/client/@tanstack/react-query.gen'
 import type {
   GetMeError,
   UserRepresentation,
 } from '@/generated/client/types.gen'
-import { authenticatedClient } from '@/lib/auth-store'
+import { meQueryKey, useGetMe } from '@/hooks/data/me'
 
-export const currentUserQueryKey = getMeQueryKey({
-  client: authenticatedClient,
-})
+export const currentUserQueryKey = meQueryKey
 
+/** Alias for `useGetMe` — shares its query cache entry. */
 export function useCurrentUser(): UseSuspenseQueryResult<
   UserRepresentation,
   GetMeError
 > {
-  return useSuspenseQuery(getMeOptions({ client: authenticatedClient }))
+  return useGetMe()
 }
