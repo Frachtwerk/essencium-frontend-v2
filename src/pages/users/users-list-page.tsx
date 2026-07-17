@@ -18,6 +18,7 @@ import { buttonVariants } from '@/components/ui/button'
 import { LinkButton } from '@/components/ui/link-button'
 import type { UserRepresentation } from '@/generated/client/types.gen'
 import { useFindAllUsers } from '@/hooks/data/users'
+import { isDefaultUser } from '@/lib/default-user'
 import { RIGHTS } from '@/lib/permissions'
 import { cn } from '@/lib/utils'
 
@@ -108,6 +109,7 @@ export function UsersListPage(): React.ReactElement {
             params: { userId: String(row.original.id) },
           })
         }
+        isRowClickable={row => !isDefaultUser(row.original.email)}
         renderPreviousPageButton={({ disabled }) => (
           <LinkButton
             variant="outline"
