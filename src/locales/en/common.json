@@ -34,7 +34,9 @@
     "edit": "Edit",
     "delete": "Delete",
     "noResults": "No results",
-    "pageInfo": "Page {{page}} of {{pages}} · {{total}} entries"
+    "pageInfo": "Page {{page}} of {{pages}} · {{total}} entries",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password"
   },
   "error": {
     "title": "An error occurred",
@@ -119,7 +121,13 @@
       "firstName": "First name must be at least 2 characters long",
       "lastName": "Last name must be at least 2 characters long",
       "email": "Please enter a valid email address",
-      "password": "Password must be at least 8 characters long",
+      "password": {
+        "minLength": "Password must be at least 12 characters long",
+        "upperCase": "Password must contain an uppercase letter",
+        "lowerCase": "Password must contain a lowercase letter",
+        "number": "Password must contain a number",
+        "specialCharacter": "Password must contain a special character"
+      },
       "roles": "Please select at least one role"
     }
   },
@@ -154,7 +162,24 @@
   "profile": {
     "title": "Profile",
     "updateSuccess": "Profile updated",
-    "saveError": "Could not save profile"
+    "saveError": "Could not save profile",
+    "tabs": {
+      "generalSettings": {
+        "title": "General Information"
+      },
+      "changePassword": {
+        "title": "Change password",
+        "form": {
+          "currentPassword": "Current password",
+          "currentPasswordRequired": "Please enter your current password",
+          "newPassword": "New password",
+          "passwordConfirmation": "Confirm password",
+          "noMatch": "The passwords do not match.",
+          "updateSuccess": "Password changed",
+          "saveError": "Could not change password"
+        }
+      }
+    }
   },
   "settings": {
     "title": "Settings"
