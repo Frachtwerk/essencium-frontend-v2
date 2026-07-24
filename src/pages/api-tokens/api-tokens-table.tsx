@@ -9,6 +9,7 @@ import dayjs from 'dayjs'
 import { useTranslation } from 'react-i18next'
 
 import { DataTable } from '@/components/data-table'
+import { CanAccess } from '@/components/shared/can-access'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { LinkButton } from '@/components/ui/link-button'
@@ -16,6 +17,7 @@ import type {
   ApiTokenRepresentation,
   PageApiTokenRepresentation,
 } from '@/generated/client/types.gen'
+import { RIGHTS } from '@/lib/permissions'
 
 const STATUS_BADGE_VARIANT: Record<
   NonNullable<ApiTokenRepresentation['status']>,
@@ -117,14 +119,16 @@ export function ApiTokensTable({
               <RiForbidLine className="size-4" />
             </Button>
           )}
-          <Button
-            variant="ghost"
-            size="icon"
-            aria-label={t('common.delete')}
-            onClick={() => onDelete(row.original)}
-          >
-            <RiDeleteBinLine className="text-destructive-400 size-4" />
-          </Button>
+          <CanAccess rights={RIGHTS.API_TOKEN_ADMIN}>
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label={t('common.delete')}
+              onClick={() => onDelete(row.original)}
+            >
+              <RiDeleteBinLine className="text-destructive-400 size-4" />
+            </Button>
+          </CanAccess>
         </div>
       ),
     },
