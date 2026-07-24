@@ -42,5 +42,6 @@ export const NAV_ITEMS: readonly NavItem[] = [
     labelKey: 'navigation.apiTokens',
     to: '/api-tokens',
     icon: RiKeyLine,
+    rights: RIGHTS.API_TOKEN,
   },
 ]
