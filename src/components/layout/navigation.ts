@@ -1,6 +1,7 @@
 import {
   RiDashboardLine,
   RiGroupLine,
+  RiKeyLine,
   RiShieldCheckLine,
   type RemixiconComponentType,
 } from '@remixicon/react'
@@ -36,5 +37,10 @@ export const NAV_ITEMS: readonly NavItem[] = [
     to: '/roles',
     icon: RiShieldCheckLine,
     rights: [RIGHTS.ROLE_READ, RIGHTS.RIGHT_READ],
+  },
+  {
+    labelKey: 'navigation.apiTokens',
+    to: '/api-tokens',
+    icon: RiKeyLine,
   },
 ]

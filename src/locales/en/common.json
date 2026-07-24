@@ -33,6 +33,8 @@
     "cancel": "Cancel",
     "edit": "Edit",
     "delete": "Delete",
+    "copy": "Copy",
+    "copied": "Copied to clipboard",
     "noResults": "No results",
     "pageInfo": "Page {{page}} of {{pages}} · {{total}} entries"
   },
@@ -57,6 +59,7 @@
     "dashboard": "Dashboard",
     "users": "Users",
     "roles": "Roles",
+    "apiTokens": "API tokens",
     "profile": "Profile",
     "settings": "Settings",
     "logout": "Log out"
@@ -155,6 +158,59 @@
     "title": "Profile",
     "updateSuccess": "Profile updated",
     "saveError": "Could not save profile"
+  },
+  "apiTokens": {
+    "title": "API tokens",
+    "create": "Create token",
+    "createTitle": "Create API token",
+    "formDescription": "Description, expiry date and rights of the token.",
+    "createSuccess": "Token created",
+    "saveError": "Could not save token",
+    "revoke": "Revoke",
+    "revokeTitle": "Revoke token",
+    "revokeConfirm": "Do you really want to revoke the token \"{{description}}\"? This cannot be undone.",
+    "revokeSuccess": "Token revoked",
+    "revokeError": "Could not revoke token",
+    "deleteTitle": "Delete token",
+    "deleteConfirm": "Do you really want to delete the token \"{{description}}\"?",
+    "deleteSuccess": "Token deleted",
+    "deleteError": "Could not delete token",
+    "status": {
+      "ACTIVE": "Active",
+      "REVOKED": "Revoked",
+      "REVOKED_ROLE_CHANGED": "Revoked (role changed)",
+      "REVOKED_RIGHTS_CHANGED": "Revoked (rights changed)",
+      "REVOKED_USER_CHANGED": "Revoked (user changed)",
+      "EXPIRED": "Expired",
+      "USER_DELETED": "User deleted"
+    },
+    "table": {
+      "description": "Description",
+      "status": "Status",
+      "validUntil": "Valid until",
+      "rights": "Rights",
+      "createdAt": "Created at",
+      "actions": "Actions"
+    },
+    "form": {
+      "description": "Description",
+      "validUntil": "Expiry date",
+      "validUntilHint": "If left empty, the token automatically expires after {{days}} days.",
+      "rights": "Rights"
+    },
+    "validation": {
+      "description": "Please enter a description",
+      "rights": "Please select at least one right"
+    },
+    "reveal": {
+      "title": "Token created",
+      "hint": "This token is shown only once and cannot be retrieved again afterwards. Store it securely.",
+      "close": "Close"
+    },
+    "empty": {
+      "title": "No API tokens yet",
+      "description": "Create your first token to access the API."
+    }
   },
   "settings": {
     "title": "Settings"

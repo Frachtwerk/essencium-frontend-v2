@@ -8,6 +8,8 @@ import {
 
 import type {
   GetMeError,
+  GetMyRightsError,
+  GrantedAuthority,
   UpdateMePartialError,
   UpdateMePartialResponse,
   UserRepresentation,
@@ -15,6 +17,7 @@ import type {
 import {
   getMeOptions,
   getMeQueryKey,
+  getMyRightsOptions,
 } from '@/generated/client/@tanstack/react-query.gen'
 import { updateMePartial } from '@/generated/client/sdk.gen'
 import { authenticatedClient } from '@/lib/auth-store'
@@ -41,6 +44,14 @@ export function useGetMe(): UseSuspenseQueryResult<
   GetMeError
 > {
   return useSuspenseQuery(getMeOptions({ client: authenticatedClient }))
+}
+
+/** The current user's own rights — for own-rights-only selection (e.g. API token creation). */
+export function useMyRights(): UseSuspenseQueryResult<
+  Array<GrantedAuthority>,
+  GetMyRightsError
+> {
+  return useSuspenseQuery(getMyRightsOptions({ client: authenticatedClient }))
 }
 
 export function useUpdateMePartial(): UseMutationResult<
