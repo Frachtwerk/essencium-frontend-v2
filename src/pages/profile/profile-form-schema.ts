@@ -1,4 +1,4 @@
-import z from 'zod'
+import { z } from 'zod'
 
 import { passwordSchema, userFormSchema } from '../users/user-form-schema'
 
