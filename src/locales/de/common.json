@@ -33,6 +33,8 @@
     "cancel": "Abbrechen",
     "edit": "Bearbeiten",
     "delete": "Löschen",
+    "copy": "Kopieren",
+    "copied": "In die Zwischenablage kopiert",
     "noResults": "Keine Einträge",
     "pageInfo": "Seite {{page}} von {{pages}} · {{total}} Einträge"
   },
@@ -57,6 +59,7 @@
     "dashboard": "Dashboard",
     "users": "Benutzer",
     "roles": "Rollen",
+    "apiTokens": "API-Tokens",
     "profile": "Profil",
     "settings": "Einstellungen",
     "logout": "Abmelden"
@@ -155,6 +158,59 @@
     "title": "Profil",
     "updateSuccess": "Profil aktualisiert",
     "saveError": "Profil konnte nicht gespeichert werden"
+  },
+  "apiTokens": {
+    "title": "API-Tokens",
+    "create": "Token erstellen",
+    "createTitle": "API-Token erstellen",
+    "formDescription": "Beschreibung, Ablaufdatum und Rechte des Tokens.",
+    "createSuccess": "Token erstellt",
+    "saveError": "Token konnte nicht gespeichert werden",
+    "revoke": "Widerrufen",
+    "revokeTitle": "Token widerrufen",
+    "revokeConfirm": "Möchten Sie den Token \"{{description}}\" wirklich widerrufen? Dies kann nicht rückgängig gemacht werden.",
+    "revokeSuccess": "Token widerrufen",
+    "revokeError": "Token konnte nicht widerrufen werden",
+    "deleteTitle": "Token löschen",
+    "deleteConfirm": "Möchten Sie den Token \"{{description}}\" wirklich löschen?",
+    "deleteSuccess": "Token gelöscht",
+    "deleteError": "Token konnte nicht gelöscht werden",
+    "status": {
+      "ACTIVE": "Aktiv",
+      "REVOKED": "Widerrufen",
+      "REVOKED_ROLE_CHANGED": "Widerrufen (Rolle geändert)",
+      "REVOKED_RIGHTS_CHANGED": "Widerrufen (Rechte geändert)",
+      "REVOKED_USER_CHANGED": "Widerrufen (Benutzer geändert)",
+      "EXPIRED": "Abgelaufen",
+      "USER_DELETED": "Benutzer gelöscht"
+    },
+    "table": {
+      "description": "Beschreibung",
+      "status": "Status",
+      "validUntil": "Gültig bis",
+      "rights": "Rechte",
+      "createdAt": "Erstellt am",
+      "actions": "Aktionen"
+    },
+    "form": {
+      "description": "Beschreibung",
+      "validUntil": "Ablaufdatum",
+      "validUntilHint": "Wird kein Datum angegeben, läuft der Token nach {{days}} Tagen automatisch ab.",
+      "rights": "Rechte"
+    },
+    "validation": {
+      "description": "Bitte eine Beschreibung eingeben",
+      "rights": "Bitte mindestens ein Recht auswählen"
+    },
+    "reveal": {
+      "title": "Token erstellt",
+      "hint": "Dieser Token wird nur einmal angezeigt und kann danach nicht mehr eingesehen werden. Bewahren Sie ihn sicher auf.",
+      "close": "Schließen"
+    },
+    "empty": {
+      "title": "Noch keine API-Tokens",
+      "description": "Erstellen Sie Ihren ersten Token, um auf die API zuzugreifen."
+    }
   },
   "settings": {
     "title": "Einstellungen"

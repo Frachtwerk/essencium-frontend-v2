@@ -1,6 +1,7 @@
 import dayjs from 'dayjs'
 import 'dayjs/locale/de'
 import 'dayjs/locale/en'
+import localizedFormat from 'dayjs/plugin/localizedFormat'
 import i18n from 'i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
 import { initReactI18next } from 'react-i18next'
@@ -10,6 +11,8 @@ import en from '@/locales/en/common.json'
 
 export const supportedLanguages = ['de', 'en'] as const
 export type SupportedLanguage = (typeof supportedLanguages)[number]
+
+dayjs.extend(localizedFormat)
 
 // eslint-disable-next-line import-x/no-named-as-default-member
 void i18n
