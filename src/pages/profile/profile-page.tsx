@@ -91,7 +91,12 @@ export function ProfilePage(): React.ReactElement {
         onSuccess: () => {
           toast.success(t('profile.tabs.changePassword.form.updateSuccess'))
           changePasswordForm.reset(defaultChangePasswordFormValues)
-          void logout().then(() => navigate({ to: '/login' }))
+          // The password already changed, so the current session is stale.
+          // The user is always redirected to /login — even if the
+          // logout request itself fails.
+          void logout()
+            .catch(() => toast.error(t('auth.logoutFailed')))
+            .finally(() => navigate({ to: '/login' }))
         },
         onError: () =>
           toast.error(t('profile.tabs.changePassword.form.saveError')),
