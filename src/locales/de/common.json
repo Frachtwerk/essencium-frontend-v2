@@ -38,6 +38,8 @@
     "noResults": "Keine Einträge",
     "pageInfo": "Seite {{page}} von {{pages}} · {{total}} Einträge",
     "sortBy": "Nach dieser Spalte sortieren",
+    "previousPage": "Vorherige Seite",
+    "nextPage": "Nächste Seite"
     "showPassword": "Passwort anzeigen",
     "hidePassword": "Passwort verbergen"
   },
@@ -236,6 +238,20 @@
     "empty": {
       "title": "Noch keine API-Tokens",
       "description": "Erstellen Sie Ihren ersten Token, um auf die API zuzugreifen."
+    },
+    "admin": {
+      "title": "Alle API-Tokens",
+      "tabMy": "Meine Tokens",
+      "tabAll": "Alle Tokens",
+      "searchPlaceholder": "Nach Benutzer oder Beschreibung suchen",
+      "deleteConfirm": "Möchten Sie den Token von {{user}} wirklich endgültig löschen?",
+      "empty": {
+        "title": "Keine API-Tokens",
+        "description": "Es hat noch kein Benutzer einen API-Token erstellt."
+      },
+      "table": {
+        "user": "Benutzer"
+      }
     }
   },
   "settings": {

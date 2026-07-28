@@ -14,6 +14,8 @@ import type {
   Delete3Error,
   Delete3Response,
   FindAll3Error,
+  FindAllAdminError,
+  FindAllAdminResponse,
   GetTokenExpirationInfoError,
   Options,
   PageApiTokenRepresentation,
@@ -26,6 +28,8 @@ import {
   delete3Mutation,
   findAll3Options,
   findAll3QueryKey,
+  findAllAdminOptions,
+  findAllAdminQueryKey,
   getTokenExpirationInfoOptions,
   update5Mutation,
 } from '@/generated/client/@tanstack/react-query.gen'
@@ -34,15 +38,16 @@ import { authenticatedClient } from '@/lib/auth-store'
 interface ListOptions {
   page: number
   size: number
+  sort: string
 }
 
 export function getFindAllApiTokensQueryOptions(
   options: ListOptions,
 ): ReturnType<typeof findAll3Options> {
-  const { page, size } = options
+  const { page, size, sort } = options
   return findAll3Options({
     client: authenticatedClient,
-    query: { page, size, sort: ['createdAt,desc'] },
+    query: { page, size, sort: [sort] },
   })
 }
 
@@ -50,6 +55,30 @@ export function useFindAllApiTokens(
   options: ListOptions,
 ): UseSuspenseQueryResult<PageApiTokenRepresentation, FindAll3Error> {
   return useSuspenseQuery(getFindAllApiTokensQueryOptions(options))
+}
+
+/**
+ * Query options for the admin "all tokens" view. `GET /v1/api-tokens/all`
+ * (API_TOKEN_ADMIN only) takes no query params and returns a map of
+ * `username -> ApiTokenRepresentation[]`; sorting/searching/pagination are
+ * therefore done client-side over the flattened result.
+ */
+export function getFindAllAdminApiTokensQueryOptions(): ReturnType<
+  typeof findAllAdminOptions
+> {
+  return findAllAdminOptions({ client: authenticatedClient })
+}
+
+/**
+ * All API tokens across users, keyed by username
+ * (`Record<string, ApiTokenRepresentation[]>`). Admin-only. Callers flatten
+ * and sort/search/paginate client-side (the endpoint takes no such params).
+ */
+export function useFindAllAdminApiTokens(): UseSuspenseQueryResult<
+  FindAllAdminResponse,
+  FindAllAdminError
+> {
+  return useSuspenseQuery(getFindAllAdminApiTokensQueryOptions())
 }
 
 /** Default token validity (in seconds) applied by the backend when `validUntil` is omitted. */
@@ -65,8 +94,13 @@ export function useTokenExpirationInfo(): UseSuspenseQueryResult<
 function useInvalidateApiTokens(): () => void {
   const queryClient = useQueryClient()
   return () => {
+    // Invalidate both the owner-scoped and the admin list, since revoke/delete
+    // can be triggered from either view and must refresh whichever is mounted.
     void queryClient.invalidateQueries({
       queryKey: findAll3QueryKey({ client: authenticatedClient }),
+    })
+    void queryClient.invalidateQueries({
+      queryKey: findAllAdminQueryKey({ client: authenticatedClient }),
     })
   }
 }
