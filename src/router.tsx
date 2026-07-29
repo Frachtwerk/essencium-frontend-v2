@@ -3,6 +3,7 @@ import { createRouter } from '@tanstack/react-router'
 import { queryClient, type RouterContext } from './routes/__root'
 import { routeTree } from './routeTree.gen'
 
+import { FullPageSpinner } from '@/components/spinner'
 import { initAuth } from '@/lib/auth-store'
 import '@/lib/i18n'
 
@@ -13,6 +14,7 @@ const router = createRouter({
   routeTree,
   scrollRestoration: true,
   defaultPreload: 'intent',
+  defaultPendingComponent: FullPageSpinner,
   context: { queryClient } satisfies RouterContext,
 })
 
