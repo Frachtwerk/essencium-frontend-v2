@@ -11,6 +11,7 @@ import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
 
 import { RouteError } from '@/components/error-fallback'
+import { PasswordInput } from '@/components/password-input'
 import { ContentSpinner, FullPageSpinner } from '@/components/spinner'
 import { Button, buttonVariants } from '@/components/ui/button'
 import {
@@ -174,9 +175,8 @@ function LoginPage(): React.ReactElement {
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">{t('auth.password')}</Label>
-              <Input
+              <PasswordInput
                 id="password"
-                type="password"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 required

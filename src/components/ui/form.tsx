@@ -104,7 +104,7 @@ function FormLabel({
   return (
     <Label
       htmlFor={formItemId}
-      className={cn(error && 'text-destructive', className)}
+      className={cn(error && 'text-destructive-400', className)}
       {...props}
     />
   )
@@ -156,7 +156,7 @@ function FormMessage({
   return (
     <p
       id={formMessageId}
-      className={cn('text-destructive text-sm font-medium', className)}
+      className={cn('text-destructive-400 text-sm font-medium', className)}
       {...props}
     >
       {body}
