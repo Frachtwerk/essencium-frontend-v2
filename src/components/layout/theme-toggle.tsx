@@ -9,6 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { themeOptions } from '@/lib/theme'
 
 /** Light / dark / system theme switcher. */
 export function ThemeToggle(): React.ReactElement {
@@ -26,15 +27,15 @@ export function ThemeToggle(): React.ReactElement {
         }
       />
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme('light')}>
+        <DropdownMenuItem onClick={() => setTheme(themeOptions.LIGHT)}>
           <RiSunLine className="size-4" />
           {t('theme.light')}
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme('dark')}>
+        <DropdownMenuItem onClick={() => setTheme(themeOptions.DARK)}>
           <RiMoonLine className="size-4" />
           {t('theme.dark')}
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme('system')}>
+        <DropdownMenuItem onClick={() => setTheme(themeOptions.SYSTEM)}>
           <RiComputerLine className="size-4" />
           {t('theme.system')}
         </DropdownMenuItem>

@@ -12,6 +12,11 @@ import en from '@/locales/en/common.json'
 export const supportedLanguages = ['de', 'en'] as const
 export type SupportedLanguage = (typeof supportedLanguages)[number]
 
+export const languageLabels: Record<SupportedLanguage, string> = {
+  de: 'Deutsch',
+  en: 'English',
+}
+
 dayjs.extend(localizedFormat)
 
 // eslint-disable-next-line import-x/no-named-as-default-member

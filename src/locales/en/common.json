@@ -214,6 +214,15 @@
     }
   },
   "settings": {
-    "title": "Settings"
+    "title": "Settings",
+    "appearance": {
+      "label": "Appearance"
+    },
+    "language": {
+      "label": "Language"
+    },
+    "save": "Save",
+    "saveSuccess": "Settings saved",
+    "saveError": "Could not save settings"
   }
 }
