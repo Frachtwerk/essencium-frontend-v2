@@ -70,7 +70,7 @@ function RootDocument({
 }: Readonly<{ children: ReactNode }>): JSX.Element {
   const { i18n } = useTranslation()
   return (
-    <html lang={i18n.language}>
+    <html lang={i18n.language} suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>
