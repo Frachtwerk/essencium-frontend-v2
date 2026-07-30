@@ -82,62 +82,64 @@ export function UserRowActions({
 
   return (
     <div className="flex justify-end">
-      <DropdownMenu>
-        <DropdownMenuTrigger
-          render={
-            <Button
-              variant="ghost"
-              size="icon"
-              aria-label={t('users.table.actions')}
-              onClick={e => e.stopPropagation()}
-            />
-          }
-        >
-          <RiMore2Line className="size-4" />
-        </DropdownMenuTrigger>
+      <CanAccess rights={[RIGHTS.USER_UPDATE, RIGHTS.USER_DELETE]}>
+        <DropdownMenu>
+          <DropdownMenuTrigger
+            render={
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label={t('users.table.actions')}
+                onClick={e => e.stopPropagation()}
+              />
+            }
+          >
+            <RiMore2Line className="size-4" />
+          </DropdownMenuTrigger>
 
-        <DropdownMenuContent align="end" onClick={e => e.stopPropagation()}>
-          <CanAccess rights={RIGHTS.USER_UPDATE}>
-            <DropdownMenuItem
-              disabled={isDefault}
-              {...(isDefault
-                ? {}
-                : {
-                    render: (
-                      <Link
-                        to="/users/$userId"
-                        params={{ userId: String(user.id) }}
-                      />
-                    ),
-                  })}
-            >
-              <RiEditLine />
-              {t('common.edit')}
-            </DropdownMenuItem>
+          <DropdownMenuContent align="end" onClick={e => e.stopPropagation()}>
+            <CanAccess rights={RIGHTS.USER_UPDATE}>
+              <DropdownMenuItem
+                disabled={isDefault}
+                {...(isDefault
+                  ? {}
+                  : {
+                      render: (
+                        <Link
+                          to="/users/$userId"
+                          params={{ userId: String(user.id) }}
+                        />
+                      ),
+                    })}
+              >
+                <RiEditLine />
+                {t('common.edit')}
+              </DropdownMenuItem>
 
-            <DropdownMenuItem
-              disabled={terminateDisabled}
-              onClick={() => setTerminateOpen(true)}
-            >
-              <RiLogoutBoxRLine />
-              {t('users.terminate')}
-            </DropdownMenuItem>
-          </CanAccess>
+              <DropdownMenuItem
+                disabled={terminateDisabled}
+                onClick={() => setTerminateOpen(true)}
+              >
+                <RiLogoutBoxRLine />
+                {t('users.terminate')}
+              </DropdownMenuItem>
+            </CanAccess>
 
-          <CanAccess rights={RIGHTS.USER_DELETE}>
-            <DropdownMenuSeparator />
+            <CanAccess rights={RIGHTS.USER_DELETE}>
+              <DropdownMenuSeparator />
 
-            <DropdownMenuItem
-              className="text-destructive-400"
-              disabled={isDefault}
-              onClick={() => setDeleteOpen(true)}
-            >
-              <RiDeleteBinLine />
-              {t('common.delete')}
-            </DropdownMenuItem>
-          </CanAccess>
-        </DropdownMenuContent>
-      </DropdownMenu>
+              <DropdownMenuItem
+                className="text-destructive-400"
+                disabled={isDefault}
+                onClick={() => setDeleteOpen(true)}
+              >
+                <RiDeleteBinLine />
+                {t('common.delete')}
+              </DropdownMenuItem>
+            </CanAccess>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </CanAccess>
 
       <AlertDialog open={terminateOpen} onOpenChange={setTerminateOpen}>
         <AlertDialogContent onClick={e => e.stopPropagation()}>
