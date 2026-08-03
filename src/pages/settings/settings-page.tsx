@@ -7,7 +7,14 @@ import { toast } from 'sonner'
 
 import { PageHeader } from '@/components/layout/page-header'
 import { Button } from '@/components/ui/button'
+import {
+  Field,
+  FieldContent,
+  FieldLabel,
+  FieldTitle,
+} from '@/components/ui/field'
 import { Label } from '@/components/ui/label'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import {
   Select,
   SelectContent,
@@ -22,7 +29,6 @@ import {
   type SupportedLanguage,
 } from '@/lib/i18n'
 import { isThemeOption, themeOptions, type ThemeOption } from '@/lib/theme'
-import { cn } from '@/lib/utils'
 
 const THEME_OPTIONS: ReadonlyArray<{
   value: ThemeOption
@@ -89,38 +95,34 @@ export function SettingsPage(): React.ReactElement {
 
       <div className="max-w-2xl space-y-8">
         <section className="space-y-2">
-          <Label htmlFor="settings-appearance">
+          <Label id="settings-appearance">
             {t('settings.appearance.label')}
           </Label>
-          <div
-            id="settings-appearance"
-            role="radiogroup"
-            aria-label={t('settings.appearance.label')}
-            className="grid grid-cols-3 gap-4"
+
+          <RadioGroup
+            value={selectedTheme}
+            onValueChange={value => {
+              if (isThemeOption(value)) {
+                setSelectedTheme(value)
+              }
+            }}
+            className="max-w-sm"
+            aria-labelledby="settings-appearance"
           >
-            {THEME_OPTIONS.map(({ value, labelKey, icon: Icon }) => {
-              const active = selectedTheme === value
-              return (
-                <button
-                  key={value}
-                  type="button"
-                  role="radio"
-                  aria-checked={active}
-                  onClick={() => setSelectedTheme(value)}
-                  className={cn(
-                    'bg-card flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border px-4 py-6 text-sm font-medium ring-1 ring-transparent transition-colors outline-none',
-                    'hover:bg-accent focus-visible:ring-ring focus-visible:ring-offset-background focus-visible:ring-2 focus-visible:ring-offset-2',
-                    active
-                      ? 'border-primary bg-primary/5 text-primary ring-primary/20'
-                      : 'border-border text-foreground',
-                  )}
-                >
-                  <Icon className="size-6" />
-                  {t(labelKey)}
-                </button>
-              )
-            })}
-          </div>
+            {THEME_OPTIONS.map(({ value, labelKey, icon: Icon }) => (
+              <FieldLabel key={value}>
+                <Field orientation="horizontal">
+                  <FieldContent>
+                    <FieldTitle>
+                      <Icon />
+                      {t(labelKey)}
+                    </FieldTitle>
+                  </FieldContent>
+                  <RadioGroupItem value={value} />
+                </Field>
+              </FieldLabel>
+            ))}
+          </RadioGroup>
         </section>
 
         <section className="space-y-2">

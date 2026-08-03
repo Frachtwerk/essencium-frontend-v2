@@ -6,6 +6,6 @@ export const themeOptions = {
 
 export type ThemeOption = (typeof themeOptions)[keyof typeof themeOptions]
 
-export function isThemeOption(value: string | undefined): value is ThemeOption {
-  return Object.values(themeOptions).includes(value as ThemeOption)
+export function isThemeOption(value: unknown): value is ThemeOption {
+  return Object.values<unknown>(themeOptions).includes(value)
 }
