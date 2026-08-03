@@ -39,9 +39,9 @@
     "pageInfo": "Seite {{page}} von {{pages}} · {{total}} Einträge",
     "sortBy": "Nach dieser Spalte sortieren",
     "previousPage": "Vorherige Seite",
-    "nextPage": "Nächste Seite"
+    "nextPage": "Nächste Seite",
     "showPassword": "Passwort anzeigen",
-    "hidePassword": "Passwort verbergen"
+    "hidePassword": "Passwort verbergen",
     "clearSearch": "Suche zurücksetzen"
   },
   "error": {

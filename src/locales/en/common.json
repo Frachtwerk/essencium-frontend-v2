@@ -39,9 +39,9 @@
     "pageInfo": "Page {{page}} of {{pages}} · {{total}} entries",
     "sortBy": "Sort by this column",
     "previousPage": "Previous page",
-    "nextPage": "Next page"
+    "nextPage": "Next page",
     "showPassword": "Show password",
-    "hidePassword": "Hide password"
+    "hidePassword": "Hide password",
     "clearSearch": "Clear search"
   },
   "error": {
