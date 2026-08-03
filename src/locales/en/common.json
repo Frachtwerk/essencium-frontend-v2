@@ -66,6 +66,7 @@
     "users": "Users",
     "roles": "Roles",
     "apiTokens": "API tokens",
+    "rights": "Rights",
     "profile": "Profile",
     "settings": "Settings",
     "logout": "Log out"
@@ -271,5 +272,10 @@
     "save": "Save",
     "saveSuccess": "Settings saved",
     "saveError": "Could not save settings"
+  "rights": {
+    "title": "Rights",
+    "authority": "Name",
+    "updateSuccess": "The role has been updated successfully.",
+    "updateError": "Could not update role."
   }
 }

@@ -66,6 +66,7 @@
     "users": "Benutzer",
     "roles": "Rollen",
     "apiTokens": "API-Tokens",
+    "rights": "Rechte",
     "profile": "Profil",
     "settings": "Einstellungen",
     "logout": "Abmelden"
@@ -271,5 +272,10 @@
     "save": "Speichern",
     "saveSuccess": "Einstellungen gespeichert",
     "saveError": "Einstellungen konnten nicht gespeichert werden"
+  "rights": {
+    "title": "Rechte",
+    "authority": "Name",
+    "updateSuccess": "Die Rolle wurde erfolgreich geändert.",
+    "updateError": "Die Rolle konnte nicht geändert werden."
   }
 }
