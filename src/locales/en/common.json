@@ -42,6 +42,7 @@
     "nextPage": "Next page"
     "showPassword": "Show password",
     "hidePassword": "Hide password"
+    "clearSearch": "Clear search"
   },
   "error": {
     "title": "An error occurred",

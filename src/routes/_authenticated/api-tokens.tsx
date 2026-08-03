@@ -14,6 +14,12 @@ import { ApiTokensListPage } from '@/pages/api-tokens/api-tokens-list-page'
 const apiTokensSearchSchema = paginationSearchParamsSchema.extend({
   tab: z.enum(['myTokens', 'allTokens']).optional(),
   sort: z.string().optional().default('createdAt,desc'),
+  // The admin tab filters/sorts/paginates client-side, but its state still lives in the URL
+  // so it survives tab switches and reloads like the myTokens tab does. Kept under
+  // separate keys so neither tab overwrites the other's view.
+  adminPage: z.number().optional().default(0),
+  adminSort: z.string().optional().default('user,asc'),
+  adminSearch: z.string().optional(),
 })
 
 export const Route = createFileRoute('/_authenticated/api-tokens')({
@@ -36,14 +42,15 @@ export const Route = createFileRoute('/_authenticated/api-tokens')({
   loader: ({
     context: { queryClient, canSelf, canAdmin },
     deps: { page, size, sort },
-  }) => {
-    if (canSelf) {
-      void queryClient.ensureQueryData(
-        getFindAllApiTokensQueryOptions({ page, size, sort }),
-      )
-    }
-    if (canAdmin) {
-      void queryClient.ensureQueryData(getFindAllAdminApiTokensQueryOptions())
-    }
-  },
+  }) =>
+    Promise.all([
+      canSelf
+        ? queryClient.ensureQueryData(
+            getFindAllApiTokensQueryOptions({ page, size, sort }),
+          )
+        : undefined,
+      canAdmin
+        ? queryClient.ensureQueryData(getFindAllAdminApiTokensQueryOptions())
+        : undefined,
+    ]),
 })

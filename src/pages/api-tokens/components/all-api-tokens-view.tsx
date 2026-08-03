@@ -1,5 +1,6 @@
 import { RiKeyLine } from '@remixicon/react'
-import type { SortingState } from '@tanstack/react-table'
+import { getRouteApi } from '@tanstack/react-router'
+import type { SortingState, Updater } from '@tanstack/react-table'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
@@ -17,6 +18,9 @@ import {
   useRevokeApiToken,
 } from '@/hooks/data/api-tokens'
 import { TOKEN_STATUS } from '@/lib/api-tokens'
+import { parseSort, serializeSort } from '@/lib/pagination'
+
+const route = getRouteApi('/_authenticated/api-tokens')
 
 const PAGE_SIZE = 10
 
@@ -51,11 +55,12 @@ export function AllApiTokensView({
   const revokeApiToken = useRevokeApiToken()
   const deleteApiToken = useDeleteApiToken()
 
-  const [search, setSearch] = useState('')
-  const [sorting, setSorting] = useState<SortingState>([
-    { id: 'user', desc: false },
-  ])
-  const [page, setPage] = useState(0)
+  const { adminPage: page, adminSort, adminSearch } = route.useSearch()
+  const navigate = route.useNavigate()
+
+  const search = adminSearch ?? ''
+  const sorting = parseSort(adminSort)
+
   const [tokenToRevoke, setTokenToRevoke] = useState<
     ApiTokenRepresentation | undefined
   >(undefined)
@@ -84,17 +89,28 @@ export function AllApiTokensView({
   )
 
   function onSearchChange(value: string): void {
-    setSearch(value)
-    setPage(0)
+    void navigate({
+      search: prev => ({
+        ...prev,
+        adminSearch: value || undefined,
+        adminPage: 0,
+      }),
+    })
   }
 
-  function onSortingChange(
-    updater: SortingState | ((prev: SortingState) => SortingState),
-  ): void {
-    setSorting(prev =>
-      typeof updater === 'function' ? updater(prev) : updater,
-    )
-    setPage(0)
+  function onSortingChange(updater: Updater<SortingState>): void {
+    const next = typeof updater === 'function' ? updater(sorting) : updater
+    void navigate({
+      search: prev => ({
+        ...prev,
+        adminSort: serializeSort(next),
+        adminPage: 0,
+      }),
+    })
+  }
+
+  function goToPage(nextPage: number): void {
+    void navigate({ search: prev => ({ ...prev, adminPage: nextPage }) })
   }
 
   function confirmRevoke(): void {
@@ -146,8 +162,8 @@ export function AllApiTokensView({
             totalElements={totalElements}
             sorting={sorting}
             onSortingChange={onSortingChange}
-            onPreviousPage={() => setPage(p => Math.max(0, p - 1))}
-            onNextPage={() => setPage(p => Math.min(totalPages - 1, p + 1))}
+            onPreviousPage={() => goToPage(Math.max(0, safePage - 1))}
+            onNextPage={() => goToPage(Math.min(totalPages - 1, safePage + 1))}
             onRevoke={setTokenToRevoke}
             onDelete={setTokenToDelete}
           />

@@ -35,11 +35,7 @@ export function ApiTokensListPage(): React.ReactElement | null {
           value={activeTab}
           onValueChange={value => {
             void navigate({
-              search: prev => ({
-                ...prev,
-                tab: value as TabValue,
-                page: 0,
-              }),
+              search: prev => ({ ...prev, tab: value as TabValue }),
             })
           }}
         >
