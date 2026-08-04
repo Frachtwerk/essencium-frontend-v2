@@ -38,8 +38,11 @@
     "noResults": "No results",
     "pageInfo": "Page {{page}} of {{pages}} · {{total}} entries",
     "sortBy": "Sort by this column",
+    "previousPage": "Previous page",
+    "nextPage": "Next page",
     "showPassword": "Show password",
-    "hidePassword": "Hide password"
+    "hidePassword": "Hide password",
+    "clearSearch": "Clear search"
   },
   "error": {
     "title": "An error occurred",
@@ -236,6 +239,20 @@
     "empty": {
       "title": "No API tokens yet",
       "description": "Create your first token to access the API."
+    },
+    "admin": {
+      "title": "All API tokens",
+      "tabMy": "My tokens",
+      "tabAll": "All tokens",
+      "searchPlaceholder": "Search by user or description",
+      "deleteConfirm": "Do you really want to permanently delete this token belonging to {{user}}?",
+      "empty": {
+        "title": "No API tokens",
+        "description": "No user has created an API token yet."
+      },
+      "table": {
+        "user": "User"
+      }
     }
   },
   "settings": {

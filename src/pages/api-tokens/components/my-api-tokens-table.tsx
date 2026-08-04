@@ -4,9 +4,11 @@ import {
   RiDeleteBinLine,
   RiForbidLine,
 } from '@remixicon/react'
-import type { ColumnDef } from '@tanstack/react-table'
+import type { ColumnDef, OnChangeFn, SortingState } from '@tanstack/react-table'
 import dayjs from 'dayjs'
 import { useTranslation } from 'react-i18next'
+
+import { ApiTokenRightsBadges } from './api-token-rights-badges'
 
 import { DataTable } from '@/components/data-table'
 import { CanAccess } from '@/components/shared/can-access'
@@ -17,52 +19,46 @@ import type {
   ApiTokenRepresentation,
   PageApiTokenRepresentation,
 } from '@/generated/client/types.gen'
+import { TOKEN_STATUS, TOKEN_STATUS_BADGE_VARIANT } from '@/lib/api-tokens'
 import { RIGHTS } from '@/lib/permissions'
 
-const STATUS_BADGE_VARIANT: Record<
-  NonNullable<ApiTokenRepresentation['status']>,
-  'default' | 'secondary' | 'outline'
-> = {
-  ACTIVE: 'default',
-  REVOKED: 'outline',
-  REVOKED_ROLE_CHANGED: 'outline',
-  REVOKED_RIGHTS_CHANGED: 'outline',
-  REVOKED_USER_CHANGED: 'outline',
-  EXPIRED: 'outline',
-  USER_DELETED: 'outline',
-}
-
-interface ApiTokensTableProps {
+interface MyApiTokensTableProps {
   tokensPage: PageApiTokenRepresentation
   page: number
   size: number
+  sorting: SortingState
+  onSortingChange: OnChangeFn<SortingState>
   onRevoke: (token: ApiTokenRepresentation) => void
   onDelete: (token: ApiTokenRepresentation) => void
 }
 
-export function ApiTokensTable({
+export function MyApiTokensTable({
   tokensPage,
   page,
   size,
+  sorting,
+  onSortingChange,
   onRevoke,
   onDelete,
-}: ApiTokensTableProps): React.ReactElement {
+}: MyApiTokensTableProps): React.ReactElement {
   const { t } = useTranslation()
 
   const columns: ColumnDef<ApiTokenRepresentation>[] = [
     {
       accessorKey: 'description',
       header: t('apiTokens.table.description'),
+      enableSorting: true,
       cell: ({ row }) => row.original.description || '—',
     },
     {
       id: 'status',
       header: t('apiTokens.table.status'),
+      enableSorting: true,
       cell: ({ row }) => {
         const status = row.original.status
         if (!status) return '—'
         return (
-          <Badge variant={STATUS_BADGE_VARIANT[status]}>
+          <Badge variant={TOKEN_STATUS_BADGE_VARIANT[status]}>
             {t(`apiTokens.status.${status}`)}
           </Badge>
         )
@@ -71,6 +67,7 @@ export function ApiTokensTable({
     {
       id: 'validUntil',
       header: t('apiTokens.table.validUntil'),
+      enableSorting: true,
       cell: ({ row }) =>
         row.original.validUntil
           ? dayjs(row.original.validUntil).format('L')
@@ -79,24 +76,12 @@ export function ApiTokensTable({
     {
       id: 'rights',
       header: t('apiTokens.table.rights'),
-      cell: ({ row }) => (
-        <div className="flex flex-wrap gap-1">
-          {(row.original.rights ?? []).slice(0, 4).map(r => (
-            <Badge key={r.authority} variant="secondary">
-              {r.authority}
-            </Badge>
-          ))}
-          {(row.original.rights ?? []).length > 4 && (
-            <Badge variant="outline">
-              +{(row.original.rights ?? []).length - 4}
-            </Badge>
-          )}
-        </div>
-      ),
+      cell: ({ row }) => <ApiTokenRightsBadges rights={row.original.rights} />,
     },
     {
       id: 'createdAt',
       header: t('apiTokens.table.createdAt'),
+      enableSorting: true,
       cell: ({ row }) =>
         row.original.createdAt
           ? dayjs(row.original.createdAt).format('L LT')
@@ -109,16 +94,16 @@ export function ApiTokensTable({
       ),
       cell: ({ row }) => (
         <div className="flex justify-end gap-1">
-          {row.original.status === 'ACTIVE' && (
-            <Button
-              variant="ghost"
-              size="icon"
-              aria-label={t('apiTokens.revoke')}
-              onClick={() => onRevoke(row.original)}
-            >
-              <RiForbidLine className="size-4" />
-            </Button>
-          )}
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label={t('apiTokens.revoke')}
+            onClick={() => onRevoke(row.original)}
+            disabled={row.original.status !== TOKEN_STATUS.ACTIVE}
+          >
+            <RiForbidLine className="size-4" />
+          </Button>
+
           <CanAccess rights={RIGHTS.API_TOKEN_ADMIN}>
             <Button
               variant="ghost"
@@ -141,13 +126,15 @@ export function ApiTokensTable({
       currentPage={page}
       totalPages={tokensPage.totalPages ?? 0}
       totalElements={tokensPage.totalElements ?? 0}
+      sorting={sorting}
+      onSortingChange={onSortingChange}
       renderPreviousPageButton={({ disabled }) => (
         <LinkButton
           variant="outline"
           size="sm"
           disabled={disabled}
           to="/api-tokens"
-          search={{ page: Math.max(0, page - 1), size }}
+          search={prev => ({ ...prev, page: Math.max(0, page - 1), size })}
         >
           <RiArrowLeftSLine className="size-4" />
         </LinkButton>
@@ -158,10 +145,11 @@ export function ApiTokensTable({
           size="sm"
           disabled={disabled}
           to="/api-tokens"
-          search={{
+          search={prev => ({
+            ...prev,
             page: Math.min((tokensPage.totalPages ?? 1) - 1, page + 1),
             size,
-          }}
+          })}
         >
           <RiArrowRightSLine className="size-4" />
         </LinkButton>
