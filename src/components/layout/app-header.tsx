@@ -1,4 +1,5 @@
 import { Breadcrumbs } from '@/components/layout/breadcrumbs'
+import { EnvironmentBadge } from '@/components/layout/environment-badge'
 import { LanguageSwitcher } from '@/components/layout/language-switcher'
 import { ThemeToggle } from '@/components/layout/theme-toggle'
 import { Separator } from '@/components/ui/separator'
@@ -12,6 +13,7 @@ export function AppHeader(): React.ReactElement {
       <Separator orientation="vertical" className="mr-2 h-4" />
       <Breadcrumbs />
       <div className="ml-auto flex items-center gap-1">
+        <EnvironmentBadge />
         <LanguageSwitcher />
         <ThemeToggle />
       </div>
