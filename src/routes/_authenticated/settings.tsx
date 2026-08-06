@@ -1,17 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { useTranslation } from 'react-i18next'
 
-import { PageHeader } from '@/components/layout/page-header'
+import { SettingsPage } from '@/pages/settings/settings-page'
 
 export const Route = createFileRoute('/_authenticated/settings')({
   component: SettingsPage,
 })
-
-function SettingsPage(): React.ReactElement {
-  const { t } = useTranslation()
-  return (
-    <div className="p-6">
-      <PageHeader title={t('settings.title')} />
-    </div>
-  )
-}

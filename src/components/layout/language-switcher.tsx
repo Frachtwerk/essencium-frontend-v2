@@ -8,12 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { supportedLanguages } from '@/lib/i18n'
-
-const LANGUAGE_LABELS: Record<string, string> = {
-  de: 'Deutsch',
-  en: 'English',
-}
+import { languageLabels, supportedLanguages } from '@/lib/i18n'
 
 /** Switches the active i18n language (persisted via the language detector). */
 export function LanguageSwitcher(): React.ReactElement {
@@ -37,7 +32,7 @@ export function LanguageSwitcher(): React.ReactElement {
             data-active={lng === current}
             className="data-[active=true]:font-semibold"
           >
-            {LANGUAGE_LABELS[lng] ?? lng.toUpperCase()}
+            {languageLabels[lng]}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

@@ -261,6 +261,15 @@
     }
   },
   "settings": {
-    "title": "Einstellungen"
+    "title": "Einstellungen",
+    "appearance": {
+      "label": "Erscheinungsbild"
+    },
+    "language": {
+      "label": "Sprache"
+    },
+    "save": "Speichern",
+    "saveSuccess": "Einstellungen gespeichert",
+    "saveError": "Einstellungen konnten nicht gespeichert werden"
   }
 }
