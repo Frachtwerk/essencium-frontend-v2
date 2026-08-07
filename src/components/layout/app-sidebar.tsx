@@ -2,7 +2,11 @@ import { Link, useRouterState } from '@tanstack/react-router'
 import { useTranslation } from 'react-i18next'
 
 import { NavUser } from '@/components/layout/nav-user'
-import { useNavItems, type NavNode } from '@/components/layout/navigation'
+import {
+  filterNavByRights,
+  useNavItems,
+  type NavNode,
+} from '@/components/layout/navigation'
 import {
   Sidebar,
   SidebarContent,
@@ -22,19 +26,15 @@ function isItemActive(pathname: string, to: string): boolean {
   return to === '/' ? pathname === '/' : pathname.startsWith(to)
 }
 
-function visibleSidebarNodes(
-  nodes: NavNode[],
-  can: (rights: NavNode['rights']) => boolean,
-): NavNode[] {
+function visibleSidebarNodes(nodes: NavNode[]): NavNode[] {
   return nodes
     .map(node => ({
       ...node,
-      children: visibleSidebarNodes(node.children, can),
+      children: visibleSidebarNodes(node.children),
     }))
-    .filter(node => {
-      if (!node.inSidebar || !can(node.rights)) return false
-      return node.navigable || node.children.length > 0
-    })
+    .filter(
+      node => node.inSidebar && (node.navigable || node.children.length > 0),
+    )
 }
 
 export function AppSidebar(): React.ReactElement {
@@ -42,7 +42,7 @@ export function AppSidebar(): React.ReactElement {
   const { can } = usePermissions()
   const pathname = useRouterState({ select: s => s.location.pathname })
 
-  const items = visibleSidebarNodes(useNavItems(), can)
+  const items = visibleSidebarNodes(filterNavByRights(useNavItems(), can))
 
   return (
     <Sidebar collapsible="icon">
