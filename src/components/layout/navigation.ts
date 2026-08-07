@@ -23,7 +23,7 @@ interface RouteMeta {
   order?: number
 }
 
-const ROUTE_META: Record<string, RouteMeta> = {
+const ROUTE_META = {
   '/': { labelKey: 'navigation.dashboard', icon: RiDashboardLine, order: 0 },
   '/users': {
     labelKey: 'navigation.users',
@@ -56,13 +56,17 @@ const ROUTE_META: Record<string, RouteMeta> = {
     order: 50,
   },
   '/users/new': { hidden: true },
-}
+} satisfies Record<string, RouteMeta>
+
+export type NavPath = keyof typeof ROUTE_META
+
+const routeMeta: Record<string, RouteMeta> = ROUTE_META
 
 const DEFAULT_ICON: RemixiconComponentType = RiFileList2Line
 const DEFAULT_ORDER = 1000
 
-export function navRights(path: string): Right | readonly Right[] | undefined {
-  return ROUTE_META[path]?.rights
+export function navRights(path: NavPath): Right | readonly Right[] | undefined {
+  return routeMeta[path]?.rights
 }
 
 function titleize(segment: string): string {
@@ -73,7 +77,7 @@ function titleize(segment: string): string {
 }
 
 function resolveLabel(path: string, lastSegment: string, t: TFunction): string {
-  const labelKey = ROUTE_META[path]?.labelKey
+  const labelKey = routeMeta[path]?.labelKey
   return labelKey ? t(labelKey) : titleize(lastSegment)
 }
 
@@ -124,13 +128,13 @@ export function useNavItems(): NavNode[] {
       if (!id.startsWith('/_authenticated')) return false
       if (id === '/_authenticated') return false
       if (!fullPath || fullPath.includes('$')) return false
-      return ROUTE_META[normalizePath(fullPath)]?.hidden !== true
+      return routeMeta[normalizePath(fullPath)]?.hidden !== true
     })
     .map(route => {
       const to = normalizePath(route.fullPath)
       const segments = to === '/' ? [] : to.split('/').filter(Boolean)
       const lastSegment = segments[segments.length - 1] ?? ''
-      const meta = ROUTE_META[to]
+      const meta = routeMeta[to]
       return {
         to,
         segments,
@@ -155,9 +159,9 @@ function buildTree(leaves: ResolvedRoute[], t: TFunction): NavNode[] {
       node = {
         to: path as LinkProps['to'],
         label: resolveLabel(path, lastSegment, t),
-        icon: ROUTE_META[path]?.icon ?? DEFAULT_ICON,
+        icon: routeMeta[path]?.icon ?? DEFAULT_ICON,
         inSidebar: true,
-        order: ROUTE_META[path]?.order ?? DEFAULT_ORDER,
+        order: routeMeta[path]?.order ?? DEFAULT_ORDER,
         navigable: false,
         children: [],
         segments,
@@ -204,6 +208,15 @@ function buildTree(leaves: ResolvedRoute[], t: TFunction): NavNode[] {
   sortRecursive(roots)
 
   return roots
+}
+
+export function filterNavByRights(
+  nodes: NavNode[],
+  can: (rights: NavNode['rights']) => boolean,
+): NavNode[] {
+  return nodes
+    .filter(node => can(node.rights))
+    .map(node => ({ ...node, children: filterNavByRights(node.children, can) }))
 }
 
 export function flattenNavItems(nodes: NavNode[]): NavLeaf[] {
