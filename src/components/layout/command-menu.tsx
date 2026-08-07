@@ -2,7 +2,11 @@ import { useNavigate, type LinkProps } from '@tanstack/react-router'
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { flattenNavItems, useNavItems } from '@/components/layout/navigation'
+import {
+  filterNavByRights,
+  flattenNavItems,
+  useNavItems,
+} from '@/components/layout/navigation'
 import {
   CommandDialog,
   CommandEmpty,
@@ -26,7 +30,7 @@ export function CommandMenu({
   const { can } = usePermissions()
   const navigate = useNavigate()
 
-  const items = flattenNavItems(useNavItems()).filter(item => can(item.rights))
+  const items = flattenNavItems(filterNavByRights(useNavItems(), can))
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent): void {
