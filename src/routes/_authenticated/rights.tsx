@@ -20,9 +20,11 @@ export const Route = createFileRoute('/_authenticated/rights')({
       getMeOptions({ client: authenticatedClient }),
     )
     const rights = getUserRights(user)
-    const allowed =
-      hasRequiredRights(rights, RIGHTS.ROLE_UPDATE) &&
-      hasRequiredRights(rights, RIGHTS.RIGHT_READ)
+    const allowed = hasRequiredRights(
+      rights,
+      [RIGHTS.ROLE_UPDATE, RIGHTS.RIGHT_READ],
+      'all',
+    )
     if (!allowed) {
       // eslint-disable-next-line @typescript-eslint/only-throw-error
       throw redirect({ to: '/' })
