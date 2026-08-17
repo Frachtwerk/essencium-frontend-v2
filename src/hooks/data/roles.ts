@@ -108,28 +108,110 @@ export function useDeleteRole(): UseMutationResult<
   })
 }
 
-export interface UpdateRoleRightsVariables {
-  // path param is role name not id
-  name: string
-  authorities: string[]
+export interface ToggleRoleRightVariables {
+  authority: string
+  nextChecked: boolean
 }
 
-export function useUpdateRoleRights(): UseMutationResult<
+interface ToggleRoleRightContext {
+  previousRoles: PageRole | undefined
+}
+
+/**
+ * Toggles a single right on the role identified by `roleName` (the API takes the
+ * role name, not the id, as path param).
+ *
+ * The authority list the API expects is derived inside the mutation from the
+ * *current* cache instead of from a snapshot captured during render, and the
+ * optimistic result is written back before the request starts. That way rapid
+ * consecutive toggles build on each other rather than overwriting one another.
+ * The mutation scope is per role name, so two updates to the same role are sent
+ * serially — the last response then reflects the last click — while updates to
+ * different roles still run in parallel.
+ */
+export function useToggleRoleRight(
+  roleName: string,
+): UseMutationResult<
   Update2Response,
   Update2Error,
-  UpdateRoleRightsVariables
+  ToggleRoleRightVariables,
+  ToggleRoleRightContext
 > {
+  const queryClient = useQueryClient()
   const invalidate = useInvalidateRoles()
+  const { queryKey } = getAllRolesQueryOptions()
+
   return useMutation({
-    mutationFn: async ({ name, authorities }) => {
+    // Serializes concurrent updates to this role — see doc comment above.
+    scope: { id: `role-rights:${roleName}` },
+    mutationFn: async ({ authority, nextChecked }) => {
+      const roles = queryClient.getQueryData<PageRole>(queryKey)
+
       const { data } = await update2({
         client: authenticatedClient,
-        path: { name },
-        body: { rights: authorities },
+        path: { name: roleName },
+        body: {
+          rights: nextAuthorities(roles, roleName, authority, nextChecked),
+        },
         throwOnError: true,
       })
       return data
     },
-    onSuccess: invalidate,
+    onMutate: ({ authority, nextChecked }) => {
+      const previousRoles = queryClient.getQueryData<PageRole>(queryKey)
+
+      queryClient.setQueryData<PageRole>(queryKey, current =>
+        applyRightToggle(current, roleName, authority, nextChecked),
+      )
+
+      return { previousRoles }
+    },
+    onError: (_error, _variables, context) => {
+      queryClient.setQueryData(queryKey, context?.previousRoles)
+    },
+    onSettled: invalidate,
   })
+}
+
+/** The authority list to send for `roleName` after toggling `authority`. */
+export function nextAuthorities(
+  roles: PageRole | undefined,
+  roleName: string,
+  authority: string,
+  nextChecked: boolean,
+): string[] {
+  const role = roles?.content?.find(r => r.name === roleName)
+  const current = role?.rights?.map(right => right.authority) ?? []
+
+  return nextChecked
+    ? [...new Set([...current, authority])]
+    : current.filter(a => a !== authority)
+}
+
+/** A copy of the roles page with `authority` toggled on `roleName`. */
+export function applyRightToggle(
+  roles: PageRole | undefined,
+  roleName: string,
+  authority: string,
+  nextChecked: boolean,
+): PageRole | undefined {
+  if (!roles?.content) return roles
+
+  return {
+    ...roles,
+    content: roles.content.map(role => {
+      if (role.name !== roleName) return role
+
+      const rights = role.rights ?? []
+      if (!nextChecked) {
+        return {
+          ...role,
+          rights: rights.filter(right => right.authority !== authority),
+        }
+      }
+
+      if (rights.some(right => right.authority === authority)) return role
+      return { ...role, rights: [...rights, { authority }] }
+    }),
+  }
 }

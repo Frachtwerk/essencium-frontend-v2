@@ -10,10 +10,49 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { LinkButton } from '@/components/ui/link-button'
 import { Right } from '@/generated/client'
 import { useFindAllRights } from '@/hooks/data/rights'
-import { useAllRoles, useUpdateRoleRights } from '@/hooks/data/roles'
+import { useAllRoles, useToggleRoleRight } from '@/hooks/data/roles'
 import { parseSort, serializeSort } from '@/lib/pagination'
 
 const route = getRouteApi('/_authenticated/rights')
+
+interface RoleRightCheckboxProps {
+  roleName: string
+  authority: string
+  checked: boolean
+  disabled: boolean
+}
+
+/**
+ * One cell of the matrix. The mutation lives per role so concurrent toggles on
+ * the same role are serialized, and the checkbox reflects the optimistic cache
+ * state immediately.
+ */
+function RoleRightCheckbox({
+  roleName,
+  authority,
+  checked,
+  disabled,
+}: RoleRightCheckboxProps): React.ReactElement {
+  const { t } = useTranslation()
+  const { mutate: toggleRight } = useToggleRoleRight(roleName)
+
+  return (
+    <Checkbox
+      checked={checked}
+      disabled={disabled}
+      className={disabled ? 'cursor-not-allowed' : ''}
+      onCheckedChange={nextChecked =>
+        toggleRight(
+          { authority, nextChecked },
+          {
+            onSuccess: () => toast.success(t('rights.updateSuccess')),
+            onError: () => toast.error(t('rights.updateError')),
+          },
+        )
+      }
+    />
+  )
+}
 
 export function RightsPage(): React.ReactElement {
   const { t } = useTranslation()
@@ -27,7 +66,6 @@ export function RightsPage(): React.ReactElement {
   })
 
   const { data: allRoles } = useAllRoles()
-  const { mutateAsync: updateRoleRights, isPending } = useUpdateRoleRights()
 
   const roleRightSets = new Map(
     allRoles?.content?.map(role => [
@@ -36,52 +74,24 @@ export function RightsPage(): React.ReactElement {
     ]),
   )
 
-  function handleRoleRightsUpdate(
-    roleName: string,
-    authorityToUpdate: string,
-    nextChecked: boolean,
-  ): void {
-    const role = allRoles.content?.find(r => r.name === roleName)
-    if (!role) return
-
-    const currentAuthorities = role.rights?.map(right => right.authority) ?? []
-    const authorityPayload = nextChecked
-      ? [...currentAuthorities, authorityToUpdate]
-      : currentAuthorities.filter(a => a !== authorityToUpdate)
-
-    void updateRoleRights(
-      { name: roleName, authorities: authorityPayload },
-      {
-        onSuccess: () => toast.success(t('rights.updateSuccess')),
-        onError: () => toast.error(t('rights.updateError')),
-      },
-    )
-  }
-
   const roleColumns: ColumnDef<Right>[] =
     allRoles.content?.map(role => ({
       id: role.id ?? role.name,
       header: role.name,
-      cell: row => {
-        const isChecked =
-          roleRightSets.get(role.id)?.has(row.row.original.authority) ?? false
-        const isDisabled =
-          !role.editable || role.systemRole || role.protected || isPending
-        return (
-          <Checkbox
-            checked={isChecked}
-            disabled={isDisabled}
-            className={isDisabled ? 'cursor-not-allowed' : ''}
-            onCheckedChange={nextChecked =>
-              handleRoleRightsUpdate(
-                role.name,
-                row.row.original.authority,
-                nextChecked,
-              )
-            }
-          />
-        )
-      },
+      cell: row => (
+        <RoleRightCheckbox
+          roleName={role.name}
+          authority={row.row.original.authority}
+          checked={
+            roleRightSets.get(role.id)?.has(row.row.original.authority) ?? false
+          }
+          disabled={
+            !role.editable ||
+            role.systemRole === true ||
+            role.protected === true
+          }
+        />
+      ),
       enableSorting: false,
     })) || []
 
