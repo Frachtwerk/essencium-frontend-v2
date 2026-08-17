@@ -47,6 +47,12 @@ interface DataTableProps<TData, TValue> {
   /** Current sort state; when provided, sortable headers become clickable. */
   sorting?: SortingState
   onSortingChange?: OnChangeFn<SortingState>
+  /**
+   * Stable row identity. Without it TanStack Table falls back to the row index,
+   * so any change to `data` remounts the cells — which loses focus and drops
+   * pending per-call mutation callbacks. Supply this when cells hold state.
+   */
+  getRowId?: (row: TData, index: number) => string
 }
 
 /**
@@ -83,6 +89,7 @@ export function DataTable<TData, TValue>(
     rowCount: props.totalElements,
     pageCount: props.totalPages,
     getCoreRowModel: getCoreRowModel(),
+    ...(props.getRowId ? { getRowId: props.getRowId } : {}),
     onSortingChange: props.onSortingChange,
     initialState: {
       columnPinning: {

@@ -34,21 +34,17 @@ function RoleRightCheckbox({
   disabled,
 }: RoleRightCheckboxProps): React.ReactElement {
   const { t } = useTranslation()
-  const { mutate: toggleRight } = useToggleRoleRight(roleName)
+  const { mutate: toggleRight } = useToggleRoleRight(roleName, {
+    onSuccess: () =>
+      toast.success(t('rights.updateSuccess', { name: roleName })),
+    onError: () => toast.error(t('rights.updateError', { name: roleName })),
+  })
 
   return (
     <Checkbox
       checked={checked}
       disabled={disabled}
-      onCheckedChange={nextChecked =>
-        toggleRight(
-          { authority, nextChecked },
-          {
-            onSuccess: () => toast.success(t('rights.updateSuccess')),
-            onError: () => toast.error(t('rights.updateError')),
-          },
-        )
-      }
+      onCheckedChange={nextChecked => toggleRight({ authority, nextChecked })}
     />
   )
 }
@@ -125,6 +121,7 @@ export function RightsPage(): React.ReactElement {
       <DataTable
         columns={columns}
         data={allRights.content ?? []}
+        getRowId={right => right.authority}
         currentPage={page}
         totalPages={allRights.totalPages ?? 0}
         totalElements={allRights.totalElements ?? 0}

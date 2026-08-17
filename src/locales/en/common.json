@@ -275,7 +275,7 @@
   "rights": {
     "title": "Rights",
     "authority": "Name",
-    "updateSuccess": "The role has been updated successfully.",
-    "updateError": "Could not update role."
+    "updateSuccess": "The role {{name}} has been updated successfully.",
+    "updateError": "Could not update role {{name}}."
   }
 }

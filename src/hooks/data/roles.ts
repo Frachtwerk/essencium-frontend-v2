@@ -118,6 +118,18 @@ interface ToggleRoleRightContext {
 }
 
 /**
+ * Success/error side effects (toasts). These belong on the mutation itself
+ * rather than on the `mutate()` call: the optimistic cache write re-renders the
+ * matrix and remounts the table cell that issued the toggle, and per-call
+ * callbacks are dropped when their component unmounts before the request
+ * settles. Mutation-level callbacks always run.
+ */
+export interface ToggleRoleRightCallbacks {
+  onSuccess?: () => void
+  onError?: () => void
+}
+
+/**
  * Toggles a single right on the role identified by `roleName` (the API takes the
  * role name, not the id, as path param).
  *
@@ -131,6 +143,7 @@ interface ToggleRoleRightContext {
  */
 export function useToggleRoleRight(
   roleName: string,
+  callbacks: ToggleRoleRightCallbacks = {},
 ): UseMutationResult<
   Update2Response,
   Update2Error,
@@ -166,8 +179,10 @@ export function useToggleRoleRight(
 
       return { previousRoles }
     },
+    onSuccess: () => callbacks.onSuccess?.(),
     onError: (_error, _variables, context) => {
       queryClient.setQueryData(queryKey, context?.previousRoles)
+      callbacks.onError?.()
     },
     onSettled: invalidate,
   })
