@@ -40,7 +40,6 @@ function RoleRightCheckbox({
     <Checkbox
       checked={checked}
       disabled={disabled}
-      className={disabled ? 'cursor-not-allowed' : ''}
       onCheckedChange={nextChecked =>
         toggleRight(
           { authority, nextChecked },
