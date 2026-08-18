@@ -272,6 +272,7 @@
     "save": "Save",
     "saveSuccess": "Settings saved",
     "saveError": "Could not save settings"
+  },
   "rights": {
     "title": "Rights",
     "authority": "Name",
