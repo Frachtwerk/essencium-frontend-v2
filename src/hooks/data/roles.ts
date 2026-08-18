@@ -16,10 +16,13 @@ import type {
   FindAll1Error,
   Options,
   PageRole,
+  Update2Error,
+  Update2Response,
   UpdateObjectData,
   UpdateObjectError,
   UpdateObjectResponse,
 } from '@/generated/client'
+import { update2 } from '@/generated/client'
 import {
   create1Mutation,
   delete1Mutation,
@@ -47,14 +50,17 @@ export function useFindAllRoles(
   return useSuspenseQuery(getFindAllRolesQueryOptions(options))
 }
 
+/** All roles (single large page) — for select inputs and the rights matrix columns. */
+export function getAllRolesQueryOptions(): ReturnType<typeof findAll1Options> {
+  return findAll1Options({
+    client: authenticatedClient,
+    query: { page: 0, size: 1000, sort: ['name,asc'] },
+  })
+}
+
 /** All roles (single large page) — for select inputs. */
 export function useAllRoles(): UseSuspenseQueryResult<PageRole, FindAll1Error> {
-  return useSuspenseQuery(
-    findAll1Options({
-      client: authenticatedClient,
-      query: { page: 0, size: 1000, sort: ['name,asc'] },
-    }),
-  )
+  return useSuspenseQuery(getAllRolesQueryOptions())
 }
 
 function useInvalidateRoles(): () => void {
@@ -100,4 +106,127 @@ export function useDeleteRole(): UseMutationResult<
     ...delete1Mutation({ client: authenticatedClient }),
     onSuccess: invalidate,
   })
+}
+
+export interface ToggleRoleRightVariables {
+  authority: string
+  nextChecked: boolean
+}
+
+interface ToggleRoleRightContext {
+  previousRoles: PageRole | undefined
+}
+
+/**
+ * Success/error side effects (toasts). These belong on the mutation itself
+ * rather than on the `mutate()` call: the optimistic cache write re-renders the
+ * matrix and remounts the table cell that issued the toggle, and per-call
+ * callbacks are dropped when their component unmounts before the request
+ * settles. Mutation-level callbacks always run.
+ */
+export interface ToggleRoleRightCallbacks {
+  onSuccess?: () => void
+  onError?: () => void
+}
+
+/**
+ * Toggles a single right on the role identified by `roleName` (the API takes the
+ * role name, not the id, as path param).
+ *
+ * The authority list the API expects is derived inside the mutation from the
+ * *current* cache instead of from a snapshot captured during render, and the
+ * optimistic result is written back before the request starts. That way rapid
+ * consecutive toggles build on each other rather than overwriting one another.
+ * The mutation scope is per role name, so two updates to the same role are sent
+ * serially — the last response then reflects the last click — while updates to
+ * different roles still run in parallel.
+ */
+export function useToggleRoleRight(
+  roleName: string,
+  callbacks: ToggleRoleRightCallbacks = {},
+): UseMutationResult<
+  Update2Response,
+  Update2Error,
+  ToggleRoleRightVariables,
+  ToggleRoleRightContext
+> {
+  const queryClient = useQueryClient()
+  const invalidate = useInvalidateRoles()
+  const { queryKey } = getAllRolesQueryOptions()
+
+  return useMutation({
+    // Serializes concurrent updates to this role — see doc comment above.
+    scope: { id: `role-rights:${roleName}` },
+    mutationFn: async ({ authority, nextChecked }) => {
+      const roles = queryClient.getQueryData<PageRole>(queryKey)
+
+      const { data } = await update2({
+        client: authenticatedClient,
+        path: { name: roleName },
+        body: {
+          rights: nextAuthorities(roles, roleName, authority, nextChecked),
+        },
+        throwOnError: true,
+      })
+      return data
+    },
+    onMutate: ({ authority, nextChecked }) => {
+      const previousRoles = queryClient.getQueryData<PageRole>(queryKey)
+
+      queryClient.setQueryData<PageRole>(queryKey, current =>
+        applyRightToggle(current, roleName, authority, nextChecked),
+      )
+
+      return { previousRoles }
+    },
+    onSuccess: () => callbacks.onSuccess?.(),
+    onError: (_error, _variables, context) => {
+      queryClient.setQueryData(queryKey, context?.previousRoles)
+      callbacks.onError?.()
+    },
+    onSettled: invalidate,
+  })
+}
+
+/** The authority list to send for `roleName` after toggling `authority`. */
+export function nextAuthorities(
+  roles: PageRole | undefined,
+  roleName: string,
+  authority: string,
+  nextChecked: boolean,
+): string[] {
+  const role = roles?.content?.find(r => r.name === roleName)
+  const current = role?.rights?.map(right => right.authority) ?? []
+
+  return nextChecked
+    ? [...new Set([...current, authority])]
+    : current.filter(a => a !== authority)
+}
+
+/** A copy of the roles page with `authority` toggled on `roleName`. */
+export function applyRightToggle(
+  roles: PageRole | undefined,
+  roleName: string,
+  authority: string,
+  nextChecked: boolean,
+): PageRole | undefined {
+  if (!roles?.content) return roles
+
+  return {
+    ...roles,
+    content: roles.content.map(role => {
+      if (role.name !== roleName) return role
+
+      const rights = role.rights ?? []
+      if (!nextChecked) {
+        return {
+          ...role,
+          rights: rights.filter(right => right.authority !== authority),
+        }
+      }
+
+      if (rights.some(right => right.authority === authority)) return role
+      return { ...role, rights: [...rights, { authority }] }
+    }),
+  }
 }

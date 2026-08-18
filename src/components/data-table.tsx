@@ -5,6 +5,7 @@ import {
 } from '@remixicon/react'
 /* eslint-disable import-x/named -- import-x cannot statically resolve @tanstack/react-table's exports */
 import {
+  Column,
   flexRender,
   getCoreRowModel,
   useReactTable,
@@ -14,7 +15,7 @@ import {
   type SortingState,
 } from '@tanstack/react-table'
 /* eslint-enable import-x/named */
-import type { ReactNode } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import {
@@ -33,6 +34,7 @@ interface DataTableProps<TData, TValue> {
   totalPages: number
   totalElements: number
   currentPage: number
+  pinnedColumns?: string[]
   renderNextPageButton: (props: { disabled: boolean }) => ReactNode
   renderPreviousPageButton: (props: { disabled: boolean }) => ReactNode
   onRowClick?: (row: Row<TData>) => void
@@ -45,6 +47,12 @@ interface DataTableProps<TData, TValue> {
   /** Current sort state; when provided, sortable headers become clickable. */
   sorting?: SortingState
   onSortingChange?: OnChangeFn<SortingState>
+  /**
+   * Stable row identity. Without it TanStack Table falls back to the row index,
+   * so any change to `data` remounts the cells — which loses focus and drops
+   * pending per-call mutation callbacks. Supply this when cells hold state.
+   */
+  getRowId?: (row: TData, index: number) => string
 }
 
 /**
@@ -52,6 +60,23 @@ interface DataTableProps<TData, TValue> {
  * caller drives page/size via search params and supplies the page buttons.
  * Mirrors the eps-core DataTable pattern.
  */
+
+/**
+ * Offset of a left-pinned column. Stays an inline style because the value is
+ * computed from the widths of the preceding columns.
+ */
+function getPinningStyles<TData>(column: Column<TData>): CSSProperties {
+  const isPinned = column.getIsPinned()
+  return {
+    left: isPinned === 'left' ? `${column.getStart('left')}px` : undefined,
+  }
+}
+
+/** Static part of the pinning treatment — expressed as design tokens. */
+function getPinningClasses<TData>(column: Column<TData>): string {
+  return column.getIsPinned() ? 'bg-background sticky z-1' : 'relative z-0'
+}
+
 export function DataTable<TData, TValue>(
   props: Readonly<DataTableProps<TData, TValue>>,
 ): React.ReactElement {
@@ -64,7 +89,13 @@ export function DataTable<TData, TValue>(
     rowCount: props.totalElements,
     pageCount: props.totalPages,
     getCoreRowModel: getCoreRowModel(),
+    ...(props.getRowId ? { getRowId: props.getRowId } : {}),
     onSortingChange: props.onSortingChange,
+    initialState: {
+      columnPinning: {
+        left: props.pinnedColumns,
+      },
+    },
     state: {
       pagination: {
         pageIndex: props.currentPage,
@@ -76,7 +107,7 @@ export function DataTable<TData, TValue>(
 
   return (
     <div>
-      <div className="rounded-md border">
+      <div className="overflow-hidden rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map(headerGroup => (
@@ -94,7 +125,11 @@ export function DataTable<TData, TValue>(
                   }
                   const sorted = header.column.getIsSorted()
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead
+                      key={header.id}
+                      className={getPinningClasses(header.column)}
+                      style={getPinningStyles(header.column)}
+                    >
                       <button
                         type="button"
                         onClick={header.column.getToggleSortingHandler()}
@@ -134,7 +169,11 @@ export function DataTable<TData, TValue>(
                     }
                   >
                     {row.getVisibleCells().map(cell => (
-                      <TableCell key={cell.id}>
+                      <TableCell
+                        key={cell.id}
+                        className={getPinningClasses(cell.column)}
+                        style={getPinningStyles(cell.column)}
+                      >
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext(),
