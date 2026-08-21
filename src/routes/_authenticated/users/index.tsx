@@ -1,11 +1,9 @@
-import { createFileRoute, redirect } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router'
 import { z } from 'zod'
 
-import { getMeOptions } from '@/generated/client/@tanstack/react-query.gen'
 import { getFindAllUsersQueryOptions } from '@/hooks/data/users'
-import { authenticatedClient } from '@/lib/auth-store'
 import { paginationSearchParamsSchema } from '@/lib/pagination'
-import { getUserRights, hasRequiredRights, RIGHTS } from '@/lib/permissions'
+import { assertRights, RIGHTS } from '@/lib/permissions'
 import { UsersListPage } from '@/pages/users/users-list-page'
 
 const usersSearchSchema = paginationSearchParamsSchema.extend({
@@ -16,14 +14,8 @@ const usersSearchSchema = paginationSearchParamsSchema.extend({
 })
 
 export const Route = createFileRoute('/_authenticated/users/')({
-  beforeLoad: async ({ context: { queryClient } }) => {
-    const user = await queryClient.ensureQueryData(
-      getMeOptions({ client: authenticatedClient }),
-    )
-    if (!hasRequiredRights(getUserRights(user), RIGHTS.USER_READ)) {
-      // eslint-disable-next-line @typescript-eslint/only-throw-error
-      throw redirect({ to: '/' })
-    }
+  beforeLoad: async ({ context: { queryClient }, location }) => {
+    await assertRights(queryClient, RIGHTS.USER_READ, 'any', location.href)
   },
   component: UsersListPage,
   validateSearch: usersSearchSchema,

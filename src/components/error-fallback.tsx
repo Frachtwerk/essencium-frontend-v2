@@ -1,8 +1,10 @@
-import { useRouter } from '@tanstack/react-router'
+import { useSearch } from '@tanstack/react-router'
 import type { FallbackProps } from 'react-error-boundary'
 import { useTranslation } from 'react-i18next'
 
 import { Button } from '@/components/ui/button'
+import { LinkButton } from '@/components/ui/link-button'
+import { getAccessToken } from '@/lib/auth-store'
 
 function getErrorMessage(error: unknown): string | null {
   if (error instanceof Error) return error.message
@@ -15,13 +17,21 @@ export function FullPageError({
   resetErrorBoundary,
 }: FallbackProps): React.ReactElement {
   const { t } = useTranslation()
+  const isAuthenticated = getAccessToken() !== null
   return (
     <div className="flex min-h-svh flex-col items-center justify-center gap-4 p-4">
       <h1 className="text-2xl font-bold">{t('error.title')}</h1>
       <p className="text-muted-foreground max-w-md text-center">
         {getErrorMessage(error) ?? t('error.unknown')}
       </p>
-      <Button onClick={resetErrorBoundary}>{t('error.retry')}</Button>
+      <div className="flex flex-wrap items-center justify-center gap-2">
+        <Button onClick={resetErrorBoundary}>{t('error.retry')}</Button>
+        {isAuthenticated && (
+          <LinkButton variant="outline" to="/">
+            {t('common.toDashboard')}
+          </LinkButton>
+        )}
+      </div>
     </div>
   )
 }
@@ -44,20 +54,41 @@ export function ContentError({
   )
 }
 
-export function RouteError({
-  error,
-}: Readonly<{ error: unknown }>): React.ReactElement {
+export function NotFoundError(): React.ReactElement {
   const { t } = useTranslation()
-  const router = useRouter()
+  const isAuthenticated = getAccessToken() !== null
   return (
     <div className="flex min-h-svh flex-col items-center justify-center gap-4 p-4">
+      <h1 className="text-2xl font-bold">{t('error.notFoundTitle')}</h1>
+      <p className="text-muted-foreground max-w-md text-center">
+        {t('error.notFoundError')}
+      </p>
+      <LinkButton to={isAuthenticated ? '/' : '/login'}>
+        {isAuthenticated ? t('common.toDashboard') : t('auth.login')}
+      </LinkButton>
+    </div>
+  )
+}
+
+export function ForbiddenError(): React.ReactElement {
+  const { t } = useTranslation()
+  const { redirect: attemptedPath } = useSearch({
+    from: '/_authenticated/forbidden',
+  })
+  return (
+    <div className="flex flex-1 flex-col items-center justify-center gap-4 p-12">
       <h1 className="text-2xl font-bold">{t('error.title')}</h1>
       <p className="text-muted-foreground max-w-md text-center">
-        {getErrorMessage(error) ?? t('error.unknown')}
+        {t('error.forbiddenError')}
       </p>
-      <Button onClick={() => void router.invalidate()}>
-        {t('error.retry')}
-      </Button>
+      <div className="flex flex-wrap items-center justify-center gap-2">
+        <LinkButton to="/">{t('common.toDashboard')}</LinkButton>
+        {attemptedPath !== undefined && (
+          <LinkButton variant="outline" to={attemptedPath}>
+            {t('error.retry')}
+          </LinkButton>
+        )}
+      </div>
     </div>
   )
 }

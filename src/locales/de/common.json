@@ -42,12 +42,16 @@
     "nextPage": "Nächste Seite",
     "showPassword": "Passwort anzeigen",
     "hidePassword": "Passwort verbergen",
-    "clearSearch": "Suche zurücksetzen"
+    "clearSearch": "Suche zurücksetzen",
+    "toDashboard": "Zur Startseite"
   },
   "error": {
     "title": "Es ist ein Fehler aufgetreten",
     "unknown": "Ein unbekannter Fehler ist aufgetreten",
-    "retry": "Nochmal versuchen"
+    "retry": "Nochmal versuchen",
+    "forbiddenError": "Es fehlen Berechtigungen für diese Seite.",
+    "notFoundTitle": "Seite nicht gefunden",
+    "notFoundError": "Die aufgerufene Seite existiert nicht oder wurde verschoben."
   },
   "dashboard": {
     "greeting": "Willkommen zurück",

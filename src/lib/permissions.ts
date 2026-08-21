@@ -1,4 +1,9 @@
+import type { QueryClient } from '@tanstack/react-query'
+import { redirect } from '@tanstack/react-router'
+
+import { getMeOptions } from '@/generated/client/@tanstack/react-query.gen'
 import type { UserRepresentation } from '@/generated/client/types.gen'
+import { authenticatedClient } from '@/lib/auth-store'
 
 /**
  * Known backend authority names (rights). Rights are dynamic strings coming
@@ -60,4 +65,41 @@ export function hasRequiredRights(
   return mode === 'all'
     ? list.every(right => userRights.includes(right))
     : list.some(right => userRights.includes(right))
+}
+
+/**
+ * Loads the current user for use in route guards. The single place that knows
+ * how `/me` is fetched, so guards cannot drift on client or caching options.
+ */
+export async function loadCurrentUser(
+  queryClient: QueryClient,
+): Promise<UserRepresentation> {
+  return queryClient.ensureQueryData(
+    getMeOptions({ client: authenticatedClient }),
+  )
+}
+
+/**
+ * Route-guard helper: loads the current user and redirects to `/forbidden`
+ * unless they hold the required right(s). Returns the user so `beforeLoad`
+ * callers can pass it on through the route context.
+ *
+ * Pass `beforeLoad`'s `location.href` as `attemptedPath` so the forbidden page
+ * can offer a way back to where the user was headed.
+ */
+export async function assertRights(
+  queryClient: QueryClient,
+  requiredRights: Right | readonly Right[] | undefined,
+  mode: RightsMode = 'any',
+  attemptedPath?: string,
+): Promise<UserRepresentation> {
+  const user = await loadCurrentUser(queryClient)
+  if (!hasRequiredRights(getUserRights(user), requiredRights, mode)) {
+    // eslint-disable-next-line @typescript-eslint/only-throw-error
+    throw redirect({
+      to: '/forbidden',
+      search: attemptedPath ? { redirect: attemptedPath } : {},
+    })
+  }
+  return user
 }

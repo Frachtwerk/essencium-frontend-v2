@@ -2,7 +2,7 @@ import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 import { Suspense } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 
-import { ContentError, RouteError } from '@/components/error-fallback'
+import { ContentError } from '@/components/error-fallback'
 import { AppHeader } from '@/components/layout/app-header'
 import { AppSidebar } from '@/components/layout/app-sidebar'
 import { ContentSpinner, FullPageSpinner } from '@/components/spinner'
@@ -19,7 +19,6 @@ export const Route = createFileRoute('/_authenticated')({
   },
   component: AuthenticatedLayout,
   pendingComponent: FullPageSpinner,
-  errorComponent: RouteError,
 })
 
 function AuthenticatedLayout(): React.ReactElement {

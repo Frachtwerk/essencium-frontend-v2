@@ -1,12 +1,10 @@
-import { createFileRoute, redirect } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router'
 import { z } from 'zod'
 
-import { getMeOptions } from '@/generated/client/@tanstack/react-query.gen'
 import { getFindAllRightsQueryOptions } from '@/hooks/data/rights'
 import { getAllRolesQueryOptions } from '@/hooks/data/roles'
-import { authenticatedClient } from '@/lib/auth-store'
 import { paginationSearchParamsSchema } from '@/lib/pagination'
-import { getUserRights, hasRequiredRights, RIGHTS } from '@/lib/permissions'
+import { assertRights, RIGHTS } from '@/lib/permissions'
 import { RightsPage } from '@/pages/rights/rights-page'
 
 export const extendedPaginationSearchSchema =
@@ -15,20 +13,13 @@ export const extendedPaginationSearchSchema =
   })
 
 export const Route = createFileRoute('/_authenticated/rights')({
-  beforeLoad: async ({ context: { queryClient } }) => {
-    const user = await queryClient.ensureQueryData(
-      getMeOptions({ client: authenticatedClient }),
-    )
-    const rights = getUserRights(user)
-    const allowed = hasRequiredRights(
-      rights,
+  beforeLoad: async ({ context: { queryClient }, location }) => {
+    await assertRights(
+      queryClient,
       [RIGHTS.ROLE_UPDATE, RIGHTS.RIGHT_READ],
       'all',
+      location.href,
     )
-    if (!allowed) {
-      // eslint-disable-next-line @typescript-eslint/only-throw-error
-      throw redirect({ to: '/' })
-    }
   },
   component: RightsPage,
   validateSearch: extendedPaginationSearchSchema,

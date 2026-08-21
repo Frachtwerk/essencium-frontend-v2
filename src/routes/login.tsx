@@ -10,7 +10,6 @@ import type { FormEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
 
-import { RouteError } from '@/components/error-fallback'
 import { PasswordInput } from '@/components/password-input'
 import { ContentSpinner, FullPageSpinner } from '@/components/spinner'
 import { Button, buttonVariants } from '@/components/ui/button'
@@ -48,7 +47,6 @@ export const Route = createFileRoute('/login')({
   }),
   component: LoginPage,
   pendingComponent: FullPageSpinner,
-  errorComponent: RouteError,
 })
 
 type SsoProvider = { imageUrl: string; name: string; url: string }

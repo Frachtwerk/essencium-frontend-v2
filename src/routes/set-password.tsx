@@ -5,7 +5,6 @@ import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
 
-import { RouteError } from '@/components/error-fallback'
 import { FullPageSpinner } from '@/components/spinner'
 import { Button, buttonVariants } from '@/components/ui/button'
 import {
@@ -36,7 +35,6 @@ export const Route = createFileRoute('/set-password')({
   validateSearch: searchSchema,
   component: SetPasswordPage,
   pendingComponent: FullPageSpinner,
-  errorComponent: RouteError,
 })
 
 const setPasswordSchema = z
