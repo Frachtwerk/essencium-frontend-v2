@@ -34,17 +34,30 @@ export function getUserRights(user: UserRepresentation | undefined): string[] {
 }
 
 /**
- * Checks whether the user holds the required right(s).
- * - A single right: the user must hold exactly that right.
- * - An array of rights: the user must hold **at least one** of them (OR).
+ * How multiple required rights are combined:
+ * - `any` (default): the user must hold at least one of them (OR).
+ * - `all`: the user must hold every one of them (AND).
+ */
+export type RightsMode = 'any' | 'all'
+
+/**
+ * Checks whether the user holds the required right(s). This is the single place
+ * where AND/OR semantics live — route guards, the sidebar and `CanAccess` all
+ * gate through it so they cannot drift apart.
+ *
+ * - A single right: the user must hold exactly that right (`mode` is irrelevant).
+ * - An array of rights: combined via `mode` — see {@link RightsMode}.
  * - An empty array / undefined: always allowed (no restriction).
  */
 export function hasRequiredRights(
   userRights: readonly string[],
   required: Right | readonly Right[] | undefined,
+  mode: RightsMode = 'any',
 ): boolean {
   if (required === undefined) return true
   const list: readonly Right[] = Array.isArray(required) ? required : [required]
   if (list.length === 0) return true
-  return list.some(right => userRights.includes(right))
+  return mode === 'all'
+    ? list.every(right => userRights.includes(right))
+    : list.some(right => userRights.includes(right))
 }

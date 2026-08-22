@@ -25,7 +25,7 @@ export function AppSidebar(): React.ReactElement {
   const { can } = usePermissions()
   const pathname = useRouterState({ select: s => s.location.pathname })
 
-  const visibleItems = NAV_ITEMS.filter(item => can(item.rights))
+  const visibleItems = NAV_ITEMS.filter(item => can(item.rights, item.mode))
 
   return (
     <Sidebar collapsible="icon">
