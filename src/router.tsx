@@ -1,6 +1,6 @@
 import { createRouter } from '@tanstack/react-router'
 
-import { FullPageError, NotFoundError } from './components/error-fallback'
+import { NotFoundError, RouteError } from './components/error-fallback'
 import { queryClient, type RouterContext } from './routes/__root'
 import { routeTree } from './routeTree.gen'
 
@@ -18,9 +18,7 @@ const router = createRouter({
   defaultPreload: 'intent',
   notFoundMode: 'root',
   defaultNotFoundComponent: NotFoundError,
-  defaultErrorComponent: ({ error, reset }) => (
-    <FullPageError error={error} resetErrorBoundary={reset} />
-  ),
+  defaultErrorComponent: RouteError,
   defaultPendingComponent: FullPageSpinner,
   context: { queryClient } satisfies RouterContext,
 })
