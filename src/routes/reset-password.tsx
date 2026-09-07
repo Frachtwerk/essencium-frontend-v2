@@ -5,7 +5,6 @@ import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
 
-import { RouteError } from '@/components/error-fallback'
 import { FullPageSpinner } from '@/components/spinner'
 import { Button, buttonVariants } from '@/components/ui/button'
 import {
@@ -31,7 +30,6 @@ export const Route = createFileRoute('/reset-password')({
   },
   component: ResetPasswordPage,
   pendingComponent: FullPageSpinner,
-  errorComponent: RouteError,
 })
 
 const resetPasswordSchema = z.object({

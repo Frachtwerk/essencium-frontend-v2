@@ -1,14 +1,17 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
 import { z } from 'zod'
 
-import { getMeOptions } from '@/generated/client/@tanstack/react-query.gen'
 import {
   getFindAllAdminApiTokensQueryOptions,
   getFindAllApiTokensQueryOptions,
 } from '@/hooks/data/api-tokens'
-import { authenticatedClient } from '@/lib/auth-store'
 import { paginationSearchParamsSchema } from '@/lib/pagination'
-import { getUserRights, hasRequiredRights, RIGHTS } from '@/lib/permissions'
+import {
+  getUserRights,
+  hasRequiredRights,
+  loadCurrentUser,
+  RIGHTS,
+} from '@/lib/permissions'
 import { ApiTokensListPage } from '@/pages/api-tokens/api-tokens-list-page'
 
 const apiTokensSearchSchema = paginationSearchParamsSchema.extend({
@@ -23,16 +26,14 @@ const apiTokensSearchSchema = paginationSearchParamsSchema.extend({
 })
 
 export const Route = createFileRoute('/_authenticated/api-tokens')({
-  beforeLoad: async ({ context: { queryClient } }) => {
-    const user = await queryClient.ensureQueryData(
-      getMeOptions({ client: authenticatedClient }),
-    )
+  beforeLoad: async ({ context: { queryClient }, location }) => {
+    const user = await loadCurrentUser(queryClient)
     const userRights = getUserRights(user)
     const canSelf = hasRequiredRights(userRights, RIGHTS.API_TOKEN)
     const canAdmin = hasRequiredRights(userRights, RIGHTS.API_TOKEN_ADMIN)
     if (!canSelf && !canAdmin) {
       // eslint-disable-next-line @typescript-eslint/only-throw-error
-      throw redirect({ to: '/' })
+      throw redirect({ to: '/forbidden', search: { redirect: location.href } })
     }
     return { canSelf, canAdmin }
   },

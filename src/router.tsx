@@ -1,10 +1,12 @@
 import { createRouter } from '@tanstack/react-router'
 
+import { NotFoundError, RouteError } from './components/error-fallback'
 import { queryClient, type RouterContext } from './routes/__root'
 import { routeTree } from './routeTree.gen'
 
 import { FullPageSpinner } from '@/components/spinner'
 import { initAuth } from '@/lib/auth-store'
+
 import '@/lib/i18n'
 
 // Kick off token refresh in the browser only — localStorage is not available on the server.
@@ -14,6 +16,9 @@ const router = createRouter({
   routeTree,
   scrollRestoration: true,
   defaultPreload: 'intent',
+  notFoundMode: 'root',
+  defaultNotFoundComponent: NotFoundError,
+  defaultErrorComponent: RouteError,
   defaultPendingComponent: FullPageSpinner,
   context: { queryClient } satisfies RouterContext,
 })
