@@ -15,5 +15,11 @@
     },
     "lib": ["ES2025", "DOM", "DOM.Iterable"]
   },
-  "include": ["src", "vite.config.ts", "openapi-ts.config.ts"]
+  "include": [
+    "src",
+    "tests",
+    "vite.config.ts",
+    "vitest.config.ts",
+    "openapi-ts.config.ts"
+  ]
 }

@@ -11,7 +11,7 @@ concurrency:
 
 jobs:
   ci:
-    name: Lint, Type-Check & Build
+    name: Lint, Test, Type-Check & Build
     runs-on: ubuntu-latest
 
     steps:
@@ -36,6 +36,9 @@ jobs:
       # required by lint/type-check. Generate them before those steps.
       - name: Generate API client and route tree
         run: pnpm generate
+
+      - name: Unit tests
+        run: pnpm test
 
       - name: Lint
         run: pnpm lint
