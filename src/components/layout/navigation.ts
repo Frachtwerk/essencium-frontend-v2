@@ -4,6 +4,7 @@ import {
   RiKeyLine,
   RiShieldCheckLine,
   RiShieldKeyholeLine,
+  RiTranslate2,
   type RemixiconComponentType,
 } from '@remixicon/react'
 import type { LinkProps } from '@tanstack/react-router'
@@ -57,5 +58,11 @@ export const NAV_ITEMS: readonly NavItem[] = [
     to: '/api-tokens',
     icon: RiKeyLine,
     rights: [RIGHTS.API_TOKEN, RIGHTS.API_TOKEN_ADMIN],
+  },
+  {
+    labelKey: 'navigation.translations',
+    to: '/translations',
+    icon: RiTranslate2,
+    rights: RIGHTS.TRANSLATION_READ,
   },
 ]
