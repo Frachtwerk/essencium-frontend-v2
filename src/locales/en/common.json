@@ -31,6 +31,7 @@
     "save": "Save",
     "saving": "Saving…",
     "cancel": "Cancel",
+    "back": "Back",
     "edit": "Edit",
     "delete": "Delete",
     "copy": "Copy",
@@ -72,6 +73,7 @@
     "dashboard": "Dashboard",
     "users": "Users",
     "roles": "Roles",
+    "translations": "Translations",
     "apiTokens": "API tokens",
     "rights": "Rights",
     "profile": "Profile",
@@ -200,6 +202,20 @@
         }
       }
     }
+  },
+  "translations": {
+    "title": "Translations",
+    "locale": {
+      "de": "German",
+      "en": "English"
+    },
+    "searchPlaceholder": "Search key or text",
+    "saveSuccess": "Translation saved",
+    "saveError": "Translation could not be saved",
+    "deleteTitle": "Delete translation",
+    "deleteConfirm": "Do you really want to delete the key \"{{key}}\" for all languages? This cannot be undone.",
+    "deleteSuccess": "Translation deleted",
+    "deleteError": "Translation could not be deleted"
   },
   "apiTokens": {
     "title": "API tokens",
