@@ -5,6 +5,7 @@ import { AllApiTokensView } from './components/all-api-tokens-view'
 import { MyApiTokensView } from './components/my-api-tokens-view'
 
 import { PageHeader } from '@/components/layout/page-header'
+import { PageWrapper } from '@/components/layout/page-wrapper'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { usePermissions } from '@/hooks/use-permissions'
 import { RIGHTS } from '@/lib/permissions'
@@ -29,7 +30,7 @@ export function ApiTokensListPage(): React.ReactElement | null {
 
   if (canSelf && canAdmin) {
     return (
-      <div className="space-y-6 p-6">
+      <PageWrapper className="space-y-6">
         <PageHeader title={t('apiTokens.title')} />
         <Tabs
           value={activeTab}
@@ -54,23 +55,23 @@ export function ApiTokensListPage(): React.ReactElement | null {
             <AllApiTokensView hideTitle />
           </TabsContent>
         </Tabs>
-      </div>
+      </PageWrapper>
     )
   }
 
   if (canAdmin) {
     return (
-      <div className="p-6">
+      <PageWrapper>
         <AllApiTokensView />
-      </div>
+      </PageWrapper>
     )
   }
 
   if (canSelf) {
     return (
-      <div className="p-6">
+      <PageWrapper>
         <MyApiTokensView />
-      </div>
+      </PageWrapper>
     )
   }
 

@@ -6,6 +6,7 @@ import { toast } from 'sonner'
 
 import { DataTable } from '@/components/data-table'
 import { PageHeader } from '@/components/layout/page-header'
+import { PageWrapper } from '@/components/layout/page-wrapper'
 import { Checkbox } from '@/components/ui/checkbox'
 import { LinkButton } from '@/components/ui/link-button'
 import { Right } from '@/generated/client'
@@ -116,7 +117,7 @@ export function RightsPage(): React.ReactElement {
   }
 
   return (
-    <div className="space-y-6 p-6">
+    <PageWrapper className="space-y-6">
       <PageHeader title={t('rights.title')} />
       <DataTable
         columns={columns}
@@ -155,6 +156,6 @@ export function RightsPage(): React.ReactElement {
           </LinkButton>
         )}
       />
-    </div>
+    </PageWrapper>
   )
 }

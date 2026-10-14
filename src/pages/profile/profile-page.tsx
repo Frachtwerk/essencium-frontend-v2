@@ -15,6 +15,7 @@ import {
 } from './profile-form-schema'
 
 import { PageHeader } from '@/components/layout/page-header'
+import { PageWrapper } from '@/components/layout/page-wrapper'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useAuth } from '@/context/auth-context'
 import {
@@ -112,7 +113,7 @@ export function ProfilePage(): React.ReactElement {
   const isSso = isSsoManaged(currentUser.source)
 
   return (
-    <div className="p-6">
+    <PageWrapper>
       <PageHeader title={t('profile.title')} />
       {isSso ? (
         <div className="w-[600px]">
@@ -153,6 +154,6 @@ export function ProfilePage(): React.ReactElement {
           </TabsContent>
         </Tabs>
       )}
-    </div>
+    </PageWrapper>
   )
 }
