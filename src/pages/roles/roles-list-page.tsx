@@ -15,6 +15,7 @@ import { RoleFormDialog } from './role-form-dialog'
 
 import { DataTable } from '@/components/data-table'
 import { PageHeader } from '@/components/layout/page-header'
+import { PageWrapper } from '@/components/layout/page-wrapper'
 import { CanAccess } from '@/components/shared/can-access'
 import {
   AlertDialog,
@@ -133,7 +134,7 @@ export function RolesListPage(): React.ReactElement {
   ]
 
   return (
-    <div className="space-y-6 p-6">
+    <PageWrapper className="space-y-6">
       <PageHeader
         title={t('roles.title')}
         actions={
@@ -208,6 +209,6 @@ export function RolesListPage(): React.ReactElement {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </div>
+    </PageWrapper>
   )
 }

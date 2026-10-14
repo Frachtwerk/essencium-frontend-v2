@@ -98,15 +98,25 @@ function FormItem({
 
 function FormLabel({
   className,
+  required,
+  children,
   ...props
-}: ComponentProps<typeof Label>): React.ReactElement {
+}: ComponentProps<typeof Label> & { required?: boolean }): React.ReactElement {
   const { error, formItemId } = useFormField()
   return (
     <Label
       htmlFor={formItemId}
       className={cn(error && 'text-destructive-400', className)}
       {...props}
-    />
+    >
+      {children}
+
+      {required && (
+        <span className="text-destructive-400 -ml-0.5" aria-hidden>
+          *
+        </span>
+      )}
+    </Label>
   )
 }
 
@@ -152,11 +162,18 @@ function FormMessage({
   // Validation messages are i18n keys. i18next returns the input unchanged for
   // unknown keys, so this is a safe pass-through for non-key strings too.
   const body = error ? t(error as ParseKeys) : children
-  if (!body) return null
+  // Reserve one line when there is no message so the layout doesn't jump.
+  if (!body) {
+    return (
+      <p className="text-xs" aria-hidden>
+        &nbsp;
+      </p>
+    )
+  }
   return (
     <p
       id={formMessageId}
-      className={cn('text-destructive-400 text-sm font-medium', className)}
+      className={cn('text-destructive-400 pl-1 text-xs font-medium', className)}
       {...props}
     >
       {body}

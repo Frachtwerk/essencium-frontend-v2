@@ -3,6 +3,7 @@ import { Suspense } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 
 import { ContentError } from '@/components/error-fallback'
+import { AppFooter } from '@/components/layout/app-footer'
 import { AppHeader } from '@/components/layout/app-header'
 import { AppSidebar } from '@/components/layout/app-sidebar'
 import { ContentSpinner, FullPageSpinner } from '@/components/spinner'
@@ -27,11 +28,14 @@ function AuthenticatedLayout(): React.ReactElement {
       <AppSidebar />
       <SidebarInset>
         <AppHeader />
-        <ErrorBoundary FallbackComponent={ContentError}>
-          <Suspense fallback={<ContentSpinner />}>
-            <Outlet />
-          </Suspense>
-        </ErrorBoundary>
+        <main className="flex-1">
+          <ErrorBoundary FallbackComponent={ContentError}>
+            <Suspense fallback={<ContentSpinner />}>
+              <Outlet />
+            </Suspense>
+          </ErrorBoundary>
+        </main>
+        <AppFooter />
       </SidebarInset>
     </SidebarProvider>
   )

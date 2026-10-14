@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
 import { PageHeader } from '@/components/layout/page-header'
+import { PageWrapper } from '@/components/layout/page-wrapper'
 import { Button } from '@/components/ui/button'
 import {
   Field,
@@ -90,7 +91,7 @@ export function SettingsPage(): React.ReactElement {
   }
 
   return (
-    <div className="p-6">
+    <PageWrapper>
       <PageHeader title={t('settings.title')} />
 
       <div className="max-w-2xl space-y-8">
@@ -160,6 +161,6 @@ export function SettingsPage(): React.ReactElement {
           </Button>
         </div>
       </div>
-    </div>
+    </PageWrapper>
   )
 }
