@@ -3,6 +3,7 @@ import { Suspense, useState } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 
 import { ContentError } from '@/components/error-fallback'
+import { AppFooter } from '@/components/layout/app-footer'
 import { AppHeader } from '@/components/layout/app-header'
 import { AppSidebar } from '@/components/layout/app-sidebar'
 import { CommandMenu } from '@/components/layout/command-menu'
@@ -31,11 +32,14 @@ function AuthenticatedLayout(): React.ReactElement {
       <SidebarInset>
         <AppHeader onOpenSearch={() => setSearchOpen(true)} />
         <CommandMenu open={searchOpen} onOpenChange={setSearchOpen} />
-        <ErrorBoundary FallbackComponent={ContentError}>
-          <Suspense fallback={<ContentSpinner />}>
-            <Outlet />
-          </Suspense>
-        </ErrorBoundary>
+        <div className="flex-1">
+          <ErrorBoundary FallbackComponent={ContentError}>
+            <Suspense fallback={<ContentSpinner />}>
+              <Outlet />
+            </Suspense>
+          </ErrorBoundary>
+        </div>
+        <AppFooter />
       </SidebarInset>
     </SidebarProvider>
   )
