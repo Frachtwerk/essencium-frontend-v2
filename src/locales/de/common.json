@@ -313,5 +313,18 @@
     "contactInformationText": "Wenn Sie Fragen zu dieser Datenschutzerklärung haben oder Ihre Rechte bezüglich Ihrer personenbezogenen Daten ausüben möchten, kontaktieren Sie uns bitte unter:",
     "email": "E-Mail: {{email}}",
     "phone": "Telefon: {{phone}}"
+  },
+  "legalNotice": {
+    "title": "Impressum",
+    "companyInformation": "Angaben gemäß § 5 DDG",
+    "country": "Deutschland",
+    "phone": "Telefon: {{phone}}",
+    "email": "E-Mail: {{email}}",
+    "managingDirector": "Geschäftsführer: {{name}}",
+    "regulatoryAuthority": "Aufsichtsbehörde",
+    "disclaimer": "Haftungsausschluss",
+    "disclaimerText": "Trotz sorgfältiger inhaltlicher Kontrolle übernehmen wir keine Haftung für die Inhalte externer Links. Für den Inhalt der verlinkten Seiten sind ausschließlich deren Betreiber verantwortlich.",
+    "copyright": "Urheberrecht",
+    "copyrightText": "Die von den Seitenbetreibern erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechts bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers."
   }
 }
