@@ -7,6 +7,8 @@
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react-jsx",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
     "noEmit": true,
     "skipLibCheck": true,
     "types": ["vite/client", "node"],
