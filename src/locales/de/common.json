@@ -318,5 +318,22 @@
     "disclaimerText": "Trotz sorgfältiger inhaltlicher Kontrolle übernehmen wir keine Haftung für die Inhalte externer Links. Für den Inhalt der verlinkten Seiten sind ausschließlich deren Betreiber verantwortlich.",
     "copyright": "Urheberrecht",
     "copyrightText": "Die von den Seitenbetreibern erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechts bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers."
+  },
+  "contact": {
+    "title": "Kontakt",
+    "description": "Schreib uns eine Nachricht – wir melden uns bei dir.",
+    "contactPerson": "Ansprechpartnerin",
+    "form": {
+      "subject": "Betreff",
+      "message": "Nachricht"
+    },
+    "send": "Senden",
+    "sending": "Wird gesendet…",
+    "sendSuccess": "Deine Nachricht wurde gesendet.",
+    "sendError": "Die Nachricht konnte nicht gesendet werden.",
+    "validation": {
+      "subject": "Bitte einen Betreff eingeben",
+      "message": "Bitte eine Nachricht eingeben"
+    }
   }
 }
