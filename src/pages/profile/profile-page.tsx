@@ -16,6 +16,7 @@ import {
 import { ProfileOverviewCard } from './profile-overview-card'
 
 import { PageHeader } from '@/components/layout/page-header'
+import { PageWrapper } from '@/components/layout/page-wrapper'
 import { Card, CardContent } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useAuth } from '@/context/auth-context'
@@ -115,7 +116,7 @@ export function ProfilePage(): React.ReactElement {
   const isSso = isSsoManaged(currentUser.source)
 
   return (
-    <div className="p-6">
+    <PageWrapper>
       <PageHeader title={t('profile.title')} />
 
       <div className="flex flex-col gap-2 lg:flex-row lg:gap-6">
@@ -167,6 +168,6 @@ export function ProfilePage(): React.ReactElement {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </PageWrapper>
   )
 }
