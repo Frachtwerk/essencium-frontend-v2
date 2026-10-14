@@ -28,6 +28,11 @@
   },
   "common": {
     "appName": "Essencium",
+    "privacy": "Privacy policy",
+    "legalNotice": "Legal notice",
+    "contact": "Contact",
+    "footerNavigation": "Footer",
+    "licenseVersion": "© {{year}} Essencium license · Version {{version}}",
     "save": "Save",
     "saving": "Saving…",
     "cancel": "Cancel",
