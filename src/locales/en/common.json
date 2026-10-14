@@ -298,5 +298,20 @@
     "authority": "Name",
     "updateSuccess": "The role {{name}} has been updated successfully.",
     "updateError": "Could not update role {{name}}."
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "introduction": "Introduction",
+    "introductionText": "This Privacy Policy explains how our company collects, uses, and protects your personal data. We are committed to ensuring that your privacy is protected. In this policy, you will find details about how we handle your information.",
+    "dataCollection": "Data Collection",
+    "dataCollectionText": "We collect information that you provide directly to us, such as when you create an account, subscribe to our newsletter, or contact us with inquiries. This may include your name, email address, phone number, and other personal details.",
+    "dataUsage": "Data Usage",
+    "dataUsageText": "The data we collect is used to improve our services, maintain our website, and communicate with you. We may use your information to personalize your experience and inform you of updates or new services that we offer.",
+    "dataProtection": "Data Protection",
+    "dataProtectionText": "We implement a variety of security measures to ensure the safety of your personal data. These measures include secure data storage, encryption, and regular security reviews. Our data protection practices comply with current legal standards.",
+    "contactInformation": "Contact Information",
+    "contactInformationText": "If you have any questions about this Privacy Policy or wish to exercise your rights regarding your personal data, please contact us at:",
+    "email": "Email: {{email}}",
+    "phone": "Phone: {{phone}}"
   }
 }
