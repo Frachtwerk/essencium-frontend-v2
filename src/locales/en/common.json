@@ -305,5 +305,18 @@
     "contactInformationText": "If you have any questions about this Privacy Policy or wish to exercise your rights regarding your personal data, please contact us at:",
     "email": "Email: {{email}}",
     "phone": "Phone: {{phone}}"
+  },
+  "legalNotice": {
+    "title": "Legal Notice",
+    "companyInformation": "Company Information",
+    "country": "Germany",
+    "phone": "Phone: {{phone}}",
+    "email": "Email: {{email}}",
+    "managingDirector": "Managing Director: {{name}}",
+    "regulatoryAuthority": "Regulatory Authority",
+    "disclaimer": "Disclaimer",
+    "disclaimerText": "Despite careful review of content, we assume no liability for the content of external links. The providers of the linked pages are solely responsible for their content.",
+    "copyright": "Copyright",
+    "copyrightText": "The content and works created by the site operators on these pages are subject to German copyright law. Reproduction, processing, distribution and any form of commercialization beyond the scope of copyright law require the written consent of the respective author or creator."
   }
 }
