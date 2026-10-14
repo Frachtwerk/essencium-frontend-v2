@@ -290,5 +290,20 @@
     "authority": "Name",
     "updateSuccess": "Die Rolle {{name}} wurde erfolgreich geändert.",
     "updateError": "Die Rolle {{name}} konnte nicht geändert werden."
+  },
+  "privacy": {
+    "title": "Datenschutzerklärung",
+    "introduction": "Einleitung",
+    "introductionText": "Diese Datenschutzerklärung erläutert, wie unser Unternehmen Ihre personenbezogenen Daten erhebt, verwendet und schützt. Wir setzen uns dafür ein, dass Ihre Privatsphäre geschützt wird. In dieser Erklärung erfahren Sie, wie wir mit Ihren Informationen umgehen.",
+    "dataCollection": "Datenerhebung",
+    "dataCollectionText": "Wir erheben Informationen, die Sie uns direkt mitteilen, zum Beispiel wenn Sie ein Konto erstellen, unseren Newsletter abonnieren oder uns eine Anfrage senden. Dazu können Ihr Name, Ihre E-Mail-Adresse, Ihre Telefonnummer und weitere persönliche Angaben gehören.",
+    "dataUsage": "Datennutzung",
+    "dataUsageText": "Die erhobenen Daten nutzen wir, um unsere Dienste zu verbessern, unsere Website zu betreiben und mit Ihnen zu kommunizieren. Wir können Ihre Informationen verwenden, um Ihr Erlebnis zu personalisieren und Sie über Neuerungen oder neue Dienste zu informieren.",
+    "dataProtection": "Datenschutz und Sicherheit",
+    "dataProtectionText": "Wir setzen verschiedene Sicherheitsmaßnahmen ein, um Ihre personenbezogenen Daten zu schützen. Dazu gehören sichere Datenspeicherung, Verschlüsselung und regelmäßige Sicherheitsprüfungen. Unsere Datenschutzpraktiken entsprechen den geltenden rechtlichen Standards.",
+    "contactInformation": "Kontakt",
+    "contactInformationText": "Wenn Sie Fragen zu dieser Datenschutzerklärung haben oder Ihre Rechte bezüglich Ihrer personenbezogenen Daten ausüben möchten, kontaktieren Sie uns bitte unter:",
+    "email": "E-Mail: {{email}}",
+    "phone": "Telefon: {{phone}}"
   }
 }
