@@ -5,7 +5,7 @@ import {
   redirect,
   useNavigate,
 } from '@tanstack/react-router'
-import { Suspense, useEffect, useState } from 'react'
+import { Suspense, useEffect, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
@@ -48,6 +48,8 @@ export const Route = createFileRoute('/login')({
   component: LoginPage,
   pendingComponent: FullPageSpinner,
 })
+
+const REDIRECT_KEY = 'redirectAfterLogin'
 
 type SsoProvider = { imageUrl: string; name: string; url: string }
 
@@ -92,22 +94,30 @@ function SsoSection(): React.ReactElement | null {
 
 function LoginPage(): React.ReactElement {
   const { t } = useTranslation()
+
   const { login } = useAuth()
+
   const navigate = useNavigate()
+
   const { token: oauthToken, redirect: redirectTo } = Route.useSearch()
+
   const [email, setEmail] = useState('')
+
   const [password, setPassword] = useState('')
 
-  // Handle OAuth token returned from backend redirect
-  useEffect(() => {
-    if (!oauthToken) return
-    setAccessToken(oauthToken)
-    void navigate({ to: redirectTo ?? '/' })
-  }, [oauthToken, redirectTo, navigate])
+  const oauthCallbackHandledRef = useRef(false)
+
+  const takeRedirectTarget = (): string => {
+    const target = sessionStorage.getItem(REDIRECT_KEY)
+
+    sessionStorage.removeItem(REDIRECT_KEY)
+
+    return target?.startsWith('/') ? target : '/'
+  }
 
   const loginMutation = useMutation({
     mutationFn: () => login(email, password),
-    onSuccess: () => void navigate({ to: '/' }),
+    onSuccess: () => void navigate({ href: takeRedirectTarget() }),
   })
 
   function handleSubmit(e: FormEvent<HTMLFormElement>): void {
@@ -120,6 +130,21 @@ function LoginPage(): React.ReactElement {
       ? loginMutation.error.message
       : t('auth.loginFailed')
     : null
+
+  // Handle OAuth token returned from backend redirect
+  useEffect(() => {
+    if (!oauthToken || oauthCallbackHandledRef.current) return
+
+    setAccessToken(oauthToken)
+
+    oauthCallbackHandledRef.current = true
+
+    void navigate({ href: takeRedirectTarget() })
+  }, [oauthToken, navigate])
+
+  useEffect(() => {
+    if (redirectTo) sessionStorage.setItem(REDIRECT_KEY, redirectTo)
+  }, [redirectTo])
 
   // Show spinner while processing OAuth callback token
   if (oauthToken) {
@@ -149,9 +174,12 @@ function LoginPage(): React.ReactElement {
             alt={t('common.appName')}
             className="mb-2 hidden h-9 dark:block"
           />
+
           <CardTitle className="text-xl">{t('auth.login')}</CardTitle>
+
           <CardDescription>{t('auth.loginSubtitle')}</CardDescription>
         </CardHeader>
+
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             {errorMessage && (
@@ -159,8 +187,10 @@ function LoginPage(): React.ReactElement {
                 {errorMessage}
               </div>
             )}
+
             <div className="space-y-2">
               <Label htmlFor="email">{t('auth.email')}</Label>
+
               <Input
                 id="email"
                 type="email"
@@ -171,6 +201,7 @@ function LoginPage(): React.ReactElement {
                 autoComplete="email"
               />
             </div>
+
             <div className="space-y-2">
               <Label htmlFor="password">{t('auth.password')}</Label>
               <PasswordInput
@@ -181,6 +212,7 @@ function LoginPage(): React.ReactElement {
                 autoComplete="current-password"
               />
             </div>
+
             <Button
               type="submit"
               className="w-full"
@@ -190,6 +222,7 @@ function LoginPage(): React.ReactElement {
                 ? t('auth.loginPending')
                 : t('auth.login')}
             </Button>
+
             <div className="text-center">
               <Link
                 to="/reset-password"
@@ -199,6 +232,7 @@ function LoginPage(): React.ReactElement {
               </Link>
             </div>
           </form>
+
           <Suspense fallback={null}>
             <SsoSection />
           </Suspense>

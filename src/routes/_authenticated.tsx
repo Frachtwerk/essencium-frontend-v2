@@ -10,11 +10,11 @@ import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
 import { getAccessToken, waitForAuth } from '@/lib/auth-store'
 
 export const Route = createFileRoute('/_authenticated')({
-  beforeLoad: async () => {
+  beforeLoad: async ({ location }) => {
     await waitForAuth()
     if (!getAccessToken()) {
       // eslint-disable-next-line @typescript-eslint/only-throw-error
-      throw redirect({ to: '/login' })
+      throw redirect({ to: '/login', search: { redirect: location.href } })
     }
   },
   component: AuthenticatedLayout,
