@@ -164,7 +164,10 @@ export function initAuth(): Promise<void> {
       if (!accessToken) return
       try {
         const refreshed = await refreshToken()
-        if (!refreshed) setAccessToken(null)
+        // SSO logins have no refresh cookie on this domain, so a failed renew
+        // is fine as long as the stored token itself is still valid.
+        const remaining = getTokenExpiry(accessToken)
+        if (!refreshed && !(remaining && remaining > 0)) setAccessToken(null)
       } catch {
         setAccessToken(null)
       }
