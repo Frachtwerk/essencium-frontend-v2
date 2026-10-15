@@ -9,6 +9,14 @@ import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { SidebarTrigger } from '@/components/ui/sidebar'
 
+/** Mac keyboards show ⌘ for the shortcut, everything else Ctrl (Strg on German keyboards). */
+function isMacPlatform(): boolean {
+  return (
+    typeof navigator !== 'undefined' &&
+    /Mac|iPhone|iPad/.test(navigator.userAgent)
+  )
+}
+
 interface AppHeaderProps {
   onOpenSearch: () => void
 }
@@ -34,7 +42,10 @@ export function AppHeader({
           <RiSearchLine className="size-4" />
           <span className="hidden sm:inline">{t('search.placeholder')}</span>
           <kbd className="bg-muted text-muted-foreground pointer-events-none hidden h-5 items-center gap-0.5 rounded border px-1.5 font-mono text-[10px] font-medium select-none sm:inline-flex">
-            <span className="text-xs">⌘</span>K
+            <span className="text-xs">
+              {isMacPlatform() ? '⌘' : t('search.ctrlKey')}
+            </span>
+            K
           </kbd>
         </Button>
         <EnvironmentBadge />

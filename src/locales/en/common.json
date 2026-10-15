@@ -83,7 +83,8 @@
     "placeholder": "Search…",
     "buttonLabel": "Open search",
     "nothingFound": "No results found.",
-    "groupNavigation": "Navigation"
+    "groupNavigation": "Navigation",
+    "ctrlKey": "Ctrl"
   },
   "theme": {
     "toggle": "Toggle theme",

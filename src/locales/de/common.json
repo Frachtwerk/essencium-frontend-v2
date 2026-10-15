@@ -83,7 +83,8 @@
     "placeholder": "Suchen…",
     "buttonLabel": "Suche öffnen",
     "nothingFound": "Keine Ergebnisse gefunden.",
-    "groupNavigation": "Navigation"
+    "groupNavigation": "Navigation",
+    "ctrlKey": "Strg"
   },
   "theme": {
     "toggle": "Erscheinungsbild umschalten",
