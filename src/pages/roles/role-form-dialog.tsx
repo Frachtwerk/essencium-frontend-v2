@@ -66,11 +66,6 @@ export function RoleFormDialog({
   })
 
   function handleSubmit(values: RoleFormValues): void {
-    const body: RoleDto = {
-      name: values.name,
-      description: values.description || undefined,
-      rights: values.rights,
-    }
     const callbacks = {
       onSuccess: () => {
         toast.success(
@@ -81,8 +76,24 @@ export function RoleFormDialog({
       onError: () => toast.error(t('roles.saveError')),
     }
     if (role) {
-      updateRole.mutate({ path: { name: role.name }, body }, callbacks)
+      // PATCH: name is immutable, and an emptied description must be sent as
+      // null — an omitted field would keep the old value.
+      updateRole.mutate(
+        {
+          path: { name: role.name },
+          body: {
+            description: values.description || null,
+            rights: values.rights,
+          },
+        },
+        callbacks,
+      )
     } else {
+      const body: RoleDto = {
+        name: values.name,
+        description: values.description || undefined,
+        rights: values.rights,
+      }
       createRole.mutate({ body }, callbacks)
     }
   }
