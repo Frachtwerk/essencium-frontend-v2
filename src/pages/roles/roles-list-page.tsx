@@ -32,6 +32,7 @@ import { LinkButton } from '@/components/ui/link-button'
 import type { Role } from '@/generated/client/types.gen'
 import { useDeleteRole, useFindAllRoles } from '@/hooks/data/roles'
 import { RIGHTS } from '@/lib/permissions'
+import { isRoleLocked } from '@/lib/roles'
 
 const route = getRouteApi('/_authenticated/roles')
 
@@ -104,7 +105,7 @@ export function RolesListPage(): React.ReactElement {
       cell: ({ row }) => (
         <div className="flex justify-end gap-1">
           <CanAccess rights={RIGHTS.ROLE_UPDATE}>
-            {row.original.editable !== false && (
+            {!isRoleLocked(row.original) && (
               <Button
                 variant="ghost"
                 size="icon"
