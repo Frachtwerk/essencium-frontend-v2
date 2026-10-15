@@ -31,61 +31,61 @@ export function ChangePasswordForm({
     <Form {...form}>
       <form
         onSubmit={e => void form.handleSubmit(onSubmit)(e)}
-        className="max-w-2xl space-y-6"
+        className="space-y-6"
       >
-        <FormField
-          control={form.control}
-          name="currentPassword"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>
-                {t('profile.tabs.changePassword.form.currentPassword')}
-              </FormLabel>
-              <FormControl>
-                <PasswordInput autoComplete="current-password" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="grid grid-cols-1 gap-6 lg:w-1/2">
+          <FormField
+            control={form.control}
+            name="currentPassword"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  {t('profile.tabs.changePassword.form.currentPassword')}
+                </FormLabel>
+                <FormControl>
+                  <PasswordInput autoComplete="current-password" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name="newPassword"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>
-                {t('profile.tabs.changePassword.form.newPassword')}
-              </FormLabel>
-              <FormControl>
-                <PasswordInput autoComplete="new-password" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          <FormField
+            control={form.control}
+            name="newPassword"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  {t('profile.tabs.changePassword.form.newPassword')}
+                </FormLabel>
+                <FormControl>
+                  <PasswordInput autoComplete="new-password" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name="passwordConfirmation"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>
-                {t('profile.tabs.changePassword.form.passwordConfirmation')}
-              </FormLabel>
-              <FormControl>
-                <PasswordInput autoComplete="new-password" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <div className="flex justify-end">
-          <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? t('common.saving') : t('common.save')}
-          </Button>
+          <FormField
+            control={form.control}
+            name="passwordConfirmation"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  {t('profile.tabs.changePassword.form.passwordConfirmation')}
+                </FormLabel>
+                <FormControl>
+                  <PasswordInput autoComplete="new-password" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
+
+        <Button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? t('common.saving') : t('common.save')}
+        </Button>
       </form>
     </Form>
   )
