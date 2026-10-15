@@ -59,6 +59,9 @@ function SsoSection(): React.ReactElement | null {
     getRegistrationsOptions({ client: baseClient }),
   )
   const appUrl = import.meta.env.VITE_APP_URL ?? window.location.origin
+
+  const ssoBaseUrl = import.meta.env.VITE_BACKEND_URL ?? API_BASE_URL
+
   const ssoEntries = Object.entries(
     (ssoProviders as Record<string, SsoProvider> | undefined) ?? {},
   )
@@ -71,17 +74,19 @@ function SsoSection(): React.ReactElement | null {
         <div className="absolute inset-0 flex items-center">
           <span className="border-border w-full border-t" />
         </div>
+
         <div className="relative flex justify-center text-xs uppercase">
           <span className="bg-card text-muted-foreground px-2">
             {t('auth.ssoLogin')}
           </span>
         </div>
       </div>
+
       <div className="space-y-2">
         {ssoEntries.map(([key, provider]) => (
           <a
             key={key}
-            href={`${API_BASE_URL}${provider.url}?redirect_uri=${encodeURIComponent(`${appUrl}/login`)}`}
+            href={`${ssoBaseUrl}${provider.url}?redirect_uri=${encodeURIComponent(`${appUrl}/login`)}`}
             className={cn(buttonVariants({ variant: 'outline' }), 'w-full')}
           >
             {provider.name}
