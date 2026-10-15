@@ -26,7 +26,7 @@ interface RouteMeta {
   order?: number
 }
 
-const ROUTE_META = {
+const ROUTE_META: Record<string, RouteMeta> = {
   '/': { labelKey: 'navigation.dashboard', icon: RiDashboardLine, order: 0 },
   '/users': {
     labelKey: 'navigation.users',
@@ -68,18 +68,10 @@ const ROUTE_META = {
   },
   '/users/new': { hidden: true },
   '/forbidden': { hidden: true },
-} satisfies Record<string, RouteMeta>
-
-export type NavPath = keyof typeof ROUTE_META
-
-const routeMeta: Record<string, RouteMeta> = ROUTE_META
+}
 
 const DEFAULT_ICON: RemixiconComponentType = RiFileList2Line
 const DEFAULT_ORDER = 1000
-
-export function navRights(path: NavPath): Right | readonly Right[] | undefined {
-  return routeMeta[path]?.rights
-}
 
 function titleize(segment: string): string {
   return segment
@@ -89,7 +81,7 @@ function titleize(segment: string): string {
 }
 
 function resolveLabel(path: string, lastSegment: string, t: TFunction): string {
-  const labelKey = routeMeta[path]?.labelKey
+  const labelKey = ROUTE_META[path]?.labelKey
   return labelKey ? t(labelKey) : titleize(lastSegment)
 }
 
@@ -142,13 +134,13 @@ export function useNavItems(): NavNode[] {
       if (!id.startsWith('/_authenticated')) return false
       if (id === '/_authenticated') return false
       if (!fullPath || fullPath.includes('$')) return false
-      return routeMeta[normalizePath(fullPath)]?.hidden !== true
+      return ROUTE_META[normalizePath(fullPath)]?.hidden !== true
     })
     .map(route => {
       const to = normalizePath(route.fullPath)
       const segments = to === '/' ? [] : to.split('/').filter(Boolean)
       const lastSegment = segments[segments.length - 1] ?? ''
-      const meta = routeMeta[to]
+      const meta = ROUTE_META[to]
       return {
         to,
         segments,
@@ -174,9 +166,9 @@ function buildTree(leaves: ResolvedRoute[], t: TFunction): NavNode[] {
       node = {
         to: path as LinkProps['to'],
         label: resolveLabel(path, lastSegment, t),
-        icon: routeMeta[path]?.icon ?? DEFAULT_ICON,
+        icon: ROUTE_META[path]?.icon ?? DEFAULT_ICON,
         inSidebar: true,
-        order: routeMeta[path]?.order ?? DEFAULT_ORDER,
+        order: ROUTE_META[path]?.order ?? DEFAULT_ORDER,
         navigable: false,
         children: [],
         segments,
