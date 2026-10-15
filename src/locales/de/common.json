@@ -78,6 +78,14 @@
     "settings": "Einstellungen",
     "logout": "Abmelden"
   },
+  "search": {
+    "title": "Suche",
+    "placeholder": "Suchen…",
+    "buttonLabel": "Suche öffnen",
+    "nothingFound": "Keine Ergebnisse gefunden.",
+    "groupNavigation": "Navigation",
+    "ctrlKey": "Strg"
+  },
   "theme": {
     "toggle": "Erscheinungsbild umschalten",
     "light": "Hell",

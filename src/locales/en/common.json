@@ -78,6 +78,14 @@
     "settings": "Settings",
     "logout": "Log out"
   },
+  "search": {
+    "title": "Search",
+    "placeholder": "Search…",
+    "buttonLabel": "Open search",
+    "nothingFound": "No results found.",
+    "groupNavigation": "Navigation",
+    "ctrlKey": "Ctrl"
+  },
   "theme": {
     "toggle": "Toggle theme",
     "light": "Light",
