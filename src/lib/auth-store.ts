@@ -143,7 +143,8 @@ export async function logout(): Promise<void> {
     await sdkLogout({
       client: authenticatedClient,
       credentials: 'include',
-      headers: { Authorization: '' },
+      redirect: 'manual',
+      headers: { Authorization: `Bearer ${accessToken ?? ''}` },
     })
   } catch {
     // Backend logout may fail — ignore, clear token regardless
