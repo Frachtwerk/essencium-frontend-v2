@@ -1,5 +1,6 @@
 import { useMutation, useSuspenseQuery } from '@tanstack/react-query'
 import {
+  ClientOnly,
   Link,
   createFileRoute,
   redirect,
@@ -45,7 +46,11 @@ export const Route = createFileRoute('/login')({
     token: z.string().optional(),
     redirect: z.string().optional(),
   }),
-  component: LoginPage,
+  component: () => (
+    <ClientOnly fallback={<FullPageSpinner />}>
+      <LoginPage />
+    </ClientOnly>
+  ),
   pendingComponent: FullPageSpinner,
 })
 
@@ -89,6 +94,15 @@ function SsoSection(): React.ReactElement | null {
             href={`${ssoBaseUrl}${provider.url}?redirect_uri=${encodeURIComponent(`${appUrl}/login`)}`}
             className={cn(buttonVariants({ variant: 'outline' }), 'w-full')}
           >
+            {provider.imageUrl && (
+              <img
+                src={provider.imageUrl}
+                alt=""
+                className="h-5 w-auto"
+                onError={e => (e.currentTarget.hidden = true)}
+              />
+            )}
+
             {provider.name}
           </a>
         ))}
@@ -157,6 +171,7 @@ function LoginPage(): React.ReactElement {
       <div className="bg-background flex min-h-svh items-center justify-center p-4">
         <div className="flex flex-col items-center gap-4">
           <ContentSpinner />
+
           <p className="text-muted-foreground text-sm">
             {t('auth.ssoLoading')}
           </p>
@@ -174,6 +189,7 @@ function LoginPage(): React.ReactElement {
             alt={t('common.appName')}
             className="mb-2 h-9 dark:hidden"
           />
+
           <img
             src="/img/logo-white.svg"
             alt={t('common.appName')}
@@ -209,6 +225,7 @@ function LoginPage(): React.ReactElement {
 
             <div className="space-y-2">
               <Label htmlFor="password">{t('auth.password')}</Label>
+
               <PasswordInput
                 id="password"
                 value={password}
