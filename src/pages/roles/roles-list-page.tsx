@@ -103,7 +103,7 @@ export function RolesListPage(): React.ReactElement {
       header: () => <span className="sr-only">{t('roles.table.actions')}</span>,
       cell: ({ row }) => (
         <div className="flex justify-end gap-1">
-          <CanAccess rights={RIGHTS.RIGHT_UPDATE}>
+          <CanAccess rights={RIGHTS.ROLE_UPDATE}>
             {row.original.editable !== false && (
               <Button
                 variant="ghost"
