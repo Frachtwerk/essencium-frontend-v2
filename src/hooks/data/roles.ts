@@ -16,11 +16,9 @@ import type {
   FindAll1Error,
   Options,
   PageRole,
+  Update2Data,
   Update2Error,
   Update2Response,
-  UpdateObjectData,
-  UpdateObjectError,
-  UpdateObjectResponse,
 } from '@/generated/client'
 import { update2 } from '@/generated/client'
 import {
@@ -28,7 +26,7 @@ import {
   delete1Mutation,
   findAll1Options,
   findAll1QueryKey,
-  updateObjectMutation,
+  update2Mutation,
 } from '@/generated/client/@tanstack/react-query.gen'
 import { authenticatedClient } from '@/lib/auth-store'
 
@@ -84,14 +82,20 @@ export function useCreateRole(): UseMutationResult<
   })
 }
 
+/**
+ * Updates a role via PATCH: only the sent fields change. PUT would rebuild the
+ * whole role and silently reset `defaultRole`/`protected`. The body must not
+ * contain `name` — the backend rejects renaming. Send an emptied description as
+ * `null`: an omitted field keeps its old value.
+ */
 export function useUpdateRole(): UseMutationResult<
-  UpdateObjectResponse,
-  UpdateObjectError,
-  Options<UpdateObjectData>
+  Update2Response,
+  Update2Error,
+  Options<Update2Data>
 > {
   const invalidate = useInvalidateRoles()
   return useMutation({
-    ...updateObjectMutation({ client: authenticatedClient }),
+    ...update2Mutation({ client: authenticatedClient }),
     onSuccess: invalidate,
   })
 }

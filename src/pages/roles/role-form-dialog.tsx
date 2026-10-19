@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
@@ -65,12 +66,13 @@ export function RoleFormDialog({
       : defaultRoleFormValues,
   })
 
+  // `values` only re-syncs when the role changes, so reopening the same role
+  // would keep discarded edits. `reset()` falls back to the current `values`.
+  useEffect(() => {
+    if (!open) form.reset()
+  }, [open, form])
+
   function handleSubmit(values: RoleFormValues): void {
-    const body: RoleDto = {
-      name: values.name,
-      description: values.description || undefined,
-      rights: values.rights,
-    }
     const callbacks = {
       onSuccess: () => {
         toast.success(
@@ -81,8 +83,22 @@ export function RoleFormDialog({
       onError: () => toast.error(t('roles.saveError')),
     }
     if (role) {
-      updateRole.mutate({ path: { name: role.name }, body }, callbacks)
+      updateRole.mutate(
+        {
+          path: { name: role.name },
+          body: {
+            description: values.description || null,
+            rights: values.rights,
+          },
+        },
+        callbacks,
+      )
     } else {
+      const body: RoleDto = {
+        name: values.name,
+        description: values.description || undefined,
+        rights: values.rights,
+      }
       createRole.mutate({ body }, callbacks)
     }
   }
