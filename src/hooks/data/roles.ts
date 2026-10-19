@@ -85,7 +85,8 @@ export function useCreateRole(): UseMutationResult<
 /**
  * Updates a role via PATCH: only the sent fields change. PUT would rebuild the
  * whole role and silently reset `defaultRole`/`protected`. The body must not
- * contain `name` — the backend rejects renaming.
+ * contain `name` — the backend rejects renaming. Send an emptied description as
+ * `null`: an omitted field keeps its old value.
  */
 export function useUpdateRole(): UseMutationResult<
   Update2Response,

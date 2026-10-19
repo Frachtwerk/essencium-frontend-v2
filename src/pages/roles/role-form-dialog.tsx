@@ -76,8 +76,6 @@ export function RoleFormDialog({
       onError: () => toast.error(t('roles.saveError')),
     }
     if (role) {
-      // PATCH: name is immutable, and an emptied description must be sent as
-      // null — an omitted field would keep the old value.
       updateRole.mutate(
         {
           path: { name: role.name },
