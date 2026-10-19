@@ -57,6 +57,7 @@ export function ProfilePage(): React.ReactElement {
 
   const changePasswordForm = useForm<ChangePasswordFormValues>({
     resolver: zodFormResolver(changePasswordFormSchema),
+    mode: 'onBlur',
     defaultValues: defaultChangePasswordFormValues,
   })
 

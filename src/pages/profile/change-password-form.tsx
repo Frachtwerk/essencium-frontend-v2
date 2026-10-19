@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 
 import { ChangePasswordFormValues } from './profile-form-schema'
 
+import { PasswordChecklist } from '@/components/password-checklist'
 import { PasswordInput } from '@/components/password-input'
 import { Button } from '@/components/ui/button'
 import {
@@ -33,7 +34,7 @@ export function ChangePasswordForm({
         onSubmit={e => void form.handleSubmit(onSubmit)(e)}
         className="space-y-6"
       >
-        <div className="grid grid-cols-1 gap-6 lg:w-1/2">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           <FormField
             control={form.control}
             name="currentPassword"
@@ -49,7 +50,9 @@ export function ChangePasswordForm({
               </FormItem>
             )}
           />
+        </div>
 
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           <FormField
             control={form.control}
             name="newPassword"
@@ -58,9 +61,13 @@ export function ChangePasswordForm({
                 <FormLabel>
                   {t('profile.tabs.changePassword.form.newPassword')}
                 </FormLabel>
-                <FormControl>
-                  <PasswordInput autoComplete="new-password" {...field} />
-                </FormControl>
+
+                <PasswordChecklist value={field.value}>
+                  <FormControl>
+                    <PasswordInput autoComplete="new-password" {...field} />
+                  </FormControl>
+                </PasswordChecklist>
+
                 <FormMessage />
               </FormItem>
             )}
@@ -74,9 +81,11 @@ export function ChangePasswordForm({
                 <FormLabel>
                   {t('profile.tabs.changePassword.form.passwordConfirmation')}
                 </FormLabel>
+
                 <FormControl>
                   <PasswordInput autoComplete="new-password" {...field} />
                 </FormControl>
+
                 <FormMessage />
               </FormItem>
             )}
