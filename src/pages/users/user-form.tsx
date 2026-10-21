@@ -7,6 +7,7 @@ import {
   type UserFormValues,
 } from './user-form-schema'
 
+import { PasswordChecklist } from '@/components/password-checklist'
 import { PasswordInput } from '@/components/password-input'
 import { SsoManagedNotice } from '@/components/shared/sso-managed-notice'
 import { Button } from '@/components/ui/button'
@@ -150,18 +151,30 @@ export function UserForm({
           render={({ field }) => (
             <FormItem>
               <FormLabel>{t('users.form.password')}</FormLabel>
-              <FormControl>
-                <PasswordInput
-                  autoComplete="new-password"
-                  {...field}
-                  disabled={isSso}
-                />
-              </FormControl>
+
+              <PasswordChecklist value={field.value ?? ''}>
+                <FormControl>
+                  <PasswordInput
+                    autoComplete="new-password"
+                    {...field}
+                    disabled={isSso}
+                  />
+                </FormControl>
+              </PasswordChecklist>
+
               <FormDescription>
-                {mode === 'create'
-                  ? t('users.form.passwordCreateHint')
-                  : t('users.form.passwordEditHint')}
+                {mode === 'create' && t('users.form.passwordCreateHint')}
+
+                {mode === 'edit' &&
+                  (field.value ? (
+                    <span className="text-primary-active">
+                      {t('users.form.passwordChangeWarning')}
+                    </span>
+                  ) : (
+                    t('users.form.passwordEditHint')
+                  ))}
               </FormDescription>
+
               <FormMessage />
             </FormItem>
           )}
