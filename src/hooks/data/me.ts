@@ -1,8 +1,8 @@
 import {
   useMutation,
-  UseMutationResult,
   useQueryClient,
   useSuspenseQuery,
+  type UseMutationResult,
   type UseSuspenseQueryResult,
 } from '@tanstack/react-query'
 
