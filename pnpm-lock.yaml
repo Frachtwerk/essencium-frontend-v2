@@ -112,8 +112,8 @@ importers:
         specifier: ^10.0.1
         version: 10.0.1(eslint@10.2.1(jiti@2.7.0))
       '@hey-api/vite-plugin':
-        specifier: ^0.3.1
-        version: 0.3.1(@hey-api/openapi-ts@0.97.0(typescript@6.0.3))(vite@8.1.5(@types/node@25.6.0)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.8.3))
+        specifier: ^0.3.2
+        version: 0.3.2(@hey-api/openapi-ts@0.97.0(typescript@6.0.3))(vite@8.1.5(@types/node@25.6.0)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.8.3))
       '@rolldown/plugin-babel':
         specifier: ^0.2.3
         version: 0.2.3(@babel/core@7.29.0)(@babel/runtime@7.29.7)(rolldown@1.1.5)(vite@8.1.5(@types/node@25.6.0)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.8.3))
@@ -840,8 +840,8 @@ packages:
   '@hey-api/types@0.1.4':
     resolution: {integrity: sha512-thWfawrDIP7wSI9ioT13I5soaaqB5vAPIiZmgD8PbeEVKNrkonc0N/Sjj97ezl7oQgusZmaNphGdMKipPO6IBg==}
 
-  '@hey-api/vite-plugin@0.3.1':
-    resolution: {integrity: sha512-aE70iQSvg3N3zQ0ALnaYXGl7pQjuILSahawvF/ZHgQsdoh7rQTAb8o/VYnQOCOrgdhq3LADVH4KCEEAMOcH86w==}
+  '@hey-api/vite-plugin@0.3.2':
+    resolution: {integrity: sha512-r9xfyfqvWQ3LoVE0U9TYkA54J3HSXJdFbeQrnWdOcbkhI4rfUTaanj4EPpk5ygZTxoex4EJrlyzn+nPSU82cjw==}
     peerDependencies:
       '@hey-api/openapi-ts': <2
       vite: ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0
@@ -5181,7 +5181,7 @@ snapshots:
 
   '@hey-api/types@0.1.4': {}
 
-  '@hey-api/vite-plugin@0.3.1(@hey-api/openapi-ts@0.97.0(typescript@6.0.3))(vite@8.1.5(@types/node@25.6.0)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.8.3))':
+  '@hey-api/vite-plugin@0.3.2(@hey-api/openapi-ts@0.97.0(typescript@6.0.3))(vite@8.1.5(@types/node@25.6.0)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.8.3))':
     dependencies:
       '@hey-api/openapi-ts': 0.97.0(typescript@6.0.3)
       vite: 8.1.5(@types/node@25.6.0)(esbuild@0.27.7)(jiti@2.7.0)(tsx@4.21.0)(yaml@2.8.3)
