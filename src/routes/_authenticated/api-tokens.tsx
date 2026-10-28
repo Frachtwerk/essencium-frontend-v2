@@ -5,7 +5,10 @@ import {
   getFindAllAdminApiTokensQueryOptions,
   getFindAllApiTokensQueryOptions,
 } from '@/hooks/data/api-tokens'
-import { paginationSearchParamsSchema } from '@/lib/pagination'
+import {
+  DEFAULT_PAGE_SIZE,
+  paginationSearchParamsSchema,
+} from '@/lib/pagination'
 import {
   getUserRights,
   hasRequiredRights,
@@ -21,6 +24,7 @@ const apiTokensSearchSchema = paginationSearchParamsSchema.extend({
   // so it survives tab switches and reloads like the myTokens tab does. Kept under
   // separate keys so neither tab overwrites the other's view.
   adminPage: z.number().optional().default(0),
+  adminSize: z.number().optional().default(DEFAULT_PAGE_SIZE),
   adminSort: z.string().optional().default('user,asc'),
   adminSearch: z.string().optional(),
 })
