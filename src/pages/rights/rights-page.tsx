@@ -1,4 +1,3 @@
-import { RiArrowLeftSLine, RiArrowRightSLine } from '@remixicon/react'
 import { getRouteApi } from '@tanstack/react-router'
 import type { SortingState, Updater } from '@tanstack/react-table'
 import { useTranslation } from 'react-i18next'
@@ -8,7 +7,6 @@ import { DataTable, type DataTableColumnDef } from '@/components/data-table'
 import { PageHeader } from '@/components/layout/page-header'
 import { PageWrapper } from '@/components/layout/page-wrapper'
 import { Checkbox } from '@/components/ui/checkbox'
-import { LinkButton } from '@/components/ui/link-button'
 import { Right } from '@/generated/client'
 import { useFindAllRights } from '@/hooks/data/rights'
 import { useAllRoles, useToggleRoleRight } from '@/hooks/data/roles'
@@ -129,32 +127,15 @@ export function RightsPage(): React.ReactElement {
         onSortingChange={onSortingChange}
         sorting={sorting}
         pinnedColumns={['authority']}
-        renderPreviousPageButton={({ disabled }) => (
-          <LinkButton
-            variant="outline"
-            size="sm"
-            disabled={disabled}
-            to="/rights"
-            search={prev => ({ ...prev, page: Math.max(0, page - 1), size })}
-          >
-            <RiArrowLeftSLine className="size-4" />
-          </LinkButton>
-        )}
-        renderNextPageButton={({ disabled }) => (
-          <LinkButton
-            variant="outline"
-            size="sm"
-            disabled={disabled}
-            to="/rights"
-            search={prev => ({
-              ...prev,
-              page: Math.min((allRights.totalPages ?? 1) - 1, page + 1),
-              size,
-            })}
-          >
-            <RiArrowRightSLine className="size-4" />
-          </LinkButton>
-        )}
+        pageSize={size}
+        onPageChange={nextPage =>
+          void navigate({ search: prev => ({ ...prev, page: nextPage }) })
+        }
+        onPageSizeChange={nextSize =>
+          void navigate({
+            search: prev => ({ ...prev, size: nextSize, page: 0 }),
+          })
+        }
       />
     </PageWrapper>
   )
