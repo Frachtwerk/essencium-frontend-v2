@@ -13,8 +13,10 @@ import {
   profileFormSchema,
   ProfileFormValues,
 } from './profile-form-schema'
+import { ProfileOverviewCard } from './profile-overview-card'
 
 import { PageHeader } from '@/components/layout/page-header'
+import { Card, CardContent } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useAuth } from '@/context/auth-context'
 import {
@@ -55,6 +57,7 @@ export function ProfilePage(): React.ReactElement {
 
   const changePasswordForm = useForm<ChangePasswordFormValues>({
     resolver: zodFormResolver(changePasswordFormSchema),
+    mode: 'onBlur',
     defaultValues: defaultChangePasswordFormValues,
   })
 
@@ -114,45 +117,56 @@ export function ProfilePage(): React.ReactElement {
   return (
     <div className="p-6">
       <PageHeader title={t('profile.title')} />
-      {isSso ? (
-        <div className="w-[600px]">
-          <ProfileForm
-            form={form}
-            onSubmit={handleSubmit}
-            isSubmitting={isPending}
-            ssoProvider={currentUser.source}
-          />
-        </div>
-      ) : (
-        <Tabs defaultValue={tabs.generalSettings} className="w-[600px]">
-          <TabsList variant="line" className="mb-3.5">
-            <TabsTrigger
-              value={tabs.generalSettings}
-              className="mr-1.5 w-[300px]"
-            >
-              {t('profile.tabs.generalSettings.title')}
-            </TabsTrigger>
-            <TabsTrigger value={tabs.changePassword}>
-              {t('profile.tabs.changePassword.title')}
-            </TabsTrigger>
-          </TabsList>
-          <TabsContent value={tabs.generalSettings}>
-            <ProfileForm
-              form={form}
-              onSubmit={handleSubmit}
-              isSubmitting={isPending}
-              ssoProvider={currentUser.source}
-            />
-          </TabsContent>
-          <TabsContent value={tabs.changePassword}>
-            <ChangePasswordForm
-              form={changePasswordForm}
-              onSubmit={handleChangePasswordSubmit}
-              isSubmitting={isPasswordPending}
-            />
-          </TabsContent>
-        </Tabs>
-      )}
+
+      <div className="flex flex-col gap-2 lg:flex-row lg:gap-6">
+        <ProfileOverviewCard currentUser={currentUser} />
+
+        <Card className="w-full justify-center">
+          <CardContent className="flex flex-col items-center gap-6">
+            <Tabs defaultValue={tabs.generalSettings} className="w-full p-2">
+              <TabsList
+                variant="line"
+                className="border-foreground/10 w-full border-b"
+              >
+                <TabsTrigger value={tabs.generalSettings}>
+                  {t('profile.tabs.generalSettings.title')}
+                </TabsTrigger>
+
+                {!isSso && (
+                  <TabsTrigger value={tabs.changePassword}>
+                    {t('profile.tabs.changePassword.title')}
+                  </TabsTrigger>
+                )}
+              </TabsList>
+
+              <TabsContent
+                value={tabs.generalSettings}
+                className="mt-6 min-h-[355px]"
+              >
+                <ProfileForm
+                  form={form}
+                  onSubmit={handleSubmit}
+                  isSubmitting={isPending}
+                  ssoProvider={currentUser.source}
+                />
+              </TabsContent>
+
+              {!isSso && (
+                <TabsContent
+                  value={tabs.changePassword}
+                  className="mt-6 min-h-[355px]"
+                >
+                  <ChangePasswordForm
+                    form={changePasswordForm}
+                    onSubmit={handleChangePasswordSubmit}
+                    isSubmitting={isPasswordPending}
+                  />
+                </TabsContent>
+              )}
+            </Tabs>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   )
 }
