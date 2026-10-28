@@ -2,6 +2,8 @@ import {
   RiArrowDownSLine,
   RiArrowUpDownLine,
   RiArrowUpSLine,
+  RiSkipBackMiniLine,
+  RiSkipForwardMiniLine,
 } from '@remixicon/react'
 import {
   columnPinningFeature,
@@ -22,6 +24,25 @@ import {
 import type { CSSProperties, ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import { Field, FieldLabel } from './ui/field'
+
+import { PageJumpCombobox } from '@/components/shared/page-jump-combobox'
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from '@/components/ui/pagination'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import {
   Table,
   TableBody,
@@ -30,6 +51,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { PAGE_SIZE_OPTIONS } from '@/lib/pagination'
 import { cn } from '@/lib/utils'
 
 /** The table features this DataTable uses; v9 requires them to be declared. */
@@ -56,8 +78,9 @@ interface DataTableProps<TData extends RowData> {
   totalElements: number
   currentPage: number
   pinnedColumns?: string[]
-  renderNextPageButton: (props: { disabled: boolean }) => ReactNode
-  renderPreviousPageButton: (props: { disabled: boolean }) => ReactNode
+  pageSize: number
+  onPageChange: (page: number) => void
+  onPageSizeChange: (size: number) => void
   onRowClick?: (row: Row<DataTableFeatures, TData>) => void
   /**
    * Decides per row whether {@link onRowClick} applies. Rows for which this
@@ -78,7 +101,7 @@ interface DataTableProps<TData extends RowData> {
 
 /**
  * Server-paginated table built on TanStack Table. Pagination is manual: the
- * caller drives page/size via search params and supplies the page buttons.
+ * caller drives page/size via search params and handles the change callbacks.
  * Mirrors the eps-core DataTable pattern.
  */
 
@@ -102,10 +125,63 @@ function getPinningClasses<TData extends RowData>(
   return column.getIsPinned() ? 'bg-background sticky z-1' : 'relative z-0'
 }
 
+type PageItem = number | 'gap-start' | 'gap-end'
+
+/**
+ * Page slots (0-based) with ellipses. Full, from `xl`: all pages up to 7, then
+ * `1 2 3 4 … 8 9` · `1 … 3 4 5 … 9` · `1 2 … 6 7 8 9`.
+ * Compact, below `xl`: all pages up to 4, then
+ * `1 2 3 4 …` · `… 3 4 5 …` · `… 6 7 8 9`.
+ */
+function getPageItems(
+  current: number,
+  last: number,
+  compact: boolean,
+): PageItem[] {
+  if (last < (compact ? 4 : 7)) {
+    return Array.from({ length: last + 1 }, (_, page) => page)
+  }
+  if (current <= 2) {
+    return [0, 1, 2, 3, 'gap-end', ...(compact ? [] : [last - 1, last])]
+  }
+  if (current >= last - 2) {
+    return [
+      ...(compact ? [] : [0, 1]),
+      'gap-start',
+      last - 3,
+      last - 2,
+      last - 1,
+      last,
+    ]
+  }
+  return [
+    ...(compact ? [] : [0]),
+    'gap-start',
+    current - 1,
+    current,
+    current + 1,
+    'gap-end',
+    ...(compact ? [] : [last]),
+  ]
+}
+
+function pageLinkProps(enabled: boolean, onSelect: () => void): object {
+  return {
+    'aria-disabled': !enabled,
+    tabIndex: enabled ? undefined : -1,
+    className: enabled ? undefined : 'pointer-events-none opacity-50',
+    onClick: (event: React.MouseEvent) => {
+      event.preventDefault()
+      if (enabled) onSelect()
+    },
+  }
+}
+
 export function DataTable<TData extends RowData>(
   props: Readonly<DataTableProps<TData>>,
 ): React.ReactElement {
   const { t } = useTranslation()
+
   const table = useTable({
     features: dataTableFeatures,
     data: props.data,
@@ -116,6 +192,17 @@ export function DataTable<TData extends RowData>(
     pageCount: props.totalPages,
     ...(props.getRowId ? { getRowId: props.getRowId } : {}),
     onSortingChange: props.onSortingChange,
+    onPaginationChange: updater => {
+      const current = { pageIndex: props.currentPage, pageSize: props.pageSize }
+
+      const next = typeof updater === 'function' ? updater(current) : updater
+
+      if (next.pageSize !== current.pageSize) {
+        props.onPageSizeChange(next.pageSize)
+      } else {
+        props.onPageChange(next.pageIndex)
+      }
+    },
     initialState: {
       columnPinning: {
         start: props.pinnedColumns ?? [],
@@ -125,11 +212,31 @@ export function DataTable<TData extends RowData>(
     state: {
       pagination: {
         pageIndex: props.currentPage,
-        pageSize: props.data.length || 1,
+        pageSize: props.pageSize,
       },
       sorting: props.sorting ?? [],
     },
   })
+
+  const pageCount = table.getPageCount()
+
+  function renderPageItems(compact: boolean, className: string): ReactNode {
+    return getPageItems(props.currentPage, pageCount - 1, compact).map(item => (
+      <PaginationItem key={`${compact}-${item}`} className={className}>
+        {typeof item === 'string' ? (
+          <PaginationEllipsis />
+        ) : (
+          <PaginationLink
+            href="#"
+            isActive={item === props.currentPage}
+            {...pageLinkProps(true, () => table.setPageIndex(item))}
+          >
+            {item + 1}
+          </PaginationLink>
+        )}
+      </PaginationItem>
+    ))
+  }
 
   return (
     <div>
@@ -222,19 +329,92 @@ export function DataTable<TData extends RowData>(
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-between gap-2 py-4">
-        <p className="text-muted-foreground text-sm">
-          {t('common.pageInfo', {
-            page: props.currentPage + 1,
-            pages: Math.max(props.totalPages, 1),
-            total: props.totalElements,
-          })}
-        </p>
-        <div className="flex items-center gap-2">
-          {props.renderPreviousPageButton({
-            disabled: !table.getCanPreviousPage(),
-          })}
-          {props.renderNextPageButton({ disabled: !table.getCanNextPage() })}
+      <div className="text-muted-foreground flex flex-wrap items-center justify-between gap-2 py-4">
+        <Field orientation="horizontal" className="w-fit">
+          <FieldLabel
+            htmlFor="select-rows-per-page"
+            className="text-muted-foreground font-normal"
+          >
+            {t('common.size')}:
+          </FieldLabel>
+
+          <Select
+            value={String(props.pageSize)}
+            onValueChange={value => table.setPageSize(Number(value))}
+          >
+            <SelectTrigger
+              id="select-rows-per-page"
+              size="sm"
+              aria-label={t('common.pageSize')}
+            >
+              <SelectValue />
+            </SelectTrigger>
+
+            <SelectContent>
+              {PAGE_SIZE_OPTIONS.map(option => (
+                <SelectItem key={option} value={String(option)}>
+                  {option}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </Field>
+
+        <div className="flex items-center gap-6">
+          <Pagination className="mx-0 w-auto">
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationLink
+                  href="#"
+                  aria-label={t('common.firstPage')}
+                  {...pageLinkProps(
+                    table.getCanPreviousPage(),
+                    table.firstPage,
+                  )}
+                >
+                  <RiSkipBackMiniLine className="size-4" />
+                </PaginationLink>
+              </PaginationItem>
+
+              <PaginationItem>
+                <PaginationPrevious
+                  href="#"
+                  className="pr-8"
+                  {...pageLinkProps(
+                    table.getCanPreviousPage(),
+                    table.previousPage,
+                  )}
+                />
+              </PaginationItem>
+
+              {renderPageItems(false, 'hidden xl:list-item')}
+
+              {renderPageItems(true, 'xl:hidden')}
+
+              <PaginationItem>
+                <PaginationNext
+                  href="#"
+                  {...pageLinkProps(table.getCanNextPage(), table.nextPage)}
+                />
+              </PaginationItem>
+
+              <PaginationItem>
+                <PaginationLink
+                  href="#"
+                  aria-label={t('common.lastPage')}
+                  {...pageLinkProps(table.getCanNextPage(), table.lastPage)}
+                >
+                  <RiSkipForwardMiniLine className="size-4" />
+                </PaginationLink>
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+
+          <PageJumpCombobox
+            currentPage={props.currentPage}
+            pageCount={pageCount}
+            onPageChange={page => table.setPageIndex(page)}
+          />
         </div>
       </div>
     </div>
