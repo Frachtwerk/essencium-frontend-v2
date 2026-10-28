@@ -28,15 +28,24 @@ export function PageJumpCombobox({
     null,
   )
 
-  const [query, setQuery] = useState('')
+  const [inputValue, setInputValue] = useState(String(currentPage + 1))
+
+  const [prevPage, setPrevPage] = useState(currentPage)
+
+  if (prevPage !== currentPage) {
+    setPrevPage(currentPage)
+    setInputValue(String(currentPage + 1))
+  }
 
   const options = useMemo(() => {
     const pages = Array.from({ length: pageCount }, (_, page) =>
       String(page + 1),
     )
 
-    return query.length ? pages.filter(page => page.includes(query)) : pages
-  }, [pageCount, query])
+    return inputValue.length
+      ? pages.filter(page => page.includes(inputValue))
+      : pages
+  }, [pageCount, inputValue])
 
   const virtualizer = useVirtualizer({
     count: options.length,
@@ -54,7 +63,8 @@ export function PageJumpCombobox({
       onValueChange={value => {
         if (value) onPageChange(Number(value) - 1)
       }}
-      onInputValueChange={value => setQuery(value)}
+      inputValue={inputValue}
+      onInputValueChange={setInputValue}
       onItemHighlighted={(_item, { reason, index }) => {
         if (index >= 0 && (reason === 'none' || reason === 'keyboard')) {
           virtualizer.scrollToIndex(index)
@@ -64,6 +74,7 @@ export function PageJumpCombobox({
       <ComboboxInput
         className="w-26"
         inputMode="numeric"
+        onBlur={() => setInputValue(String(currentPage + 1))}
         aria-label={t('common.jumpToPage')}
       />
 
