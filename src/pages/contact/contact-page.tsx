@@ -122,7 +122,7 @@ export function ContactPage(): React.ReactElement {
                   control={form.control}
                   name="message"
                   render={({ field }) => (
-                    <FormItem className="h-[80px]">
+                    <FormItem>
                       <FormLabel required>
                         {t('contact.form.message')}
                       </FormLabel>
