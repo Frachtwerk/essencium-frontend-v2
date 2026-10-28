@@ -1,8 +1,4 @@
-import {
-  RiAddLine,
-  RiArrowLeftSLine,
-  RiArrowRightSLine,
-} from '@remixicon/react'
+import { RiAddLine } from '@remixicon/react'
 import { getRouteApi } from '@tanstack/react-router'
 import type { ColumnDef, SortingState, Updater } from '@tanstack/react-table'
 import { useTranslation } from 'react-i18next'
@@ -139,32 +135,15 @@ export function UsersListPage(): React.ReactElement {
           })
         }
         isRowClickable={row => !isDefaultUser(row.original.email)}
-        renderPreviousPageButton={({ disabled }) => (
-          <LinkButton
-            variant="outline"
-            size="sm"
-            disabled={disabled}
-            to="/users"
-            search={prev => ({ ...prev, page: Math.max(0, page - 1), size })}
-          >
-            <RiArrowLeftSLine className="size-4" />
-          </LinkButton>
-        )}
-        renderNextPageButton={({ disabled }) => (
-          <LinkButton
-            variant="outline"
-            size="sm"
-            disabled={disabled}
-            to="/users"
-            search={prev => ({
-              ...prev,
-              page: Math.min((usersPage.totalPages ?? 1) - 1, page + 1),
-              size,
-            })}
-          >
-            <RiArrowRightSLine className="size-4" />
-          </LinkButton>
-        )}
+        pageSize={size}
+        onPageChange={nextPage =>
+          void navigate({ search: prev => ({ ...prev, page: nextPage }) })
+        }
+        onPageSizeChange={nextSize =>
+          void navigate({
+            search: prev => ({ ...prev, size: nextSize, page: 0 }),
+          })
+        }
       />
     </div>
   )

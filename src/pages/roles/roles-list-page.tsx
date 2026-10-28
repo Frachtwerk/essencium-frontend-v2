@@ -1,10 +1,4 @@
-import {
-  RiAddLine,
-  RiArrowLeftSLine,
-  RiArrowRightSLine,
-  RiDeleteBinLine,
-  RiEditLine,
-} from '@remixicon/react'
+import { RiAddLine, RiDeleteBinLine, RiEditLine } from '@remixicon/react'
 import { getRouteApi } from '@tanstack/react-router'
 import type { ColumnDef } from '@tanstack/react-table'
 import { useState } from 'react'
@@ -28,7 +22,6 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { LinkButton } from '@/components/ui/link-button'
 import type { Role } from '@/generated/client/types.gen'
 import { useDeleteRole, useFindAllRoles } from '@/hooks/data/roles'
 import { RIGHTS } from '@/lib/permissions'
@@ -39,6 +32,7 @@ const route = getRouteApi('/_authenticated/roles')
 export function RolesListPage(): React.ReactElement {
   const { t } = useTranslation()
   const { page, size } = route.useSearch()
+  const navigate = route.useNavigate()
   const { data: rolesPage } = useFindAllRoles({
     page,
     size,
@@ -152,31 +146,15 @@ export function RolesListPage(): React.ReactElement {
         currentPage={page}
         totalPages={rolesPage.totalPages ?? 0}
         totalElements={rolesPage.totalElements ?? 0}
-        renderPreviousPageButton={({ disabled }) => (
-          <LinkButton
-            variant="outline"
-            size="sm"
-            disabled={disabled}
-            to="/roles"
-            search={{ page: Math.max(0, page - 1), size }}
-          >
-            <RiArrowLeftSLine className="size-4" />
-          </LinkButton>
-        )}
-        renderNextPageButton={({ disabled }) => (
-          <LinkButton
-            variant="outline"
-            size="sm"
-            disabled={disabled}
-            to="/roles"
-            search={{
-              page: Math.min((rolesPage.totalPages ?? 1) - 1, page + 1),
-              size,
-            }}
-          >
-            <RiArrowRightSLine className="size-4" />
-          </LinkButton>
-        )}
+        pageSize={size}
+        onPageChange={nextPage =>
+          void navigate({ search: prev => ({ ...prev, page: nextPage }) })
+        }
+        onPageSizeChange={nextSize =>
+          void navigate({
+            search: prev => ({ ...prev, size: nextSize, page: 0 }),
+          })
+        }
       />
 
       <RoleFormDialog
