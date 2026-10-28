@@ -162,21 +162,15 @@ function FormMessage({
   // Validation messages are i18n keys. i18next returns the input unchanged for
   // unknown keys, so this is a safe pass-through for non-key strings too.
   const body = error ? t(error as ParseKeys) : children
-  // Reserve one line when there is no message so the layout doesn't jump.
-  if (!body) {
-    return (
-      <p className="text-xs" aria-hidden>
-        &nbsp;
-      </p>
-    )
-  }
   return (
     <p
       id={formMessageId}
       className={cn('text-destructive-400 pl-1 text-xs font-medium', className)}
+      aria-hidden={!body}
       {...props}
     >
-      {body}
+      {/* Reserve one line when there is no message so the layout doesn't jump. */}
+      {body || <>&nbsp;</>}
     </p>
   )
 }
