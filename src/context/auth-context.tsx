@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useRouter } from '@tanstack/react-router'
 import { createContext, use, useCallback } from 'react'
 
 import { currentUserQueryKey } from '@/hooks/use-current-user'
@@ -19,6 +20,7 @@ export function AuthProvider({
   children,
 }: Readonly<{ children: React.ReactNode }>): React.ReactElement {
   const queryClient = useQueryClient()
+  const router = useRouter()
 
   const login = useCallback(
     async (username: string, password: string) => {
@@ -30,8 +32,10 @@ export function AuthProvider({
 
   const logoutMutation = useMutation({
     mutationFn: () => authLogout(),
-    onSettled: () => {
+    onSettled: async () => {
       resetAuth()
+
+      await router.navigate({ to: '/login' })
       queryClient.clear()
     },
   })
