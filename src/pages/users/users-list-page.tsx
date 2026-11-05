@@ -12,6 +12,7 @@ import { UsersFilterBar } from './users-filter-bar'
 
 import { DataTable } from '@/components/data-table'
 import { PageHeader } from '@/components/layout/page-header'
+import { PageWrapper } from '@/components/layout/page-wrapper'
 import { CanAccess } from '@/components/shared/can-access'
 import { Badge } from '@/components/ui/badge'
 import { buttonVariants } from '@/components/ui/button'
@@ -111,7 +112,7 @@ export function UsersListPage(): React.ReactElement {
   ]
 
   return (
-    <div className="space-y-6 p-6">
+    <PageWrapper className="space-y-6">
       <PageHeader
         title={t('users.title')}
         actions={
@@ -123,7 +124,9 @@ export function UsersListPage(): React.ReactElement {
           </CanAccess>
         }
       />
+
       <UsersFilterBar />
+
       <DataTable
         columns={columns}
         data={usersPage.content ?? []}
@@ -166,6 +169,6 @@ export function UsersListPage(): React.ReactElement {
           </LinkButton>
         )}
       />
-    </div>
+    </PageWrapper>
   )
 }

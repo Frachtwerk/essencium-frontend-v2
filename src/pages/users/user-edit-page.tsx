@@ -6,6 +6,7 @@ import { UserForm } from './user-form'
 import type { UserFormValues } from './user-form-schema'
 
 import { PageHeader } from '@/components/layout/page-header'
+import { PageWrapper } from '@/components/layout/page-wrapper'
 import type { UserDtoWritable } from '@/generated/client/types.gen'
 import { useFindByIdUser, useUpdateUser } from '@/hooks/data/users'
 import { toSupportedLocale } from '@/lib/locale'
@@ -58,11 +59,12 @@ export function UserEditPage(): React.ReactElement {
   }
 
   return (
-    <div className="space-y-6 p-6">
+    <PageWrapper className="space-y-6">
       <PageHeader
         title={t('users.editTitle')}
         description={user.email ?? undefined}
       />
+
       <UserForm
         mode="edit"
         initialValues={initialValues}
@@ -70,6 +72,6 @@ export function UserEditPage(): React.ReactElement {
         isSubmitting={updateUser.isPending}
         ssoProvider={user.source}
       />
-    </div>
+    </PageWrapper>
   )
 }

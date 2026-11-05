@@ -6,6 +6,7 @@ import { UserForm } from './user-form'
 import type { UserFormValues } from './user-form-schema'
 
 import { PageHeader } from '@/components/layout/page-header'
+import { PageWrapper } from '@/components/layout/page-wrapper'
 import type { UserDtoWritable } from '@/generated/client/types.gen'
 import { useCreateUser } from '@/hooks/data/users'
 
@@ -39,13 +40,14 @@ export function UserCreatePage(): React.ReactElement {
   }
 
   return (
-    <div className="space-y-6 p-6">
+    <PageWrapper className="space-y-6">
       <PageHeader title={t('users.createTitle')} />
+
       <UserForm
         mode="create"
         onSubmit={handleSubmit}
         isSubmitting={createUser.isPending}
       />
-    </div>
+    </PageWrapper>
   )
 }

@@ -11,6 +11,7 @@ import type { ParseKeys } from 'i18next'
 import { useTranslation } from 'react-i18next'
 
 import { PageHeader } from '@/components/layout/page-header'
+import { PageWrapper } from '@/components/layout/page-wrapper'
 import { CanAccess } from '@/components/shared/can-access'
 import {
   Card,
@@ -57,7 +58,7 @@ export function DashboardPage(): React.ReactElement {
   const { data: user } = useCurrentUser()
 
   return (
-    <div className="space-y-8 p-6">
+    <PageWrapper className="space-y-8">
       <PageHeader
         title={
           user.firstName
@@ -92,6 +93,6 @@ export function DashboardPage(): React.ReactElement {
           ))}
         </div>
       </section>
-    </div>
+    </PageWrapper>
   )
 }
