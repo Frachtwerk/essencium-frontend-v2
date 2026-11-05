@@ -14,7 +14,6 @@
     "newPassword": "Neues Passwort",
     "confirmPassword": "Passwort bestätigen",
     "passwordMismatch": "Passwörter stimmen nicht überein",
-    "passwordMinLength": "Passwort muss mindestens 8 Zeichen lang sein",
     "setPassword": "Passwort setzen",
     "setPasswordSuccess": "Dein Passwort wurde erfolgreich geändert.",
     "setPasswordDescription": "Lege ein neues Passwort fest.",
@@ -42,6 +41,13 @@
     "nextPage": "Nächste Seite",
     "showPassword": "Passwort anzeigen",
     "hidePassword": "Passwort verbergen",
+    "passwordRules": {
+      "minLength": "Mindestens 12 Zeichen",
+      "upperCase": "Ein Großbuchstabe",
+      "lowerCase": "Ein Kleinbuchstabe",
+      "number": "Eine Zahl",
+      "specialCharacter": "Ein Sonderzeichen"
+    },
     "clearSearch": "Suche zurücksetzen",
     "toDashboard": "Zur Startseite"
   },
@@ -138,6 +144,7 @@
       "mobile": "Mobilnummer",
       "password": "Passwort",
       "passwordCreateHint": "Leer lassen, um dem Benutzer eine E-Mail zum Festlegen des Passworts zu senden.",
+      "passwordChangeWarning": "Das Passwort des Nutzers wird geändert.",
       "passwordEditHint": "Leer lassen, um das Passwort nicht zu ändern.",
       "locale": "Sprache",
       "enabled": "Aktiv",

@@ -5,6 +5,8 @@ import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
 
+import { PasswordChecklist } from '@/components/password-checklist'
+import { PasswordInput } from '@/components/password-input'
 import { FullPageSpinner } from '@/components/spinner'
 import { Button, buttonVariants } from '@/components/ui/button'
 import {
@@ -14,11 +16,18 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
 import { setNewPassword } from '@/generated/client/sdk.gen'
 import { baseClient, getAccessToken, waitForAuth } from '@/lib/auth-store'
 import { cn } from '@/lib/utils'
+import { passwordSchema } from '@/pages/users/user-form-schema'
 
 const searchSchema = z.object({
   token: z.string().optional(),
@@ -39,8 +48,8 @@ export const Route = createFileRoute('/set-password')({
 
 const setPasswordSchema = z
   .object({
-    password: z.string().min(8),
-    confirmPassword: z.string().min(8),
+    password: passwordSchema,
+    confirmPassword: z.string(),
   })
   .refine(data => data.password === data.confirmPassword, {
     path: ['confirmPassword'],
@@ -53,12 +62,10 @@ function SetPasswordPage(): React.ReactElement {
   const { t } = useTranslation()
   const { token } = Route.useSearch()
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<SetPasswordForm>({
+  const form = useForm<SetPasswordForm>({
     resolver: standardSchemaResolver(setPasswordSchema),
+    mode: 'onBlur',
+    defaultValues: { password: '', confirmPassword: '' },
   })
 
   const mutation = useMutation({
@@ -117,62 +124,71 @@ function SetPasswordPage(): React.ReactElement {
       <Card className="w-full max-w-sm">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl">{t('auth.setPassword')}</CardTitle>
+
           <CardDescription>{t('auth.setPasswordDescription')}</CardDescription>
         </CardHeader>
+
         <CardContent>
-          <form
-            onSubmit={e => void handleSubmit(data => mutation.mutate(data))(e)}
-            className="space-y-4"
-          >
-            {mutation.isError && (
-              <div className="bg-destructive text-destructive-foreground rounded-md p-3 text-sm">
-                {mutation.error instanceof Error
-                  ? mutation.error.message
-                  : t('error.unknown')}
-              </div>
-            )}
-            <div className="space-y-2">
-              <Label htmlFor="password">{t('auth.newPassword')}</Label>
-              <Input
-                id="password"
-                type="password"
-                autoComplete="new-password"
-                {...register('password')}
-              />
-              {errors.password && (
-                <p className="text-destructive text-sm">
-                  {t('auth.passwordMinLength')}
-                </p>
-              )}
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="confirmPassword">
-                {t('auth.confirmPassword')}
-              </Label>
-              <Input
-                id="confirmPassword"
-                type="password"
-                autoComplete="new-password"
-                {...register('confirmPassword')}
-              />
-              {errors.confirmPassword && (
-                <p className="text-destructive text-sm">
-                  {errors.confirmPassword.message === 'auth.passwordMismatch'
-                    ? t('auth.passwordMismatch')
-                    : t('auth.passwordMinLength')}
-                </p>
-              )}
-            </div>
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={mutation.isPending}
+          <Form {...form}>
+            <form
+              onSubmit={e =>
+                void form.handleSubmit(data => mutation.mutate(data))(e)
+              }
+              className="space-y-4"
             >
-              {mutation.isPending
-                ? t('auth.setPasswordPending')
-                : t('auth.setPassword')}
-            </Button>
-          </form>
+              {mutation.isError && (
+                <div className="bg-destructive text-destructive-foreground rounded-md p-3 text-sm">
+                  {mutation.error instanceof Error
+                    ? mutation.error.message
+                    : t('error.unknown')}
+                </div>
+              )}
+
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t('auth.newPassword')}</FormLabel>
+
+                    <PasswordChecklist value={field.value}>
+                      <FormControl>
+                        <PasswordInput autoComplete="new-password" {...field} />
+                      </FormControl>
+                    </PasswordChecklist>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="confirmPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t('auth.confirmPassword')}</FormLabel>
+
+                    <FormControl>
+                      <PasswordInput autoComplete="new-password" {...field} />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={mutation.isPending}
+              >
+                {mutation.isPending
+                  ? t('auth.setPasswordPending')
+                  : t('auth.setPassword')}
+              </Button>
+            </form>
+          </Form>
         </CardContent>
       </Card>
     </div>

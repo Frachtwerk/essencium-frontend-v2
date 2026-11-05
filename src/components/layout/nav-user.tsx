@@ -28,7 +28,7 @@ import {
 import { useAuth } from '@/context/auth-context'
 import { useCurrentUser } from '@/hooks/use-current-user'
 
-function initials(firstName?: string, lastName?: string): string {
+export function initials(firstName?: string, lastName?: string): string {
   const a = firstName?.[0] ?? ''
   const b = lastName?.[0] ?? ''
   return (a + b).toUpperCase() || '?'

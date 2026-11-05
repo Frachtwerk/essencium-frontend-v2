@@ -47,37 +47,9 @@ export function ProfileForm({
     <Form {...form}>
       <form
         onSubmit={e => void form.handleSubmit(onSubmit)(e)}
-        className="max-w-2xl space-y-6"
+        className="space-y-6"
       >
         <SsoManagedNotice ssoProvider={ssoProvider} />
-        <div className="grid gap-4 sm:grid-cols-2">
-          <FormField
-            control={form.control}
-            name="firstName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t('users.form.firstName')}</FormLabel>
-                <FormControl>
-                  <Input {...field} readOnly={isSso} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="lastName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t('users.form.lastName')}</FormLabel>
-                <FormControl>
-                  <Input {...field} readOnly={isSso} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
 
         <FormField
           control={form.control}
@@ -85,13 +57,49 @@ export function ProfileForm({
           render={({ field }) => (
             <FormItem>
               <FormLabel>{t('users.form.email')}</FormLabel>
+
               <FormControl>
                 <Input type="email" autoComplete="off" {...field} readOnly />
               </FormControl>
+
               <FormMessage />
             </FormItem>
           )}
         />
+
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <FormField
+            control={form.control}
+            name="firstName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t('users.form.firstName')}</FormLabel>
+
+                <FormControl>
+                  <Input {...field} readOnly={isSso} />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="lastName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t('users.form.lastName')}</FormLabel>
+
+                <FormControl>
+                  <Input {...field} readOnly={isSso} />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
           <FormField
@@ -100,9 +108,11 @@ export function ProfileForm({
             render={({ field }) => (
               <FormItem>
                 <FormLabel>{t('users.form.phone')}</FormLabel>
+
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
+
                 <FormMessage />
               </FormItem>
             )}
@@ -113,9 +123,11 @@ export function ProfileForm({
             render={({ field }) => (
               <FormItem>
                 <FormLabel>{t('users.form.mobile')}</FormLabel>
+
                 <FormControl>
                   <Input {...field} />
                 </FormControl>
+
                 <FormMessage />
               </FormItem>
             )}
@@ -128,11 +140,13 @@ export function ProfileForm({
           render={({ field }) => (
             <FormItem>
               <FormLabel>{t('users.form.locale')}</FormLabel>
+
               <FormControl>
                 <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
+
                   <SelectContent>
                     {SUPPORTED_LOCALES.map(locale => (
                       <SelectItem key={locale} value={locale}>
@@ -142,16 +156,15 @@ export function ProfileForm({
                   </SelectContent>
                 </Select>
               </FormControl>
+
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <div className="flex justify-end">
-          <Button type="submit" disabled={isSubmitting || !isDirty}>
-            {isSubmitting ? t('common.saving') : t('common.save')}
-          </Button>
-        </div>
+        <Button type="submit" disabled={isSubmitting || !isDirty}>
+          {isSubmitting ? t('common.saving') : t('common.save')}
+        </Button>
       </form>
     </Form>
   )

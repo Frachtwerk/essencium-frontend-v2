@@ -14,7 +14,6 @@
     "newPassword": "New password",
     "confirmPassword": "Confirm password",
     "passwordMismatch": "Passwords do not match",
-    "passwordMinLength": "Password must be at least 8 characters long",
     "setPassword": "Set password",
     "setPasswordSuccess": "Your password has been changed successfully.",
     "setPasswordDescription": "Set a new password.",
@@ -42,6 +41,13 @@
     "nextPage": "Next page",
     "showPassword": "Show password",
     "hidePassword": "Hide password",
+    "passwordRules": {
+      "minLength": "At least 12 characters",
+      "upperCase": "An uppercase letter",
+      "lowerCase": "A lowercase letter",
+      "number": "A number",
+      "specialCharacter": "A special character"
+    },
     "clearSearch": "Clear search",
     "toDashboard": "To Dashboard"
   },
@@ -138,6 +144,7 @@
       "mobile": "Mobile",
       "password": "Password",
       "passwordCreateHint": "Leave empty to send the user an email to set their password.",
+      "passwordChangeWarning": "The user's password will be changed.",
       "passwordEditHint": "Leave empty to keep the current password.",
       "locale": "Language",
       "enabled": "Active",

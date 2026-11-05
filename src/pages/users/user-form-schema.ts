@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 import { SUPPORTED_LOCALES } from '@/lib/locale'
+import { passwordRules } from '@/lib/password-rules'
 
 /**
  * User create/edit form schema. Password is optional: on create an empty
@@ -8,13 +9,16 @@ import { SUPPORTED_LOCALES } from '@/lib/locale'
  * password leaves it unchanged.
  */
 
-export const passwordSchema = z
-  .string()
-  .min(12, 'users.validation.password.minLength')
-  .regex(/[A-Z]/, 'users.validation.password.upperCase')
-  .regex(/[a-z]/, 'users.validation.password.lowerCase')
-  .regex(/\d/, 'users.validation.password.number')
-  .regex(/[^A-Za-z0-9]/, 'users.validation.password.specialCharacter')
+export const passwordSchema = z.string().superRefine((value, ctx) => {
+  for (const { key, test } of passwordRules) {
+    if (!test(value)) {
+      ctx.addIssue({
+        code: 'custom',
+        message: `users.validation.password.${key}`,
+      })
+    }
+  }
+})
 
 export const userFormSchema = z.object({
   firstName: z.string().min(2, 'users.validation.firstName'),
