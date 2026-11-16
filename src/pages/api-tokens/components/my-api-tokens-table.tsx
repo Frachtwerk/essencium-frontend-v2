@@ -1,9 +1,4 @@
-import {
-  RiArrowLeftSLine,
-  RiArrowRightSLine,
-  RiDeleteBinLine,
-  RiForbidLine,
-} from '@remixicon/react'
+import { RiDeleteBinLine, RiForbidLine } from '@remixicon/react'
 import type { ColumnDef, OnChangeFn, SortingState } from '@tanstack/react-table'
 import dayjs from 'dayjs'
 import { useTranslation } from 'react-i18next'
@@ -14,7 +9,6 @@ import { DataTable } from '@/components/data-table'
 import { CanAccess } from '@/components/shared/can-access'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { LinkButton } from '@/components/ui/link-button'
 import type {
   ApiTokenRepresentation,
   PageApiTokenRepresentation,
@@ -28,6 +22,8 @@ interface MyApiTokensTableProps {
   size: number
   sorting: SortingState
   onSortingChange: OnChangeFn<SortingState>
+  onPageChange: (page: number) => void
+  onPageSizeChange: (size: number) => void
   onRevoke: (token: ApiTokenRepresentation) => void
   onDelete: (token: ApiTokenRepresentation) => void
 }
@@ -38,6 +34,8 @@ export function MyApiTokensTable({
   size,
   sorting,
   onSortingChange,
+  onPageChange,
+  onPageSizeChange,
   onRevoke,
   onDelete,
 }: MyApiTokensTableProps): React.ReactElement {
@@ -128,32 +126,9 @@ export function MyApiTokensTable({
       totalElements={tokensPage.totalElements ?? 0}
       sorting={sorting}
       onSortingChange={onSortingChange}
-      renderPreviousPageButton={({ disabled }) => (
-        <LinkButton
-          variant="outline"
-          size="sm"
-          disabled={disabled}
-          to="/api-tokens"
-          search={prev => ({ ...prev, page: Math.max(0, page - 1), size })}
-        >
-          <RiArrowLeftSLine className="size-4" />
-        </LinkButton>
-      )}
-      renderNextPageButton={({ disabled }) => (
-        <LinkButton
-          variant="outline"
-          size="sm"
-          disabled={disabled}
-          to="/api-tokens"
-          search={prev => ({
-            ...prev,
-            page: Math.min((tokensPage.totalPages ?? 1) - 1, page + 1),
-            size,
-          })}
-        >
-          <RiArrowRightSLine className="size-4" />
-        </LinkButton>
-      )}
+      pageSize={size}
+      onPageChange={onPageChange}
+      onPageSizeChange={onPageSizeChange}
     />
   )
 }

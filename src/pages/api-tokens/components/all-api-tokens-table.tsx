@@ -1,9 +1,4 @@
-import {
-  RiArrowLeftSLine,
-  RiArrowRightSLine,
-  RiDeleteBinLine,
-  RiForbidLine,
-} from '@remixicon/react'
+import { RiDeleteBinLine, RiForbidLine } from '@remixicon/react'
 import type { ColumnDef, OnChangeFn, SortingState } from '@tanstack/react-table'
 import dayjs from 'dayjs'
 import { useTranslation } from 'react-i18next'
@@ -19,12 +14,13 @@ import { TOKEN_STATUS, TOKEN_STATUS_BADGE_VARIANT } from '@/lib/api-tokens'
 interface AllApiTokensTableProps {
   tokens: ApiTokenRepresentation[]
   page: number
+  pageSize: number
   totalPages: number
   totalElements: number
   sorting: SortingState
   onSortingChange: OnChangeFn<SortingState>
-  onPreviousPage: () => void
-  onNextPage: () => void
+  onPageChange: (page: number) => void
+  onPageSizeChange: (size: number) => void
   onRevoke: (token: ApiTokenRepresentation) => void
   onDelete: (token: ApiTokenRepresentation) => void
 }
@@ -32,12 +28,13 @@ interface AllApiTokensTableProps {
 export function AllApiTokensTable({
   tokens,
   page,
+  pageSize,
   totalPages,
   totalElements,
   sorting,
   onSortingChange,
-  onPreviousPage,
-  onNextPage,
+  onPageChange,
+  onPageSizeChange,
   onRevoke,
   onDelete,
 }: AllApiTokensTableProps): React.ReactElement {
@@ -122,28 +119,9 @@ export function AllApiTokensTable({
       totalElements={totalElements}
       sorting={sorting}
       onSortingChange={onSortingChange}
-      renderPreviousPageButton={({ disabled }) => (
-        <Button
-          variant="outline"
-          size="sm"
-          disabled={disabled}
-          onClick={onPreviousPage}
-          aria-label={t('common.previousPage')}
-        >
-          <RiArrowLeftSLine className="size-4" />
-        </Button>
-      )}
-      renderNextPageButton={({ disabled }) => (
-        <Button
-          variant="outline"
-          size="sm"
-          disabled={disabled}
-          onClick={onNextPage}
-          aria-label={t('common.nextPage')}
-        >
-          <RiArrowRightSLine className="size-4" />
-        </Button>
-      )}
+      pageSize={pageSize}
+      onPageChange={onPageChange}
+      onPageSizeChange={onPageSizeChange}
     />
   )
 }

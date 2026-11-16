@@ -137,6 +137,14 @@ export function MyApiTokensView({
           size={size}
           sorting={sorting}
           onSortingChange={onSortingChange}
+          onPageChange={nextPage =>
+            void navigate({ search: prev => ({ ...prev, page: nextPage }) })
+          }
+          onPageSizeChange={nextSize =>
+            void navigate({
+              search: prev => ({ ...prev, size: nextSize, page: 0 }),
+            })
+          }
           onRevoke={setTokenToRevoke}
           onDelete={setTokenToDelete}
         />

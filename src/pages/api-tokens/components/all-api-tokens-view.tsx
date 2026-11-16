@@ -22,8 +22,6 @@ import { parseSort, serializeSort } from '@/lib/pagination'
 
 const route = getRouteApi('/_authenticated/api-tokens')
 
-const PAGE_SIZE = 10
-
 function sortValue(token: ApiTokenRepresentation, columnId: string): string {
   if (columnId === 'user') return token.linkedUser?.name ?? ''
   if (columnId === 'description') return token.description ?? ''
@@ -55,7 +53,12 @@ export function AllApiTokensView({
   const revokeApiToken = useRevokeApiToken()
   const deleteApiToken = useDeleteApiToken()
 
-  const { adminPage: page, adminSort, adminSearch } = route.useSearch()
+  const {
+    adminPage: page,
+    adminSize: pageSize,
+    adminSort,
+    adminSearch,
+  } = route.useSearch()
   const navigate = route.useNavigate()
 
   const search = adminSearch ?? ''
@@ -81,11 +84,11 @@ export function AllApiTokensView({
     : filtered
 
   const totalElements = sorted.length
-  const totalPages = Math.max(1, Math.ceil(totalElements / PAGE_SIZE))
+  const totalPages = Math.max(1, Math.ceil(totalElements / pageSize))
   const safePage = Math.min(page, totalPages - 1)
   const pageTokens = sorted.slice(
-    safePage * PAGE_SIZE,
-    safePage * PAGE_SIZE + PAGE_SIZE,
+    safePage * pageSize,
+    safePage * pageSize + pageSize,
   )
 
   function onSearchChange(value: string): void {
@@ -111,6 +114,12 @@ export function AllApiTokensView({
 
   function goToPage(nextPage: number): void {
     void navigate({ search: prev => ({ ...prev, adminPage: nextPage }) })
+  }
+
+  function changePageSize(nextSize: number): void {
+    void navigate({
+      search: prev => ({ ...prev, adminSize: nextSize, adminPage: 0 }),
+    })
   }
 
   function confirmRevoke(): void {
@@ -158,12 +167,13 @@ export function AllApiTokensView({
           <AllApiTokensTable
             tokens={pageTokens}
             page={safePage}
+            pageSize={pageSize}
             totalPages={totalPages}
             totalElements={totalElements}
             sorting={sorting}
             onSortingChange={onSortingChange}
-            onPreviousPage={() => goToPage(Math.max(0, safePage - 1))}
-            onNextPage={() => goToPage(Math.min(totalPages - 1, safePage + 1))}
+            onPageChange={goToPage}
+            onPageSizeChange={changePageSize}
             onRevoke={setTokenToRevoke}
             onDelete={setTokenToDelete}
           />
