@@ -1,10 +1,10 @@
 import { RiArrowLeftSLine, RiArrowRightSLine } from '@remixicon/react'
 import { getRouteApi } from '@tanstack/react-router'
-import type { ColumnDef, SortingState, Updater } from '@tanstack/react-table'
+import type { SortingState, Updater } from '@tanstack/react-table'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
-import { DataTable } from '@/components/data-table'
+import { DataTable, type DataTableColumnDef } from '@/components/data-table'
 import { PageHeader } from '@/components/layout/page-header'
 import { PageWrapper } from '@/components/layout/page-wrapper'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -70,7 +70,7 @@ export function RightsPage(): React.ReactElement {
     ]),
   )
 
-  const roleColumns: ColumnDef<Right>[] =
+  const roleColumns: DataTableColumnDef<Right>[] =
     allRoles.content?.map(role => ({
       id: role.id ?? role.name,
       header: role.name,
@@ -91,7 +91,7 @@ export function RightsPage(): React.ReactElement {
       enableSorting: false,
     })) || []
 
-  const columns: ColumnDef<Right>[] = [
+  const columns: DataTableColumnDef<Right>[] = [
     {
       accessorKey: 'authority',
       header: t('rights.authority'),

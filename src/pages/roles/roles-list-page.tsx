@@ -6,14 +6,13 @@ import {
   RiEditLine,
 } from '@remixicon/react'
 import { getRouteApi } from '@tanstack/react-router'
-import type { ColumnDef } from '@tanstack/react-table'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 
 import { RoleFormDialog } from './role-form-dialog'
 
-import { DataTable } from '@/components/data-table'
+import { DataTable, type DataTableColumnDef } from '@/components/data-table'
 import { PageHeader } from '@/components/layout/page-header'
 import { PageWrapper } from '@/components/layout/page-wrapper'
 import { CanAccess } from '@/components/shared/can-access'
@@ -75,7 +74,7 @@ export function RolesListPage(): React.ReactElement {
     )
   }
 
-  const columns: ColumnDef<Role>[] = [
+  const columns: DataTableColumnDef<Role>[] = [
     { accessorKey: 'name', header: t('roles.table.name') },
     {
       accessorKey: 'description',
