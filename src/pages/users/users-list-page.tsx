@@ -4,13 +4,13 @@ import {
   RiArrowRightSLine,
 } from '@remixicon/react'
 import { getRouteApi } from '@tanstack/react-router'
-import type { ColumnDef, SortingState, Updater } from '@tanstack/react-table'
+import type { SortingState, Updater } from '@tanstack/react-table'
 import { useTranslation } from 'react-i18next'
 
 import { UserRowActions } from './user-row-actions'
 import { UsersFilterBar } from './users-filter-bar'
 
-import { DataTable } from '@/components/data-table'
+import { DataTable, type DataTableColumnDef } from '@/components/data-table'
 import { PageHeader } from '@/components/layout/page-header'
 import { PageWrapper } from '@/components/layout/page-wrapper'
 import { CanAccess } from '@/components/shared/can-access'
@@ -52,7 +52,7 @@ export function UsersListPage(): React.ReactElement {
     })
   }
 
-  const columns: ColumnDef<UserRepresentation>[] = [
+  const columns: DataTableColumnDef<UserRepresentation>[] = [
     {
       // Derived column: the accessor produces the full name, used both as the
       // cell value and as TanStack's sortability signal (getCanSort needs an

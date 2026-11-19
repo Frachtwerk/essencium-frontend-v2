@@ -4,13 +4,13 @@ import {
   RiDeleteBinLine,
   RiForbidLine,
 } from '@remixicon/react'
-import type { ColumnDef, OnChangeFn, SortingState } from '@tanstack/react-table'
+import type { OnChangeFn, SortingState } from '@tanstack/react-table'
 import dayjs from 'dayjs'
 import { useTranslation } from 'react-i18next'
 
 import { ApiTokenRightsBadges } from './api-token-rights-badges'
 
-import { DataTable } from '@/components/data-table'
+import { DataTable, type DataTableColumnDef } from '@/components/data-table'
 import { CanAccess } from '@/components/shared/can-access'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -43,7 +43,7 @@ export function MyApiTokensTable({
 }: MyApiTokensTableProps): React.ReactElement {
   const { t } = useTranslation()
 
-  const columns: ColumnDef<ApiTokenRepresentation>[] = [
+  const columns: DataTableColumnDef<ApiTokenRepresentation>[] = [
     {
       accessorKey: 'description',
       header: t('apiTokens.table.description'),
