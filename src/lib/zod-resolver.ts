@@ -6,7 +6,8 @@ import type { ZodType } from 'zod'
  * Thin wrapper around `zodResolver` that isolates a types-only incompatibility
  * between zod 4.4 and @hookform/resolvers 5.2 (the resolver's overloads still
  * carry the zod-4.0 version brand). Runtime behaviour is unaffected; this keeps
- * the cast in one place so form call sites stay clean and type-safe.
+ * the cast in one place so form call sites stay clean and type-safe. Still
+ * needed with @hookform/resolvers 7.0 (tsc fails without the cast).
  */
 export function zodFormResolver<T extends FieldValues>(
   schema: ZodType<T>,
