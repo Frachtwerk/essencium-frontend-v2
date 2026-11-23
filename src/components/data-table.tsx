@@ -3,18 +3,22 @@ import {
   RiArrowUpDownLine,
   RiArrowUpSLine,
 } from '@remixicon/react'
-/* eslint-disable import-x/named -- import-x cannot statically resolve @tanstack/react-table's exports */
 import {
-  Column,
+  columnPinningFeature,
+  columnSizingFeature,
+  columnVisibilityFeature,
   flexRender,
-  getCoreRowModel,
-  useReactTable,
+  rowPaginationFeature,
+  rowSortingFeature,
+  tableFeatures,
+  useTable,
+  type Column,
   type ColumnDef,
   type OnChangeFn,
   type Row,
+  type RowData,
   type SortingState,
 } from '@tanstack/react-table'
-/* eslint-enable import-x/named */
 import type { CSSProperties, ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -28,8 +32,25 @@ import {
 } from '@/components/ui/table'
 import { cn } from '@/lib/utils'
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
+/** The table features this DataTable uses; v9 requires them to be declared. */
+const dataTableFeatures = tableFeatures({
+  columnPinningFeature,
+  columnSizingFeature, // provides column.getStart() for the pinning offset
+  columnVisibilityFeature, // provides row.getVisibleCells()
+  rowPaginationFeature,
+  rowSortingFeature,
+})
+
+type DataTableFeatures = typeof dataTableFeatures
+
+/** Column definition bound to the features of {@link DataTable}. */
+export type DataTableColumnDef<
+  TData extends RowData,
+  TValue = unknown,
+> = ColumnDef<DataTableFeatures, TData, TValue>
+
+interface DataTableProps<TData extends RowData> {
+  columns: DataTableColumnDef<TData>[]
   data: TData[]
   totalPages: number
   totalElements: number
@@ -37,13 +58,13 @@ interface DataTableProps<TData, TValue> {
   pinnedColumns?: string[]
   renderNextPageButton: (props: { disabled: boolean }) => ReactNode
   renderPreviousPageButton: (props: { disabled: boolean }) => ReactNode
-  onRowClick?: (row: Row<TData>) => void
+  onRowClick?: (row: Row<DataTableFeatures, TData>) => void
   /**
    * Decides per row whether {@link onRowClick} applies. Rows for which this
    * returns `false` are not clickable and show no pointer cursor. Defaults to
    * all rows being clickable when `onRowClick` is set.
    */
-  isRowClickable?: (row: Row<TData>) => boolean
+  isRowClickable?: (row: Row<DataTableFeatures, TData>) => boolean
   /** Current sort state; when provided, sortable headers become clickable. */
   sorting?: SortingState
   onSortingChange?: OnChangeFn<SortingState>
@@ -65,35 +86,40 @@ interface DataTableProps<TData, TValue> {
  * Offset of a left-pinned column. Stays an inline style because the value is
  * computed from the widths of the preceding columns.
  */
-function getPinningStyles<TData>(column: Column<TData>): CSSProperties {
+function getPinningStyles<TData extends RowData>(
+  column: Column<DataTableFeatures, TData>,
+): CSSProperties {
   const isPinned = column.getIsPinned()
   return {
-    left: isPinned === 'left' ? `${column.getStart('left')}px` : undefined,
+    left: isPinned === 'start' ? `${column.getStart('start')}px` : undefined,
   }
 }
 
 /** Static part of the pinning treatment — expressed as design tokens. */
-function getPinningClasses<TData>(column: Column<TData>): string {
+function getPinningClasses<TData extends RowData>(
+  column: Column<DataTableFeatures, TData>,
+): string {
   return column.getIsPinned() ? 'bg-background sticky z-1' : 'relative z-0'
 }
 
-export function DataTable<TData, TValue>(
-  props: Readonly<DataTableProps<TData, TValue>>,
+export function DataTable<TData extends RowData>(
+  props: Readonly<DataTableProps<TData>>,
 ): React.ReactElement {
   const { t } = useTranslation()
-  const table = useReactTable({
+  const table = useTable({
+    features: dataTableFeatures,
     data: props.data,
     columns: props.columns,
     manualPagination: true,
     manualSorting: true,
     rowCount: props.totalElements,
     pageCount: props.totalPages,
-    getCoreRowModel: getCoreRowModel(),
     ...(props.getRowId ? { getRowId: props.getRowId } : {}),
     onSortingChange: props.onSortingChange,
     initialState: {
       columnPinning: {
-        left: props.pinnedColumns,
+        start: props.pinnedColumns ?? [],
+        end: [],
       },
     },
     state: {
