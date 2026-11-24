@@ -12,7 +12,9 @@ import { LinkButton } from '@/components/ui/link-button'
 import { Right } from '@/generated/client'
 import { useFindAllRights } from '@/hooks/data/rights'
 import { useAllRoles, useToggleRoleRight } from '@/hooks/data/roles'
+import { usePermissions } from '@/hooks/use-permissions'
 import { parseSort, serializeSort } from '@/lib/pagination'
+import { RIGHTS } from '@/lib/permissions'
 import { isRoleLocked } from '@/lib/roles'
 
 const route = getRouteApi('/_authenticated/rights')
@@ -63,6 +65,7 @@ export function RightsPage(): React.ReactElement {
   })
 
   const { data: allRoles } = useAllRoles()
+  const canUpdateRoles = usePermissions().can(RIGHTS.ROLE_UPDATE)
 
   const roleRightSets = new Map(
     allRoles?.content?.map(role => [
@@ -82,7 +85,7 @@ export function RightsPage(): React.ReactElement {
           checked={
             roleRightSets.get(role.id)?.has(row.row.original.authority) ?? false
           }
-          disabled={isRoleLocked(role)}
+          disabled={!canUpdateRoles || isRoleLocked(role)}
         />
       ),
       enableSorting: false,
