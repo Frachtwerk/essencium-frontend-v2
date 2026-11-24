@@ -65,7 +65,7 @@ function SsoSection(): React.ReactElement | null {
   )
   const appUrl = import.meta.env.VITE_APP_URL ?? window.location.origin
 
-  const ssoBaseUrl = import.meta.env.VITE_BACKEND_URL ?? API_BASE_URL
+  const ssoBaseUrl = import.meta.env.VITE_BACKEND_URL || API_BASE_URL
 
   const ssoEntries = Object.entries(
     (ssoProviders as Record<string, SsoProvider> | undefined) ?? {},
@@ -131,7 +131,7 @@ function LoginPage(): React.ReactElement {
 
     sessionStorage.removeItem(REDIRECT_KEY)
 
-    return target?.startsWith('/') ? target : '/'
+    return target && /^\/.*/.test(target) ? target : '/'
   }
 
   const loginMutation = useMutation({
@@ -163,7 +163,8 @@ function LoginPage(): React.ReactElement {
 
   useEffect(() => {
     if (redirectTo) sessionStorage.setItem(REDIRECT_KEY, redirectTo)
-  }, [redirectTo])
+    else if (!oauthToken) sessionStorage.removeItem(REDIRECT_KEY)
+  }, [redirectTo, oauthToken])
 
   // Show spinner while processing OAuth callback token
   if (oauthToken) {

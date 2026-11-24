@@ -32,6 +32,15 @@ authenticatedClient.interceptors.request.use(request => {
   return request
 })
 
+function redirectToLogin(): void {
+  const { pathname, search, hash } = window.location
+  const target = `${pathname}${search}${hash}`
+
+  window.location.href = pathname.startsWith('/login')
+    ? '/login'
+    : `/login?redirect=${encodeURIComponent(target)}`
+}
+
 // On 401: refresh token, then retry the original request. Redirect on failure.
 let isRefreshing = false
 authenticatedClient.interceptors.response.use(async (response, request) => {
@@ -44,7 +53,7 @@ authenticatedClient.interceptors.response.use(async (response, request) => {
         return fetch(request)
       }
       resetAuth()
-      window.location.href = '/login'
+      redirectToLogin()
     } finally {
       isRefreshing = false
     }
@@ -74,7 +83,7 @@ export function scheduleRefresh(token: string): void {
       const ok = await refreshToken()
       if (!ok) {
         resetAuth()
-        window.location.href = '/login'
+        redirectToLogin()
       }
     })()
   }, refreshIn)
@@ -140,12 +149,14 @@ export async function login(
 
 export async function logout(): Promise<void> {
   try {
-    await sdkLogout({
-      client: authenticatedClient,
-      credentials: 'include',
-      redirect: 'manual',
-      headers: { Authorization: `Bearer ${accessToken ?? ''}` },
-    })
+    if (accessToken) {
+      await sdkLogout({
+        client: authenticatedClient,
+        credentials: 'include',
+        redirect: 'manual',
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
+    }
   } catch {
     // Backend logout may fail — ignore, clear token regardless
   } finally {
