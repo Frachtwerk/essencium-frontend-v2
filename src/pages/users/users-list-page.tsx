@@ -19,6 +19,7 @@ import { buttonVariants } from '@/components/ui/button'
 import { LinkButton } from '@/components/ui/link-button'
 import type { UserRepresentation } from '@/generated/client/types.gen'
 import { useFindAllUsers } from '@/hooks/data/users'
+import { usePermissions } from '@/hooks/use-permissions'
 import { isDefaultUser } from '@/lib/default-user'
 import { parseSort, serializeSort } from '@/lib/pagination'
 import { RIGHTS } from '@/lib/permissions'
@@ -38,6 +39,7 @@ export function UsersListPage(): React.ReactElement {
     roles,
   })
   const navigate = route.useNavigate()
+  const canUpdateUsers = usePermissions().can(RIGHTS.USER_UPDATE)
 
   const sorting = parseSort(sort)
 
@@ -141,7 +143,9 @@ export function UsersListPage(): React.ReactElement {
             params: { userId: String(row.original.id) },
           })
         }
-        isRowClickable={row => !isDefaultUser(row.original.email)}
+        isRowClickable={row =>
+          canUpdateUsers && !isDefaultUser(row.original.email)
+        }
         renderPreviousPageButton={({ disabled }) => (
           <LinkButton
             variant="outline"
