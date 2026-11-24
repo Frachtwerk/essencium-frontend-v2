@@ -3,6 +3,7 @@
     "login": "Anmelden",
     "loginPending": "Anmeldung läuft...",
     "loginFailed": "Login fehlgeschlagen",
+    "invalidCredentials": "E-Mail oder Passwort ist falsch",
     "loginSubtitle": "Melde dich an um fortzufahren",
     "email": "E-Mail",
     "password": "Passwort",

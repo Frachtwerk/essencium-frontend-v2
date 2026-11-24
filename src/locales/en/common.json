@@ -3,6 +3,7 @@
     "login": "Login",
     "loginPending": "Logging in...",
     "loginFailed": "Login failed",
+    "invalidCredentials": "Email or password is incorrect",
     "loginSubtitle": "Sign in to continue",
     "email": "Email",
     "password": "Password",
