@@ -18,6 +18,7 @@ const SEGMENT_LABELS: Record<string, ParseKeys> = {
   roles: 'roles.title',
   profile: 'profile.title',
   settings: 'settings.title',
+  translations: 'translations.title',
   privacy: 'common.privacy',
   'legal-notice': 'common.legalNotice',
   contact: 'common.contact',

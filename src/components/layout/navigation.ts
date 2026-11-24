@@ -6,6 +6,7 @@ import {
   RiSettingsLine,
   RiShieldCheckLine,
   RiShieldKeyholeLine,
+  RiTranslate2,
   RiUserLine,
   type RemixiconComponentType,
 } from '@remixicon/react'
@@ -53,6 +54,12 @@ const ROUTE_META: Record<string, RouteMeta> = {
     icon: RiKeyLine,
     rights: [RIGHTS.API_TOKEN, RIGHTS.API_TOKEN_ADMIN],
     order: 30,
+  },
+  '/translations': {
+    labelKey: 'navigation.translations',
+    icon: RiTranslate2,
+    rights: RIGHTS.TRANSLATION_READ,
+    order: 35,
   },
   '/profile': {
     labelKey: 'navigation.profile',

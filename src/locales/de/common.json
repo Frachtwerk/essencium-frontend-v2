@@ -83,6 +83,7 @@
     "dashboard": "Dashboard",
     "users": "Benutzer",
     "roles": "Rollen",
+    "translations": "Übersetzungen",
     "apiTokens": "API-Tokens",
     "rights": "Rechte",
     "profile": "Profil",
@@ -220,6 +221,20 @@
         }
       }
     }
+  },
+  "translations": {
+    "title": "Übersetzungen",
+    "locale": {
+      "de": "Deutsch",
+      "en": "Englisch"
+    },
+    "searchPlaceholder": "Schlüssel oder Text suchen",
+    "saveSuccess": "Übersetzung gespeichert",
+    "saveError": "Übersetzung konnte nicht gespeichert werden",
+    "deleteTitle": "Übersetzung löschen",
+    "deleteConfirm": "Möchten Sie den Schlüssel \"{{key}}\" wirklich für alle Sprachen löschen? Dies kann nicht rückgängig gemacht werden.",
+    "deleteSuccess": "Übersetzung gelöscht",
+    "deleteError": "Übersetzung konnte nicht gelöscht werden"
   },
   "apiTokens": {
     "title": "API-Tokens",
