@@ -34,17 +34,13 @@ export function ConfirmDialog({
 
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent className="data-[size=default]:max-w-sm data-[size=default]:sm:max-w-lg">
+      <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>
           <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
-
-        <AlertDialogFooter className="border-none bg-white">
-          <AlertDialogCancel variant="ghost">
-            {t('common.cancel')}
-          </AlertDialogCancel>
-
+        <AlertDialogFooter>
+          <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
           <AlertDialogAction onClick={onConfirm} disabled={isPending}>
             {confirmLabel}
           </AlertDialogAction>
