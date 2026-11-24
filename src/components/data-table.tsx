@@ -224,10 +224,11 @@ export function DataTable<TData extends RowData>(
     return getPageItems(props.currentPage, pageCount - 1, compact).map(item => (
       <PaginationItem key={`${compact}-${item}`} className={className}>
         {typeof item === 'string' ? (
-          <PaginationEllipsis />
+          <PaginationEllipsis aria-label={t('common.jumpToPage')} />
         ) : (
           <PaginationLink
             href="#"
+            aria-label={t('common.goToPage', { page: item + 1 })}
             isActive={item === props.currentPage}
             {...pageLinkProps(true, () => table.setPageIndex(item))}
           >
@@ -420,7 +421,10 @@ export function DataTable<TData extends RowData>(
             />
 
             <span className="text-sm">
-              {t('common.ofPages', { pages: pageCount })}
+              {t('common.ofPages', {
+                pages: pageCount,
+                count: props.totalElements,
+              })}
             </span>
           </div>
         </div>
