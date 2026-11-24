@@ -72,6 +72,7 @@ export function TranslationsPage(): React.ReactElement {
         <Tabs
           value={locale}
           onValueChange={value => {
+            // Safe: the tab values are rendered from TRANSLATION_LOCALES below.
             void navigate({
               search: prev => ({ ...prev, locale: value as TranslationLocale }),
             })

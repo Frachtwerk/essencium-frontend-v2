@@ -55,11 +55,11 @@ const ROUTE_META: Record<string, RouteMeta> = {
     rights: [RIGHTS.API_TOKEN, RIGHTS.API_TOKEN_ADMIN],
     order: 30,
   },
-  {
+  '/translations': {
     labelKey: 'navigation.translations',
-    to: '/translations',
     icon: RiTranslate2,
     rights: RIGHTS.TRANSLATION_READ,
+    order: 35,
   },
   '/profile': {
     labelKey: 'navigation.profile',

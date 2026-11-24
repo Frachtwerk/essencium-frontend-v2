@@ -56,7 +56,7 @@ export function TranslationRow({
           {label}
         </span>
 
-        {draft ? (
+        {draft !== undefined ? (
           <div className="flex min-w-0 flex-1 flex-col gap-2">
             <Textarea
               ref={el => el?.focus()}
@@ -75,7 +75,7 @@ export function TranslationRow({
                 variant="outline"
                 onClick={() => setDraft(undefined)}
               >
-                {t('common.back')}
+                {t('common.cancel')}
               </Button>
 
               <Button

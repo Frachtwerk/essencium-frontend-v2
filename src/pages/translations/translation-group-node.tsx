@@ -47,7 +47,7 @@ export function TranslationGroupNode({
           defaultOpen={expanded}
           className={cn(
             nested
-              ? 'border-foreground/30 border-t'
+              ? 'border-foreground/30 border-t first:border-t-0'
               : 'bg-card border-foreground/50 overflow-hidden rounded-lg border',
           )}
         >
