@@ -131,7 +131,13 @@ function LoginPage(): React.ReactElement {
 
     sessionStorage.removeItem(REDIRECT_KEY)
 
-    return target && /^\/.*/.test(target) ? target : '/'
+    if (!target) return '/'
+
+    const url = new URL(target, window.location.origin)
+
+    return url.origin === window.location.origin
+      ? url.pathname + url.search + url.hash
+      : '/'
   }
 
   const loginMutation = useMutation({
