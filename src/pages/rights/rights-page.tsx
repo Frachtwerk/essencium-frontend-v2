@@ -49,6 +49,7 @@ function RoleRightCheckbox({
     <Checkbox
       checked={checked}
       disabled={disabled}
+      aria-label={t('rights.checkbox', { right: authority, role: roleName })}
       onCheckedChange={nextChecked => toggleRight({ authority, nextChecked })}
     />
   )
