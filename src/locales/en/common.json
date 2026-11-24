@@ -19,6 +19,7 @@
     "setPasswordSuccess": "Your password has been changed successfully.",
     "setPasswordDescription": "Set a new password.",
     "invalidResetToken": "Invalid or expired link.",
+    "resetNotAllowed": "The password for this account can't be reset here.",
     "goToLogin": "Go to login",
     "resetPasswordPending": "Sending link...",
     "setPasswordPending": "Setting password...",

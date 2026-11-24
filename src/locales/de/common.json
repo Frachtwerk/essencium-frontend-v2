@@ -19,6 +19,7 @@
     "setPasswordSuccess": "Dein Passwort wurde erfolgreich geändert.",
     "setPasswordDescription": "Lege ein neues Passwort fest.",
     "invalidResetToken": "Ungültiger oder abgelaufener Link.",
+    "resetNotAllowed": "Für dieses Konto lässt sich das Passwort hier nicht zurücksetzen.",
     "goToLogin": "Zum Login",
     "resetPasswordPending": "Link wird gesendet...",
     "setPasswordPending": "Passwort wird gesetzt...",
