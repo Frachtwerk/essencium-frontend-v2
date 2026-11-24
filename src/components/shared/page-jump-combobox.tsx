@@ -1,5 +1,5 @@
 import { useVirtualizer } from '@tanstack/react-virtual'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import {
@@ -30,22 +30,21 @@ export function PageJumpCombobox({
 
   const [inputValue, setInputValue] = useState(String(currentPage + 1))
 
+  const [query, setQuery] = useState('')
+
   const [prevPage, setPrevPage] = useState(currentPage)
 
   if (prevPage !== currentPage) {
     setPrevPage(currentPage)
     setInputValue(String(currentPage + 1))
+    setQuery('')
   }
 
-  const options = useMemo(() => {
-    const pages = Array.from({ length: pageCount }, (_, page) =>
-      String(page + 1),
-    )
+  const pages = Array.from({ length: pageCount }, (_, page) => String(page + 1))
 
-    return inputValue.length
-      ? pages.filter(page => page.includes(inputValue))
-      : pages
-  }, [pageCount, inputValue])
+  const options = query.length
+    ? pages.filter(page => page.includes(query))
+    : pages
 
   const virtualizer = useVirtualizer({
     count: options.length,
@@ -57,6 +56,7 @@ export function PageJumpCombobox({
   return (
     <Combobox
       virtualized
+      autoHighlight
       items={options}
       filteredItems={options}
       value={String(currentPage + 1)}
@@ -72,9 +72,14 @@ export function PageJumpCombobox({
       }}
     >
       <ComboboxInput
-        className="w-26"
+        className="w-20"
         inputMode="numeric"
-        onBlur={() => setInputValue(String(currentPage + 1))}
+        onChange={event => setQuery(event.target.value)}
+        onBlur={() => {
+          setInputValue(String(currentPage + 1))
+
+          setQuery('')
+        }}
         aria-label={t('common.jumpToPage')}
       />
 
