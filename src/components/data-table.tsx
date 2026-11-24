@@ -379,6 +379,7 @@ export function DataTable<TData extends RowData>(
               <PaginationItem>
                 <PaginationPrevious
                   href="#"
+                  aria-label={t('common.previousPage')}
                   className="pr-8"
                   {...pageLinkProps(
                     table.getCanPreviousPage(),
@@ -394,6 +395,7 @@ export function DataTable<TData extends RowData>(
               <PaginationItem>
                 <PaginationNext
                   href="#"
+                  aria-label={t('common.nextPage')}
                   {...pageLinkProps(table.getCanNextPage(), table.nextPage)}
                 />
               </PaginationItem>
@@ -410,11 +412,17 @@ export function DataTable<TData extends RowData>(
             </PaginationContent>
           </Pagination>
 
-          <PageJumpCombobox
-            currentPage={props.currentPage}
-            pageCount={pageCount}
-            onPageChange={page => table.setPageIndex(page)}
-          />
+          <div className="flex items-center gap-4">
+            <PageJumpCombobox
+              currentPage={props.currentPage}
+              pageCount={pageCount}
+              onPageChange={page => table.setPageIndex(page)}
+            />
+
+            <span className="text-sm">
+              {t('common.ofPages', { pages: pageCount })}
+            </span>
+          </div>
         </div>
       </div>
     </div>

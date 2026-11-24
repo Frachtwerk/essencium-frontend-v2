@@ -42,6 +42,7 @@
     "noResults": "No results",
     "size": "Size",
     "sortBy": "Sort by this column",
+    "ofPages": "of {{pages}}",
     "pageSize": "Entries per page",
     "jumpToPage": "Jump to page",
     "firstPage": "First page",

@@ -42,6 +42,7 @@
     "noResults": "Keine Einträge",
     "size": "Größe",
     "sortBy": "Nach dieser Spalte sortieren",
+    "ofPages": "von {{pages}}",
     "pageSize": "Einträge pro Seite",
     "jumpToPage": "Zu Seite springen",
     "firstPage": "Erste Seite",
