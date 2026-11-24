@@ -23,6 +23,7 @@ import {
 import { authenticatedClient } from '@/lib/auth-store'
 import {
   parseTranslationFile,
+  TRANSLATION_LOCALES,
   type TranslationEntry,
   type TranslationLocale,
 } from '@/lib/translations'
@@ -50,9 +51,11 @@ export function useTranslations(
 function useInvalidateTranslations(): () => void {
   const queryClient = useQueryClient()
   return () => {
-    void queryClient.invalidateQueries({
-      queryKey: [{ _id: 'getTranslationFile' }],
-    })
+    for (const locale of TRANSLATION_LOCALES) {
+      void queryClient.invalidateQueries({
+        queryKey: getTranslationsQueryOptions(locale).queryKey,
+      })
+    }
   }
 }
 

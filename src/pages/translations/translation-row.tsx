@@ -103,16 +103,18 @@ export function TranslationRow({
                 >
                   <RiEditLine className="size-4" />
                 </Button>
-
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  aria-label={t('common.delete')}
-                  onClick={() => onDelete(entry.key)}
-                >
-                  <RiDeleteBinLine className="text-destructive-400 size-4" />
-                </Button>
               </div>
+            </CanAccess>
+
+            <CanAccess rights={RIGHTS.TRANSLATION_DELETE}>
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label={t('common.delete')}
+                onClick={() => onDelete(entry.key)}
+              >
+                <RiDeleteBinLine className="text-destructive-400 size-4" />
+              </Button>
             </CanAccess>
           </>
         )}
