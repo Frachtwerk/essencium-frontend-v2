@@ -13,6 +13,7 @@ import { Right } from '@/generated/client'
 import { useFindAllRights } from '@/hooks/data/rights'
 import { useAllRoles, useToggleRoleRight } from '@/hooks/data/roles'
 import { parseSort, serializeSort } from '@/lib/pagination'
+import { isRoleLocked } from '@/lib/roles'
 
 const route = getRouteApi('/_authenticated/rights')
 
@@ -81,11 +82,7 @@ export function RightsPage(): React.ReactElement {
           checked={
             roleRightSets.get(role.id)?.has(row.row.original.authority) ?? false
           }
-          disabled={
-            !role.editable ||
-            role.systemRole === true ||
-            role.protected === true
-          }
+          disabled={isRoleLocked(role)}
         />
       ),
       enableSorting: false,
