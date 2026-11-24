@@ -1,6 +1,7 @@
 import { standardSchemaResolver } from '@hookform/resolvers/standard-schema'
 import { useMutation } from '@tanstack/react-query'
 import { Link, createFileRoute, redirect } from '@tanstack/react-router'
+import type { ParseKeys } from 'i18next'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import { z } from 'zod'
@@ -34,7 +35,7 @@ export const Route = createFileRoute('/reset-password')({
 })
 
 const resetPasswordSchema = z.object({
-  email: z.string().email(),
+  email: z.email('users.validation.email'),
 })
 
 type ResetPasswordForm = z.infer<typeof resetPasswordSchema>
@@ -106,6 +107,7 @@ function ResetPasswordPage(): React.ReactElement {
         </CardHeader>
         <CardContent>
           <form
+            noValidate
             onSubmit={e => void handleSubmit(data => mutation.mutate(data))(e)}
             className="space-y-4"
           >
@@ -125,7 +127,8 @@ function ResetPasswordPage(): React.ReactElement {
               />
               {errors.email && (
                 <p className="text-destructive text-sm">
-                  {errors.email.message}
+                  {/* Validation messages are i18n keys from the schema. */}
+                  {t(errors.email.message as ParseKeys)}
                 </p>
               )}
             </div>
