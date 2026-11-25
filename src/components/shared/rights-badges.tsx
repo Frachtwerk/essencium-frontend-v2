@@ -8,13 +8,13 @@ import type { Right } from '@/generated/client/types.gen'
 
 const VISIBLE_COUNT = 4
 
-interface ApiTokenRightsBadgesProps {
+interface RightsBadgesProps {
   rights?: Right[]
 }
 
-export function ApiTokenRightsBadges({
+export function RightsBadges({
   rights = [],
-}: ApiTokenRightsBadgesProps): React.ReactElement {
+}: RightsBadgesProps): React.ReactElement {
   const overflow = rights.slice(VISIBLE_COUNT)
   return (
     <div className="flex flex-wrap gap-1">

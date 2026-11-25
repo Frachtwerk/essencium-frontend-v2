@@ -3,10 +3,9 @@ import type { OnChangeFn, SortingState } from '@tanstack/react-table'
 import dayjs from 'dayjs'
 import { useTranslation } from 'react-i18next'
 
-import { ApiTokenRightsBadges } from './api-token-rights-badges'
-
 import { DataTable, type DataTableColumnDef } from '@/components/data-table'
 import { CanAccess } from '@/components/shared/can-access'
+import { RightsBadges } from '@/components/shared/rights-badges'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import type {
@@ -74,7 +73,7 @@ export function MyApiTokensTable({
     {
       id: 'rights',
       header: t('apiTokens.table.rights'),
-      cell: ({ row }) => <ApiTokenRightsBadges rights={row.original.rights} />,
+      cell: ({ row }) => <RightsBadges rights={row.original.rights} />,
     },
     {
       id: 'createdAt',
