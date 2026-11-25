@@ -80,6 +80,14 @@ export function AllApiTokensTable({
       cell: ({ row }) => <RightsBadges rights={row.original.rights} />,
     },
     {
+      id: 'createdAt',
+      header: t('apiTokens.table.createdAt'),
+      cell: ({ row }) =>
+        row.original.createdAt
+          ? dayjs(row.original.createdAt).format('L LT')
+          : '—',
+    },
+    {
       id: 'actions',
       header: () => (
         <span className="sr-only">{t('apiTokens.table.actions')}</span>
