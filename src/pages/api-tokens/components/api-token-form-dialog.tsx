@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import {
   apiTokenFormSchema,
   defaultApiTokenFormValues,
+  getTodayIsoDate,
   type ApiTokenFormValues,
 } from './api-token-form-schema'
 
@@ -100,7 +101,7 @@ export function ApiTokenFormDialog({
                 <FormItem>
                   <FormLabel>{t('apiTokens.form.validUntil')}</FormLabel>
                   <FormControl>
-                    <Input type="date" {...field} />
+                    <Input type="date" min={getTodayIsoDate()} {...field} />
                   </FormControl>
                   {!field.value && (
                     <FormDescription>
