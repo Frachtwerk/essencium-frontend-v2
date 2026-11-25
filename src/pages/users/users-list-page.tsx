@@ -22,6 +22,11 @@ import { cn } from '@/lib/utils'
 
 const route = getRouteApi('/_authenticated/users/')
 
+// Local accounts carry source 'local'; anything else names the SSO provider.
+function isSsoUser(user: UserRepresentation): boolean {
+  return Boolean(user.source) && user.source !== 'local'
+}
+
 export function UsersListPage(): React.ReactElement {
   const { t } = useTranslation()
   const { page, size, name, email, roles, sort } = route.useSearch()
@@ -58,7 +63,14 @@ export function UsersListPage(): React.ReactElement {
         [row.firstName, row.lastName].filter(Boolean).join(' '),
       header: t('users.table.name'),
       enableSorting: true,
-      cell: ({ getValue }) => getValue<string>() || '—',
+      cell: ({ row, getValue }) => (
+        <div className="flex items-center gap-2">
+          <span>{getValue<string>() || '—'}</span>
+          {isSsoUser(row.original) && (
+            <Badge variant="outline">{row.original.source}</Badge>
+          )}
+        </div>
+      ),
     },
     {
       accessorKey: 'email',
