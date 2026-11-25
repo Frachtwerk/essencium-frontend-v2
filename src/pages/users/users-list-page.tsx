@@ -72,6 +72,12 @@ export function UsersListPage(): React.ReactElement {
       cell: ({ row }) => row.original.phone || '—',
     },
     {
+      accessorKey: 'locale',
+      header: t('users.table.locale'),
+      enableSorting: true,
+      cell: ({ row }) => row.original.locale?.toUpperCase() || '—',
+    },
+    {
       id: 'roles',
       header: t('users.table.roles'),
       enableSorting: false,

@@ -145,6 +145,7 @@
       "name": "Name",
       "email": "Email",
       "phone": "Phone",
+      "locale": "Language",
       "roles": "Roles",
       "status": "Status",
       "actions": "Actions"
