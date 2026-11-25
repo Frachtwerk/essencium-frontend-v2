@@ -1,10 +1,13 @@
 import type { SortingState } from '@tanstack/react-table'
 import { z } from 'zod'
 
+export const PAGE_SIZE_OPTIONS = [10, 20, 50, 100] as const
+export const DEFAULT_PAGE_SIZE = 10
+
 /** Type-safe search params for paginated list routes. */
 export const paginationSearchParamsSchema = z.object({
   page: z.number().optional().default(0),
-  size: z.number().optional().default(10),
+  size: z.number().optional().default(DEFAULT_PAGE_SIZE),
 })
 
 /** Spring-style sort token: `property,asc` | `property,desc`. */
