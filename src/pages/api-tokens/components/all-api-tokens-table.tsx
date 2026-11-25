@@ -56,6 +56,7 @@ export function AllApiTokensTable({
     {
       id: 'status',
       header: t('apiTokens.table.status'),
+      enableSorting: true,
       cell: ({ row }) => {
         const status = row.original.status
         if (!status) return '—'
@@ -69,6 +70,7 @@ export function AllApiTokensTable({
     {
       id: 'validUntil',
       header: t('apiTokens.table.validUntil'),
+      enableSorting: true,
       cell: ({ row }) =>
         row.original.validUntil
           ? dayjs(row.original.validUntil).format('L')
@@ -82,6 +84,7 @@ export function AllApiTokensTable({
     {
       id: 'createdAt',
       header: t('apiTokens.table.createdAt'),
+      enableSorting: true,
       cell: ({ row }) =>
         row.original.createdAt
           ? dayjs(row.original.createdAt).format('L LT')
