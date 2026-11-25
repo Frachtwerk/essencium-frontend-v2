@@ -54,7 +54,7 @@ export function AllApiTokensTable({
       cell: ({ row }) => row.original.description || '—',
     },
     {
-      id: 'status',
+      accessorKey: 'status',
       header: t('apiTokens.table.status'),
       enableSorting: true,
       cell: ({ row }) => {
@@ -68,7 +68,7 @@ export function AllApiTokensTable({
       },
     },
     {
-      id: 'validUntil',
+      accessorKey: 'validUntil',
       header: t('apiTokens.table.validUntil'),
       enableSorting: true,
       cell: ({ row }) =>
@@ -82,7 +82,7 @@ export function AllApiTokensTable({
       cell: ({ row }) => <RightsBadges rights={row.original.rights} />,
     },
     {
-      id: 'createdAt',
+      accessorKey: 'createdAt',
       header: t('apiTokens.table.createdAt'),
       enableSorting: true,
       cell: ({ row }) =>
