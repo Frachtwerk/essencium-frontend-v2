@@ -25,6 +25,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { setNewPassword } from '@/generated/client/sdk.gen'
+import { ApiError } from '@/lib/api-error'
 import { baseClient, getAccessToken, waitForAuth } from '@/lib/auth-store'
 import { cn } from '@/lib/utils'
 import { passwordSchema } from '@/pages/users/user-form-schema'
@@ -58,6 +59,15 @@ const setPasswordSchema = z
 
 type SetPasswordForm = z.infer<typeof setPasswordSchema>
 
+// The backend answers an unknown or already used token with 401.
+function setPasswordErrorKey(
+  error: Error,
+): 'auth.invalidResetToken' | 'error.unknown' {
+  return error instanceof ApiError && error.status === 401
+    ? 'auth.invalidResetToken'
+    : 'error.unknown'
+}
+
 function SetPasswordPage(): React.ReactElement {
   const { t } = useTranslation()
   const { token } = Route.useSearch()
@@ -69,11 +79,13 @@ function SetPasswordPage(): React.ReactElement {
   })
 
   const mutation = useMutation({
-    mutationFn: (data: SetPasswordForm) =>
-      setNewPassword({
+    mutationFn: async (data: SetPasswordForm) => {
+      const { error, response } = await setNewPassword({
         client: baseClient,
         body: { password: data.password, verification: token ?? '' },
-      }),
+      })
+      if (error) throw new ApiError(response?.status)
+    },
   })
 
   if (!token) {
@@ -138,9 +150,7 @@ function SetPasswordPage(): React.ReactElement {
             >
               {mutation.isError && (
                 <div className="bg-destructive text-destructive-foreground rounded-md p-3 text-sm">
-                  {mutation.error instanceof Error
-                    ? mutation.error.message
-                    : t('error.unknown')}
+                  {t(setPasswordErrorKey(mutation.error))}
                 </div>
               )}
 

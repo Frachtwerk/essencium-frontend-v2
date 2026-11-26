@@ -4,6 +4,7 @@ import {
   postLogin,
   postRenew,
 } from '@/generated/client/sdk.gen'
+import { ApiError } from '@/lib/api-error'
 import { getTokenExpiry } from '@/lib/jwt'
 
 export const API_BASE_URL = import.meta.env.VITE_API_URL ?? '/api'
@@ -130,7 +131,7 @@ export async function login(
   username: string,
   password: string,
 ): Promise<string> {
-  const { data, error } = await postLogin({
+  const { data, error, response } = await postLogin({
     client: baseClient,
     body: { username, password },
     credentials: 'include',
@@ -138,9 +139,7 @@ export async function login(
   })
 
   if (error || !data?.token) {
-    throw new Error(
-      (error as Error | undefined)?.message ?? 'No token received',
-    )
+    throw new ApiError(response?.status)
   }
 
   setAccessToken(data.token)

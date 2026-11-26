@@ -25,6 +25,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useAuth } from '@/context/auth-context'
 import { getRegistrationsOptions } from '@/generated/client/@tanstack/react-query.gen'
+import { ApiError } from '@/lib/api-error'
 import {
   API_BASE_URL,
   baseClient,
@@ -55,6 +56,16 @@ export const Route = createFileRoute('/login')({
 })
 
 const REDIRECT_KEY = 'redirectAfterLogin'
+
+// The backend answers every failed login (wrong password, locked, disabled)
+// with 401.
+function loginErrorKey(
+  error: Error,
+): 'auth.invalidCredentials' | 'auth.loginFailed' {
+  return error instanceof ApiError && error.status === 401
+    ? 'auth.invalidCredentials'
+    : 'auth.loginFailed'
+}
 
 type SsoProvider = { imageUrl: string; name: string; url: string }
 
@@ -151,9 +162,7 @@ function LoginPage(): React.ReactElement {
   }
 
   const errorMessage = loginMutation.error
-    ? loginMutation.error instanceof Error
-      ? loginMutation.error.message
-      : t('auth.loginFailed')
+    ? t(loginErrorKey(loginMutation.error))
     : null
 
   // Handle OAuth token returned from backend redirect
