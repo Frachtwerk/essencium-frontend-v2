@@ -3,10 +3,9 @@ import type { OnChangeFn, SortingState } from '@tanstack/react-table'
 import dayjs from 'dayjs'
 import { useTranslation } from 'react-i18next'
 
-import { ApiTokenRightsBadges } from './api-token-rights-badges'
-
 import { DataTable, type DataTableColumnDef } from '@/components/data-table'
 import { CanAccess } from '@/components/shared/can-access'
+import { RightsBadges } from '@/components/shared/rights-badges'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import type {
@@ -49,7 +48,7 @@ export function MyApiTokensTable({
       cell: ({ row }) => row.original.description || '—',
     },
     {
-      id: 'status',
+      accessorKey: 'status',
       header: t('apiTokens.table.status'),
       enableSorting: true,
       cell: ({ row }) => {
@@ -63,7 +62,7 @@ export function MyApiTokensTable({
       },
     },
     {
-      id: 'validUntil',
+      accessorKey: 'validUntil',
       header: t('apiTokens.table.validUntil'),
       enableSorting: true,
       cell: ({ row }) =>
@@ -74,10 +73,10 @@ export function MyApiTokensTable({
     {
       id: 'rights',
       header: t('apiTokens.table.rights'),
-      cell: ({ row }) => <ApiTokenRightsBadges rights={row.original.rights} />,
+      cell: ({ row }) => <RightsBadges rights={row.original.rights} />,
     },
     {
-      id: 'createdAt',
+      accessorKey: 'createdAt',
       header: t('apiTokens.table.createdAt'),
       enableSorting: true,
       cell: ({ row }) =>

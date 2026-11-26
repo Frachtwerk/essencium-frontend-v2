@@ -22,9 +22,13 @@ import { parseSort, serializeSort } from '@/lib/pagination'
 
 const route = getRouteApi('/_authenticated/api-tokens')
 
+// Dates are ISO strings, so comparing them as text sorts them chronologically.
 function sortValue(token: ApiTokenRepresentation, columnId: string): string {
   if (columnId === 'user') return token.linkedUser?.name ?? ''
   if (columnId === 'description') return token.description ?? ''
+  if (columnId === 'status') return token.status ?? ''
+  if (columnId === 'validUntil') return token.validUntil ?? ''
+  if (columnId === 'createdAt') return token.createdAt ?? ''
   return ''
 }
 

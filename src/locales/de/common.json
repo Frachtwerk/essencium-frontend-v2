@@ -287,7 +287,8 @@
     },
     "validation": {
       "description": "Bitte eine Beschreibung eingeben",
-      "rights": "Bitte mindestens ein Recht auswählen"
+      "rights": "Bitte mindestens ein Recht auswählen",
+      "validUntilPast": "Das Datum darf nicht in der Vergangenheit liegen"
     },
     "reveal": {
       "title": "Token erstellt",

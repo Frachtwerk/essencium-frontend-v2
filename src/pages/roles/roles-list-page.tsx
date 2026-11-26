@@ -10,6 +10,7 @@ import { DataTable, type DataTableColumnDef } from '@/components/data-table'
 import { PageHeader } from '@/components/layout/page-header'
 import { PageWrapper } from '@/components/layout/page-wrapper'
 import { CanAccess } from '@/components/shared/can-access'
+import { RightsBadges } from '@/components/shared/rights-badges'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -20,7 +21,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import type { Role } from '@/generated/client/types.gen'
 import { useDeleteRole, useFindAllRoles } from '@/hooks/data/roles'
@@ -78,20 +78,7 @@ export function RolesListPage(): React.ReactElement {
     {
       id: 'rights',
       header: t('roles.table.rights'),
-      cell: ({ row }) => (
-        <div className="flex flex-wrap gap-1">
-          {(row.original.rights ?? []).slice(0, 4).map(r => (
-            <Badge key={r.authority} variant="secondary">
-              {r.authority}
-            </Badge>
-          ))}
-          {(row.original.rights ?? []).length > 4 && (
-            <Badge variant="outline">
-              +{(row.original.rights ?? []).length - 4}
-            </Badge>
-          )}
-        </div>
-      ),
+      cell: ({ row }) => <RightsBadges rights={row.original.rights} />,
     },
     {
       id: 'actions',
