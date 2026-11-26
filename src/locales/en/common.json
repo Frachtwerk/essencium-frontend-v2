@@ -326,7 +326,8 @@
     "title": "Rights",
     "authority": "Name",
     "updateSuccess": "The role {{name}} has been updated successfully.",
-    "updateError": "Could not update role {{name}}."
+    "updateError": "Could not update role {{name}}.",
+    "checkbox": "Right {{right}} for role {{role}}"
   },
   "privacy": {
     "title": "Privacy Policy",

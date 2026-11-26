@@ -326,7 +326,8 @@
     "title": "Rechte",
     "authority": "Name",
     "updateSuccess": "Die Rolle {{name}} wurde erfolgreich geändert.",
-    "updateError": "Die Rolle {{name}} konnte nicht geändert werden."
+    "updateError": "Die Rolle {{name}} konnte nicht geändert werden.",
+    "checkbox": "Recht {{right}} für Rolle {{role}}"
   },
   "privacy": {
     "title": "Datenschutzerklärung",

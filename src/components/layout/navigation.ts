@@ -45,7 +45,7 @@ const ROUTE_META: Record<string, RouteMeta> = {
   '/rights': {
     labelKey: 'navigation.rights',
     icon: RiShieldKeyholeLine,
-    rights: [RIGHTS.ROLE_UPDATE, RIGHTS.RIGHT_READ],
+    rights: [RIGHTS.ROLE_READ, RIGHTS.RIGHT_READ],
     mode: 'all',
     order: 25,
   },

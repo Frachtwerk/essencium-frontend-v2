@@ -10,7 +10,11 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Right } from '@/generated/client'
 import { useFindAllRights } from '@/hooks/data/rights'
 import { useAllRoles, useToggleRoleRight } from '@/hooks/data/roles'
+import { usePermissions } from '@/hooks/use-permissions'
 import { parseSort, serializeSort } from '@/lib/pagination'
+import { RIGHTS } from '@/lib/permissions'
+import { isRoleLocked } from '@/lib/roles'
+import { cn } from '@/lib/utils'
 
 const route = getRouteApi('/_authenticated/rights')
 
@@ -43,6 +47,7 @@ function RoleRightCheckbox({
     <Checkbox
       checked={checked}
       disabled={disabled}
+      aria-label={t('rights.checkbox', { right: authority, role: roleName })}
       onCheckedChange={nextChecked => toggleRight({ authority, nextChecked })}
     />
   )
@@ -60,6 +65,7 @@ export function RightsPage(): React.ReactElement {
   })
 
   const { data: allRoles } = useAllRoles()
+  const canUpdateRoles = usePermissions().can(RIGHTS.ROLE_UPDATE)
 
   const roleRightSets = new Map(
     allRoles?.content?.map(role => [
@@ -71,7 +77,11 @@ export function RightsPage(): React.ReactElement {
   const roleColumns: DataTableColumnDef<Right>[] =
     allRoles.content?.map(role => ({
       id: role.id ?? role.name,
-      header: role.name,
+      header: () => (
+        <span className={cn(isRoleLocked(role) && 'text-muted-foreground')}>
+          {role.name}
+        </span>
+      ),
       cell: row => (
         <RoleRightCheckbox
           roleName={role.name}
@@ -79,11 +89,7 @@ export function RightsPage(): React.ReactElement {
           checked={
             roleRightSets.get(role.id)?.has(row.row.original.authority) ?? false
           }
-          disabled={
-            !role.editable ||
-            role.systemRole === true ||
-            role.protected === true
-          }
+          disabled={!canUpdateRoles || isRoleLocked(role)}
         />
       ),
       enableSorting: false,

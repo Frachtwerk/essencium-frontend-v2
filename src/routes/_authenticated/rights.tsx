@@ -16,7 +16,7 @@ export const Route = createFileRoute('/_authenticated/rights')({
   beforeLoad: async ({ context: { queryClient }, location }) => {
     await assertRights(
       queryClient,
-      [RIGHTS.ROLE_UPDATE, RIGHTS.RIGHT_READ],
+      [RIGHTS.ROLE_READ, RIGHTS.RIGHT_READ],
       'all',
       location.href,
     )
