@@ -10,7 +10,7 @@ const usersSearchSchema = paginationSearchParamsSchema.extend({
   name: z.string().optional(),
   email: z.string().optional(),
   roles: z.array(z.string()).optional(),
-  sort: z.string().optional().default('email,asc'),
+  sort: z.string().optional().default('name,asc'),
 })
 
 export const Route = createFileRoute('/_authenticated/users/')({
